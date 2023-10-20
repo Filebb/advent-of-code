@@ -1,0 +1,55 @@
+---
+title: "Day 1: Not Quite Lisp"
+---
+
+[Reference](https://adventofcode.com/2015/day/1)
+
+## Part One
+
+```{r}
+#| label: 2015 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2015/01.txt")
+
+moves <- tibble(move     = str_split_1(string = input, pattern = ""),
+                number   = case_match(move, "(" ~  1, ")" ~ -1),
+                position = cumsum(number)) |> 
+    rowid_to_column("time")
+    
+moves |> 
+    summarize(position = sum(number)) |> 
+    pull(position) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+moves |> 
+    filter(position == -1) |> 
+    slice(1) |> 
+    pull(time) |> 
+    cat()
+```
+
+## Plot
+
+```{r}
+#| label: 2015 - day 1 - plot
+#| message: false
+#| warning: false
+#| collapse: true
+moves |> 
+    ggplot(mapping = aes(x = time, y = position)) +
+    geom_point() +
+    theme_minimal()
+```
+

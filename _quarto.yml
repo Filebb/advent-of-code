@@ -1,0 +1,40 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Advent of Code"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Events"
+        menu:
+          - text: "2015"
+            href: solutions/2015/01.qmd
+
+  sidebar:
+    - title: "2015"
+      style: "docked"
+      collapse-level: 1
+      align: left
+      contents:
+        - solutions/2015/01.qmd
+
+    - title: "2016"
+
+format:
+  html:
+    theme: cosmo
+    highlight-style: atom-one
+    css: styles.css
+    toc: false
+    header-includes: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+monofont: Roboto Mono
+editor: source
+
+
