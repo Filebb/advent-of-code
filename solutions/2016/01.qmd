@@ -19,9 +19,8 @@ library(tidyverse)
 
 # read input
 input <- readLines(con = "../../inputs/2016/01.txt")
-# input <- "R8, R4, R4, R8"
 
-# extract direction and length from input
+# extract direction and length from input (first entry NA)
 move <- c(NA, str_split_1(string = input, pattern = ", "))
 
 turn <- str_extract(string = move, pattern = "L|R")
