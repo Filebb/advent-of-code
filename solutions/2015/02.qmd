@@ -19,13 +19,15 @@ library(tidyverse)
 
 input <- readLines(con = "../../inputs/2015/02.txt")
 
+paper_area <- function(l, w, h) {
+    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)
+}
+
 paper <- tibble(original = input) |> 
     separate_wider_delim(cols = original, names = c("l", "w", "h"),
                          delim = "x", cols_remove = FALSE) |> 
     mutate(across(c(l, w, h), ~as.integer(.))) |> 
-    rowwise() |>
-    mutate(paper = sum(2L*l*w, 2L*w*h, 2L*h*l) + min(l*w, w*h, h*l)) |>
-    ungroup()
+    mutate(paper = pmap_int(list(l, w, h), paper_area))
 
 paper |> 
     summarise(total_paper = sum(paper)) |> 
@@ -53,10 +55,12 @@ paper |> print(n = nrow(paper))
 #| message: false
 #| warning: false
 #| collapse: true
+ribbon_length <- function(l, w, h){
+    2L * (l+w+h - max(l, w, h)) + l*w*h
+}
+
 paper <- paper |>
-    rowwise() |>
-    mutate(ribbon = 2 * (l+w+h-max(l,w,h)) + l*w*h) |>
-    ungroup()
+    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length))
 
 paper |> 
     summarise(total_ribbon = sum(ribbon)) |> 
