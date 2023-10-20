@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "This website contains my solutions to programming challenges proposed by Advent of Code"
+  },
+  {
+    "objectID": "solutions/2015/home.html",
+    "href": "solutions/2015/home.html",
+    "title": "2015",
+    "section": "",
+    "text": "2015 challenges solutions."
+  },
+  {
+    "objectID": "solutions/2015/01.html",
+    "href": "solutions/2015/01.html",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "",
+    "text": "Reference"
+  },
+  {
+    "objectID": "solutions/2015/01.html#part-one",
+    "href": "solutions/2015/01.html#part-one",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Part One",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- readLines(con = \"../../inputs/2015/01.txt\")\n\nmoves &lt;- tibble(move     = str_split_1(string = input, pattern = \"\"),\n                number   = case_match(move, \"(\" ~  1, \")\" ~ -1),\n                position = cumsum(number)) |&gt; \n    rowid_to_column(\"time\")\n    \nmoves |&gt; \n    summarize(position = sum(number)) |&gt; \n    pull(position) |&gt; \n    cat()\n## 232"
+  },
+  {
+    "objectID": "solutions/2015/index.html",
+    "href": "solutions/2015/index.html",
+    "title": "2015",
+    "section": "",
+    "text": "2015 challenges solutions"
+  },
+  {
+    "objectID": "solutions/2015/01.html#part-two",
+    "href": "solutions/2015/01.html#part-two",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Part Two",
+    "text": "Part Two\n\nmoves |&gt; \n    filter(position == -1) |&gt; \n    slice(1) |&gt; \n    pull(time) |&gt; \n    cat()\n## 1783"
+  },
+  {
+    "objectID": "solutions/2015/01.html#plot",
+    "href": "solutions/2015/01.html#plot",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Plot",
+    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = time, y = position)) +\n    geom_point() +\n    theme_minimal()"
+  }
+]
