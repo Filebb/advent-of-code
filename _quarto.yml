@@ -18,6 +18,8 @@ website:
             href: solutions/2018/01.qmd
           - text: "2019"
             href: solutions/2019/01.qmd
+          - text: "2020"
+            href: solutions/2020/01.qmd
 
   sidebar:
     - title: "2015"
@@ -53,6 +55,12 @@ website:
         - text: "2019"
           contents:
             - solutions/2019/01.qmd
+
+    - title: "2020"
+      contents:
+        - text: "2020"
+          contents:
+            - solutions/2020/01.qmd
 
 format:
   html:

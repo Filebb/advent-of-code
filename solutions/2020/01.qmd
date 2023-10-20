@@ -1,0 +1,38 @@
+---
+title: "Day 1: Report Repair"
+---
+
+[Reference](https://adventofcode.com/2020/day/1)
+
+## Part One
+
+```{r}
+#| label: 2020 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+input <- readLines(con = "../../inputs/2020/01.txt") |> as.integer()
+
+for (i in 1:(length(input)-1)) {
+    for (j in (i+1):length(input)) {
+        if (input[i] + input[j] == 2020) cat(input[i] * input[j])
+    }
+}
+```
+
+## Part Two
+
+```{r}
+#| label: 2020 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+for (i in 1:(length(input)-2)) {
+    for (j in (i+1):length(input)-1) {
+        for (k in (j+1):length(input)) {
+        if (input[i] + input[j] + input[k] == 2020)
+            cat(input[i] * input[j] * input[k])
+        }
+    }
+}
+```
