@@ -1,0 +1,30 @@
+---
+title: "Day 1: Sonar Sweep"
+---
+
+[Reference](https://adventofcode.com/2021/day/1)
+
+## Part One
+
+```{r}
+#| label: 2021 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+input <- readLines(con = "../../inputs/2021/01.txt") |> as.integer()
+
+cat(sum(diff(input) > 0))
+```
+
+## Part Two
+
+```{r}
+#| label: 2021 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+library(slider)
+
+new_input <- slide_sum(input, after = 2, complete = TRUE)
+cat(sum(diff(new_input) > 0, na.rm = TRUE))
+```
