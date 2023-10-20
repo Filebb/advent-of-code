@@ -11,7 +11,6 @@ title: "Day 1: Chronal Calibration"
 #| message: false
 #| warning: false
 #| collapse: true
-# library(tidyverse)
 input <- readLines(con = "../../inputs/2018/01.txt") |> as.integer()
 
 cat(sum(input))
@@ -26,7 +25,7 @@ cat(sum(input))
 #| collapse: true
 library(tidyverse)
 
-# 136 found after some trials, using optimal value to optmize execution
+# 136 found after some trials, using optimal value to optimize execution
 frequencies <- tibble(change = rep(input, times = 136),
                       result = cumsum(change)) |> 
     rowid_to_column("time")

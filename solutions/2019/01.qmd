@@ -1,0 +1,88 @@
+---
+title: "Day 1: The Tyranny of the Rocket Equation"
+---
+
+[Reference](https://adventofcode.com/2019/day/1)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2019 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+calculate_fuel <- function(mass) floor(mass / 3) - 2
+
+input <- read_csv(file = "../../inputs/2019/01.txt", col_names = "mass") |> 
+    mutate(fuel = map_dbl(mass, calculate_fuel))
+
+input |> 
+    summarise(total_fuel = sum(fuel)) |> 
+    pull(total_fuel) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2019 - day 1 - full table part one
+#| message: false
+#| warning: false
+#| collapse: true
+# look at the full table
+input |> print(n = nrow(input))
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2019 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+calculate_fuel_adj <- function(mass) {
+    
+    total <- calculate_fuel(mass)
+    
+    repeat{
+        new <- calculate_fuel(total[length(total)])
+        
+        if (new > 0) total <- c(total, new) else break
+    }
+    
+    return(sum(total))
+}
+
+input <- input |> 
+    mutate(fuel_adj = map_dbl(mass, calculate_fuel_adj))
+
+input |> 
+    summarise(total_fuel_adj = sum(fuel_adj)) |> 
+    pull(total_fuel_adj) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2019 - day 1 - full table part two
+#| message: false
+#| warning: false
+#| collapse: true
+# look at the full table
+input |> print(n = nrow(input))
+```
+
+:::
