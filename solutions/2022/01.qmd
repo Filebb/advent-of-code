@@ -1,0 +1,61 @@
+---
+title: "Day 1: Calorie Counting"
+---
+
+[Reference](https://adventofcode.com/2022/day/1)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2022 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2022/01.txt") |> as.integer()
+
+elf_calories <- tibble(calories = input,
+                       elf = cumsum(is.na(input)) + 1L) |> 
+    filter(!is.na(calories))
+
+elf_calories |> 
+    group_by(elf) |> 
+    summarise(total_calories = sum(calories)) |> 
+    slice_max(total_calories) |> 
+    pull(total_calories) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2022 - day 1 - full table
+#| message: false
+#| warning: false
+#| collapse: true
+# look at the full table
+elf_calories |> print(n = nrow(elf_calories))
+```
+
+:::
+
+## Part Two
+
+```{r}
+#| label: 2022 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+elf_calories |>
+    group_by(elf) |> 
+    summarise(total_calories = sum(calories)) |> 
+    slice_max(total_calories, n = 3) |> 
+    summarise(total_3 = sum(total_calories)) |> 
+    pull(total_3) |> 
+    cat()
+```
