@@ -12,6 +12,8 @@ website:
             href: solutions/2015/01.qmd
           - text: "2016"
             href: solutions/2016/01.qmd
+          - text: "2017"
+            href: solutions/2017/01.qmd
 
   sidebar:
     - title: "2015"
@@ -29,6 +31,12 @@ website:
         - text: "2016"
           contents:
             - solutions/2016/01.qmd
+
+    - title: "2017"
+      contents:
+        - text: "2017"
+          contents:
+            - solutions/2017/01.qmd
 
 format:
   html:
