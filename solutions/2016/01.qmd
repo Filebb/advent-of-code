@@ -1,0 +1,247 @@
+---
+title: "Day 1: No Time for a Taxicab"
+---
+
+[Reference](https://adventofcode.com/2016/day/1)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+# read input
+input <- readLines(con = "../../inputs/2016/01.txt")
+# input <- "R8, R4, R4, R8"
+
+# extract direction and length from input
+move <- c(NA, str_split_1(string = input, pattern = ", "))
+
+turn <- str_extract(string = move, pattern = "L|R")
+
+length <- str_extract(string = move, pattern = "[0-9]+") |> as.integer()
+
+# pre-allocate vectors for x/y-positions and x/y-direction
+position_x <- integer(length = length(move))
+position_y <- integer(length = length(move))
+
+direction_x <- integer(length = length(move))
+direction_y <- integer(length = length(move))
+
+# initialize position and direction (everything is pre-populated as 0)
+# position_x[1] <- 0
+# position_y[1] <- 0
+# 
+# direction_x[1] <- 0
+direction_y[1] <- 1L
+
+change_direction <- function(current_direction, turn) {
+    
+    if (turn == "R") new_direction <- rev(current_direction) * c(1L, -1L)
+    if (turn == "L") new_direction <- rev(current_direction) * c(-1L, 1L)
+    
+    return(new_direction)
+}
+
+# calculate directions and positions
+for (i in 2:length(move)) {
+    # get current x/y-direction
+    current_direction <- c(direction_x[i-1], direction_y[i-1])
+    
+    # calculate new direction
+    new_direction <- change_direction(current_direction, turn[i])
+    
+    # update values
+    direction_x[i] <- new_direction[1]
+    direction_y[i] <- new_direction[2]
+    
+    # get current x/y-position
+    current_position <- c(position_x[i-1], position_y[i-1])
+    
+    # calculate new position
+    new_position <- current_position + new_direction * length[i]
+    
+    # update values
+    position_x[i] <- new_position[1]
+    position_y[i] <- new_position[2]    
+}
+
+# collect all vectors in a table
+moves <- tibble(move, turn, length,
+                direction_x, direction_y,
+                position_x, position_y) |> 
+    mutate(distance = abs(position_x) + abs(position_y))
+
+# result
+moves |> 
+    select(distance) |> 
+    tail(1) |> 
+    pull() |> 
+    cat()
+```
+
+## `change_direction()` tests
+
+```{r}
+#| label: 2016 - day 1 - change_direction() tests
+#| message: false
+#| warning: false
+#| collapse: true
+# tests for change_direction()
+
+# right turn
+change_direction(c(0,1), "R")
+change_direction(c(1,0), "R")
+change_direction(c(0,-1), "R")
+change_direction(c(-1, 0), "R")
+
+# left turn
+change_direction(c(0,1), "L")
+change_direction(c(1,0), "L")
+change_direction(c(0,-1), "L")
+change_direction(c(-1, 0), "L")
+```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 1 - full table
+#| message: false
+#| warning: false
+#| collapse: true
+# look at the full table
+moves|> print(n = 178)
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+
+# change_direction() allows no change in direction
+change_direction <- function(current_direction, turn) {
+    
+    if (turn == "R") new_direction <- rev(current_direction) * c(1L, -1L)
+    if (turn == "L") new_direction <- rev(current_direction) * c(-1L, 1L)
+    if (turn == "N") new_direction <- current_direction
+    
+    return(new_direction)
+}
+
+# initialize new turn vector (first entry is NA as before)
+turn_unit <- c(NA)
+
+# populate the vector: each turn + No turn for length - 1 times
+for(i in seq_along(length)[-1]) {
+    turn_unit <- c(turn_unit, turn[i], rep("N", times = length[i]-1))
+}
+
+# length vector: NA + unit steps
+length_unit <- c(NA, rep(1L, times = length(turn_unit) - 1))
+
+
+# REPEAT WHAT'S DONE IN PART ONE
+position_x <- integer(length = length(turn_unit))
+position_y <- integer(length = length(turn_unit))
+
+direction_x <- integer(length = length(turn_unit))
+direction_y <- integer(length = length(turn_unit))
+
+# initialize position and direction (everything is pre-populated as 0)
+# position_x[1] <- 0
+# position_y[1] <- 0
+# 
+# direction_x[1] <- 0
+direction_y[1] <- 1L
+
+# calculate directions and positions
+for (i in 2:length(turn_unit)) {
+    # get current x/y-direction
+    current_direction <- c(direction_x[i-1], direction_y[i-1])
+    
+    # calculate new direction
+    new_direction <- change_direction(current_direction, turn_unit[i])
+    
+    # update values
+    direction_x[i] <- new_direction[1]
+    direction_y[i] <- new_direction[2]
+    
+    # get current x/y-position
+    current_position <- c(position_x[i-1], position_y[i-1])
+    
+    # calculate new position
+    new_position <- current_position + new_direction * length_unit[i]
+    
+    # update values
+    position_x[i] <- new_position[1]
+    position_y[i] <- new_position[2]    
+}
+
+# collect all vectors in a table
+moves_unit <- tibble(turn_unit, length_unit,
+                     direction_x, direction_y,
+                     position_x, position_y) |> 
+    mutate(distance = abs(position_x) + abs(position_y))
+
+
+# results
+moves_unit |> 
+    rowid_to_column("time") |> 
+    group_by(position_x, position_y, distance) |> 
+    summarise(count = n(), second_time = nth(time, 2)) |> 
+    filter(count > 1) |> 
+    arrange(second_time) |> 
+    select(distance) |> 
+    head(1) |> 
+    pull() |> 
+    cat()
+```
+
+## Visited Twice
+
+```{r}
+#| label: 2016 - day 1 - visited twice
+#| message: false
+#| warning: false
+#| collapse: true
+moves_unit |> 
+    rowid_to_column("time") |> 
+    group_by(position_x, position_y, distance) |> 
+    summarise(count = n(), second_time = nth(time, 2)) |> 
+    filter(count > 1) |> 
+    arrange(second_time) |> 
+    print(n = 49)
+```
+
+
+:::
+
+## Plot
+
+```{r}
+#| label: 2016 - day 1 - plot
+#| message: false
+#| warning: false
+#| collapse: true
+moves |> 
+    ggplot(mapping = aes(x = position_x, y = position_y)) + 
+    geom_path() +
+    theme_minimal()
+```
+

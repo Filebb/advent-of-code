@@ -6,22 +6,28 @@ website:
   title: "Advent of Code"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
       - text: "Events"
         menu:
           - text: "2015"
             href: solutions/2015/01.qmd
+          - text: "2016"
+            href: solutions/2016/01.qmd
 
   sidebar:
     - title: "2015"
       style: "docked"
-      collapse-level: 1
+      collapse-level: 2
       align: left
       contents:
-        - solutions/2015/01.qmd
+        - text: "2015"
+          contents:
+            - solutions/2015/01.qmd
 
     - title: "2016"
+      contents:
+        - text: "2016"
+          contents:
+            - solutions/2016/01.qmd
 
 format:
   html:
