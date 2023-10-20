@@ -1,0 +1,42 @@
+---
+title: "Day 1: Chronal Calibration"
+---
+
+[Reference](https://adventofcode.com/2018/day/1)
+
+## Part One
+
+```{r}
+#| label: 2018 - day 1 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+# library(tidyverse)
+input <- readLines(con = "../../inputs/2018/01.txt") |> as.integer()
+
+cat(sum(input))
+```
+
+## Part Two
+
+```{r}
+#| label: 2018 - day 1 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+# 136 found after some trials, using optimal value to optmize execution
+frequencies <- tibble(change = rep(input, times = 136),
+                      result = cumsum(change)) |> 
+    rowid_to_column("time")
+
+frequencies |> 
+    group_by(result) |> 
+    summarise(count = n(), second_time = nth(time, 2)) |> 
+    filter(count > 1) |> 
+    arrange(second_time) |> 
+    head(1) |> 
+    pull(result) |> 
+    cat()
+```
