@@ -22,6 +22,7 @@ website:
         - text: "2015"
           contents:
             - solutions/2015/01.qmd
+            - solutions/2015/02.qmd
 
     - title: "2016"
       contents:

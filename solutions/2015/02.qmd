@@ -1,0 +1,65 @@
+---
+title: "Day 2: I Was Told There Would Be No Math"
+---
+
+[Reference](https://adventofcode.com/2015/day/2)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2015 - day 2 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2015/02.txt")
+
+paper <- tibble(original = input) |> 
+    separate_wider_delim(cols = original, names = c("l", "w", "h"),
+                         delim = "x", cols_remove = FALSE) |> 
+    mutate(across(c(l, w, h), ~as.integer(.))) |> 
+    rowwise() |>
+    mutate(paper = sum(2L*l*w, 2L*w*h, 2L*h*l) + min(l*w, w*h, h*l)) |>
+    ungroup()
+
+paper |> 
+    summarise(total_paper = sum(paper)) |> 
+    pull(total_paper) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2015 - day 2 - full table
+#| message: false
+#| warning: false
+#| collapse: true
+# look at the full table
+paper |> print(n = nrow(paper))
+```
+
+:::
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 2 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+paper <- paper |>
+    rowwise() |>
+    mutate(ribbon = 2 * (l+w+h-max(l,w,h)) + l*w*h) |>
+    ungroup()
+
+paper |> 
+    summarise(total_ribbon = sum(ribbon)) |> 
+    pull(total_ribbon) |> 
+    cat()
+```
