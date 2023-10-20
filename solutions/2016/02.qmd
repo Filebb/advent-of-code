@@ -1,0 +1,24 @@
+---
+title: "Day 2: Bathroom Security"
+---
+
+[Reference](https://adventofcode.com/2016/day/2)
+
+## Part One
+
+```{r}
+#| label: 2016 - day 2 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+```
+
+## Part Two
+
+```{r}
+#| label: 2016 - day 2 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+```
