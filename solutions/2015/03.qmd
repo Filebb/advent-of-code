@@ -42,7 +42,7 @@ tibble(move_x = case_match(input, "^" ~  0, ">" ~  1, "v" ~  0, "<" ~ -1),
 
     mutate(who = if_else(row_number() %% 2 == 1, "santa", "robo")) |>
 
-    mutate(pos_x  = cumsum(move_x), pos_y  = cumsum(move_y), .by = who) |>
+    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |>
 
     add_row(move_x = NA, move_y = NA, pos_x = 0, pos_y = 0, .before = 1) |> 
     

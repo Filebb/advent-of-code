@@ -123,7 +123,7 @@
     "href": "solutions/2015/03.html#part-two",
     "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
     "section": "Part Two",
-    "text": "Part Two\n\ntibble(move_x = case_match(input, \"^\" ~  0, \"&gt;\" ~  1, \"v\" ~  0, \"&lt;\" ~ -1),\n       move_y = case_match(input, \"^\" ~  1, \"&gt;\" ~  0, \"v\" ~ -1, \"&lt;\" ~  0),\n       pos_x  = cumsum(move_x),\n       pos_y  = cumsum(move_y)) |&gt; \n\n    mutate(who = if_else(row_number() %% 2 == 1, \"santa\", \"robo\")) |&gt;\n\n    mutate(pos_x  = cumsum(move_x), pos_y  = cumsum(move_y), .by = who) |&gt;\n\n    add_row(move_x = NA, move_y = NA, pos_x = 0, pos_y = 0, .before = 1) |&gt; \n    \n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341"
+    "text": "Part Two\n\ntibble(move_x = case_match(input, \"^\" ~  0, \"&gt;\" ~  1, \"v\" ~  0, \"&lt;\" ~ -1),\n       move_y = case_match(input, \"^\" ~  1, \"&gt;\" ~  0, \"v\" ~ -1, \"&lt;\" ~  0),\n       pos_x  = cumsum(move_x),\n       pos_y  = cumsum(move_y)) |&gt; \n\n    mutate(who = if_else(row_number() %% 2 == 1, \"santa\", \"robo\")) |&gt;\n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt;\n\n    add_row(move_x = NA, move_y = NA, pos_x = 0, pos_y = 0, .before = 1) |&gt; \n    \n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341"
   },
   {
     "objectID": "solutions/2015/01.html",
