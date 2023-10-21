@@ -1,0 +1,101 @@
+---
+title: "Day 2: 1202 Program Alarm"
+---
+
+[Reference](https://adventofcode.com/2019/day/2)
+
+## Part One
+
+```{r}
+#| label: 2019 - day 2 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(stringr)
+
+input <- readLines(con = "../../inputs/2019/02.txt") |> 
+    str_split_1(pattern = ",") |> 
+    as.integer()
+
+input[1 + 1] <- 12
+input[2 + 1] <- 2
+
+# starting position
+pointer <- 0 + 1
+
+repeat{
+    if (input[pointer] == 99) break
+    
+    # get values (1st value = noun, 2nd value = verb)
+    noun <- input[input[pointer + 1] + 1]
+    verb <- input[input[pointer + 2] + 1]
+    
+    # target location
+    target_pointer <- input[pointer + 3] + 1
+    
+    # replace value
+    if (input[pointer] == 1) 
+        input[target_pointer] <- noun + verb
+    
+    else if (input[pointer] == 2)
+        input[target_pointer] <- noun * verb
+    
+    # update pointer
+    pointer <- pointer + 4
+}
+
+cat(input[1])
+```
+
+## Part Two
+
+```{r}
+#| label: 2019 - day 2 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+
+# create a function
+output <- function(input){
+    # starting position
+    pointer <- 0 + 1
+    
+    repeat{
+        if (input[pointer] == 99) break
+        
+        # get values (1st value = noun, 2nd value = verb)
+        noun <- input[input[pointer + 1] + 1]
+        verb <- input[input[pointer + 2] + 1]
+        
+        # target location
+        target_pointer <- input[pointer + 3] + 1
+        
+        # replace value
+        if (input[pointer] == 1) 
+            input[target_pointer] <- noun + verb
+        
+        else if (input[pointer] == 2)
+            input[target_pointer] <- noun * verb
+        
+        # update pointer
+        pointer <- pointer + 4
+    }
+    
+    return(input[1])
+}
+
+# search for noun and verb
+for (noun in 0:99) {
+    for (verb in 0:99) {
+        input <- readLines(con = "../../inputs/2019/02.txt") |> 
+            str_split_1(pattern = ",") |> 
+            as.integer()
+        
+        input[1 + 1] <- noun
+        input[2 + 1] <- verb
+        
+        if (output(input) == 19690720) cat(100 * noun + verb)
+        
+    }
+}
+```
