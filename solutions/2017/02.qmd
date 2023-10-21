@@ -1,0 +1,49 @@
+---
+title: "Day 2: Corruption Checksum"
+---
+
+[Reference](https://adventofcode.com/2017/day/2)
+
+## Part One
+
+```{r}
+#| label: 2017 - day 2 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+input <- read_table(file = "../../inputs/2017/02.txt", col_names = FALSE)
+
+max_minus_min <- function(x) max(x) - min(x)
+
+input |> 
+    rowwise() |>
+    mutate(line_check = max_minus_min(across(everything()))) |> 
+    ungroup() |>
+    summarise(checksum = sum(line_check)) |> 
+    pull(checksum) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2017 - day 2 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+division <- function(x) {
+    for(i in seq_along(x)) {
+        for(j in seq_along(x)) {
+            if (x[i] %% x[j] == 0 & i != j) return(x[i] / x[j])
+        }
+    }
+}
+
+# I couldn't find a purrr (or tidyverse) way of doing this
+input |> 
+    apply(MARGIN = 1, FUN = division) |> 
+    sum() |> 
+    cat()
+```
