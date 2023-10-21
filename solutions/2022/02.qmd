@@ -1,0 +1,102 @@
+---
+title: "Day 2: Rock Paper Scissors"
+---
+
+[Reference](https://adventofcode.com/2022/day/2)
+
+## Part One
+
+```{r}
+#| label: 2022 - day 2 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2022/02.txt")
+
+guide <- tibble(original = input) |> 
+    separate_wider_delim(cols = original,
+                         delim = " ",
+                         names = c("opponent", "me")) |> 
+    mutate(opponent = case_match(opponent,
+                                 "A" ~ "Rock",
+                                 "B" ~ "Paper",
+                                 "C" ~ "Scissors"),
+           me       = case_match(me,
+                                 "X" ~ "Rock",
+                                 "Y" ~ "Paper",
+                                 "Z" ~ "Scissors"))
+
+score <- function(opponent, me) {
+    if (me == "Rock")
+        score <- 1 + case_when(opponent == "Rock"     ~ 3,
+                               opponent == "Paper"    ~ 0,
+                               opponent == "Scissors" ~ 6)
+    
+    else if (me == "Paper")
+        score <- 2 + case_when(opponent == "Rock"     ~ 6,
+                               opponent == "Paper"    ~ 3,
+                               opponent == "Scissors" ~ 0)
+    
+    else if (me == "Scissors")
+        score <- 3 + case_when(opponent == "Rock"     ~ 0,
+                               opponent == "Paper"    ~ 6,
+                               opponent == "Scissors" ~ 3)
+    
+    return(score)
+}
+
+guide |> 
+    mutate(score = map2_int(opponent, me, score)) |> 
+    summarise(total = sum(score)) |> 
+    pull(total) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2022 - day 2 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+guide <- tibble(original = input) |> 
+    separate_wider_delim(cols = original,
+                         delim = " ",
+                         names = c("opponent", "outcome")) |> 
+    mutate(opponent = case_match(opponent,
+                                 "A" ~ "Rock",
+                                 "B" ~ "Paper",
+                                 "C" ~ "Scissors"),
+           outcome  = case_match(outcome,
+                                 "X" ~ "lose",
+                                 "Y" ~ "draw",
+                                 "Z" ~ "win"))
+
+me <- function(opponent, outcome) {
+    if (opponent == "Rock")
+        me <- case_when(outcome == "lose" ~ "Scissors",
+                        outcome == "draw" ~ "Rock",
+                        outcome == "win"  ~ "Paper")
+    
+    else if (opponent == "Paper")
+        me <- case_when(outcome == "lose" ~ "Rock",
+                        outcome == "draw" ~ "Paper",
+                        outcome == "win"  ~ "Scissors")
+    
+    else if (opponent == "Scissors")
+        me <- case_when(outcome == "lose" ~ "Paper",
+                        outcome == "draw" ~ "Scissors",
+                        outcome == "win"  ~ "Rock")
+    
+    return(me)
+}
+
+guide |> 
+    mutate(me    = map2_chr(opponent, outcome, me),
+           score = map2_int(opponent, me, score)) |> 
+    summarise(total = sum(score)) |> 
+    pull(total) |> 
+    cat()
+```

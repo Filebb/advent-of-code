@@ -82,6 +82,7 @@ website:
         - text: "2022"
           contents:
             - solutions/2022/01.qmd
+            - solutions/2022/02.qmd
 
 format:
   html:
