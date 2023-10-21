@@ -1,0 +1,63 @@
+---
+title: "Day 2: Password Philosophy"
+---
+
+[Reference](https://adventofcode.com/2020/day/2)
+
+## Part One
+
+```{r}
+#| label: 2020 - day 2 - part 1
+#| message: false
+#| warning: false
+#| collapse: true
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2020/02.txt")
+
+passwords <- tibble(original = input) |> 
+    
+    separate_wider_delim(cols = original,
+                         names = c("range", "letter", "password"),
+                         delim = " ") |>
+    
+    mutate(letter = str_replace(string = letter,
+                                pattern = ":",
+                                replacement = "")) |>
+    
+    separate_wider_delim(cols = range, names = c("min", "max"), delim = "-") |> 
+    
+    mutate(across(c(min, max), as.integer))
+
+validation_1 <- passwords |> 
+    mutate(matches = str_count(password, pattern = letter),
+           valid   = between(matches, min, max))
+
+validation_1
+
+validation_1 |> 
+    count(valid) |> 
+    filter(valid == TRUE) |> 
+    pull(n) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2020 - day 2 - part 2
+#| message: false
+#| warning: false
+#| collapse: true
+validation_2 <- passwords |> 
+    mutate(first   = str_sub(password, start = min, end = min),
+           second  = str_sub(password, start = max, end = max),
+           matches = (first == letter) + (second == letter))
+
+validation_2
+
+validation_2 |> 
+    filter(matches == 1) |> 
+    nrow() |> 
+    cat()
+```

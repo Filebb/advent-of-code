@@ -69,6 +69,7 @@ website:
         - text: "2020"
           contents:
             - solutions/2020/01.qmd
+            - solutions/2020/02.qmd
 
     - title: "2021"
       contents:
