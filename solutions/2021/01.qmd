@@ -8,7 +8,6 @@ title: "Day 1: Sonar Sweep"
 
 ```{r}
 #| label: 2021 - day 1 - part 1
-#| collapse: true
 input <- readLines(con = "../../inputs/2021/01.txt") |> as.integer()
 
 cat(sum(diff(input) > 0))
@@ -18,7 +17,6 @@ cat(sum(diff(input) > 0))
 
 ```{r}
 #| label: 2021 - day 1 - part 2
-#| collapse: true
 library(slider)
 
 new_input <- slide_sum(input, after = 2, complete = TRUE)

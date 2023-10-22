@@ -99,6 +99,10 @@ execute:
   message: false
   warning: false
 
+knitr:
+  opts_chunk:
+    collapse: true
+
 monofont: Roboto Mono
 editor: source
 

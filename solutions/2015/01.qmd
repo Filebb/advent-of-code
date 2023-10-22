@@ -8,7 +8,6 @@ title: "Day 1: Not Quite Lisp"
 
 ```{r}
 #| label: 2015 - day 1 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2015/01.txt")
@@ -28,7 +27,6 @@ moves |>
 
 ```{r}
 #| label: 2015 - day 1 - part 2
-#| collapse: true
 moves |> 
     filter(position == -1) |> 
     slice(1) |> 
@@ -40,7 +38,6 @@ moves |>
 
 ```{r}
 #| label: 2015 - day 1 - plot
-#| collapse: true
 moves |> 
     ggplot(mapping = aes(x = time, y = position)) +
     geom_point() +

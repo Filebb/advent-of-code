@@ -8,7 +8,6 @@ title: "Day 2: Bathroom Security"
 
 ```{r}
 #| label: 2016 - day 2 - part 1
-#| collapse: true
 library(tidyverse)
 ```
 
@@ -16,5 +15,4 @@ library(tidyverse)
 
 ```{r}
 #| label: 2016 - day 2 - part 2
-#| collapse: true
 ```

@@ -12,7 +12,6 @@ title: "Day 1: No Time for a Taxicab"
 
 ```{r}
 #| label: 2016 - day 1 - part 1
-#| collapse: true
 library(tidyverse)
 
 # read input
@@ -88,7 +87,6 @@ moves |>
 
 ```{r}
 #| label: 2016 - day 1 - change_direction() tests
-#| collapse: true
 # tests for change_direction()
 
 # right turn
@@ -108,7 +106,6 @@ change_direction(c(-1, 0), "L")
 
 ```{r}
 #| label: 2016 - day 1 - full table
-#| collapse: true
 # look at the full table
 moves|> print(n = 178)
 ```
@@ -123,8 +120,6 @@ moves|> print(n = 178)
 
 ```{r}
 #| label: 2016 - day 1 - part 2
-#| collapse: true
-
 # change_direction() allows no change in direction
 change_direction <- function(current_direction, turn) {
     
@@ -208,7 +203,6 @@ moves_unit |>
 
 ```{r}
 #| label: 2016 - day 1 - visited twice
-#| collapse: true
 moves_unit |> 
     rowid_to_column("time") |> 
     group_by(position_x, position_y, distance) |> 
@@ -224,7 +218,6 @@ moves_unit |>
 
 ```{r}
 #| label: 2016 - day 1 - plot
-#| collapse: true
 moves |> 
     ggplot(mapping = aes(x = position_x, y = position_y)) + 
     geom_path() +

@@ -8,7 +8,6 @@ title: "Day 2: Password Philosophy"
 
 ```{r}
 #| label: 2020 - day 2 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2020/02.txt")
@@ -44,7 +43,6 @@ validation_1 |>
 
 ```{r}
 #| label: 2020 - day 2 - part 2
-#| collapse: true
 validation_2 <- passwords |> 
     mutate(first   = str_sub(password, start = min, end = min),
            second  = str_sub(password, start = max, end = max),

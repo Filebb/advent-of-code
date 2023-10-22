@@ -8,7 +8,6 @@ title: "Day 2: Rock Paper Scissors"
 
 ```{r}
 #| label: 2022 - day 2 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2022/02.txt")
@@ -59,7 +58,6 @@ guide |>
 
 ```{r}
 #| label: 2022 - day 2 - part 2
-#| collapse: true
 guide <- tibble(original = input) |> 
     separate_wider_delim(cols = original,
                          delim = " ",

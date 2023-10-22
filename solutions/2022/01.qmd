@@ -12,7 +12,6 @@ title: "Day 1: Calorie Counting"
 
 ```{r}
 #| label: 2022 - day 1 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2022/01.txt") |> as.integer()
@@ -33,7 +32,6 @@ elf_calories |>
 
 ```{r}
 #| label: 2022 - day 1 - full table
-#| collapse: true
 # look at the full table
 elf_calories |> print(n = nrow(elf_calories))
 ```
@@ -44,7 +42,6 @@ elf_calories |> print(n = nrow(elf_calories))
 
 ```{r}
 #| label: 2022 - day 1 - part 2
-#| collapse: true
 elf_calories |>
     group_by(elf) |> 
     summarise(total_calories = sum(calories)) |> 

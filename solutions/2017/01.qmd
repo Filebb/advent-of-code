@@ -8,7 +8,6 @@ title: "Day 1: Inverse Captcha"
 
 ```{r}
 #| label: 2017 - day 1 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2017/01.txt")
@@ -29,7 +28,6 @@ digits |>
 
 ```{r}
 #| label: 2017 - day 1 - part 2
-#| collapse: true
 mid <- nrow(digits) / 2
 
 digits <- tibble(digit   = input,

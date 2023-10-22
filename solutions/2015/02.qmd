@@ -12,7 +12,6 @@ title: "Day 2: I Was Told There Would Be No Math"
 
 ```{r}
 #| label: 2015 - day 2 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2015/02.txt")
@@ -37,7 +36,6 @@ paper |>
 
 ```{r}
 #| label: 2015 - day 2 - full table
-#| collapse: true
 # look at the full table
 paper |> print(n = nrow(paper))
 ```
@@ -48,7 +46,6 @@ paper |> print(n = nrow(paper))
 
 ```{r}
 #| label: 2015 - day 2 - part 2
-#| collapse: true
 ribbon_length <- function(l, w, h){
     2L * (l+w+h - max(l, w, h)) + l*w*h
 }

@@ -8,7 +8,6 @@ title: "Day 2: Corruption Checksum"
 
 ```{r}
 #| label: 2017 - day 2 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- read_table(file = "../../inputs/2017/02.txt", col_names = FALSE)
@@ -28,7 +27,6 @@ input |>
 
 ```{r}
 #| label: 2017 - day 2 - part 2
-#| collapse: true
 division <- function(x) {
     for(i in seq_along(x)) {
         for(j in seq_along(x)) {

@@ -8,7 +8,6 @@ title: "Day 3: Perfectly Spherical Houses in a Vacuum"
 
 ```{r}
 #| label: 2015 - day 3 - part 1
-#| collapse: true
 library(tidyverse)
 
 input <- readLines(con = "../../inputs/2015/03.txt") |> 
@@ -30,7 +29,6 @@ tibble(move_x = case_match(input, "^" ~  0, ">" ~  1, "v" ~  0, "<" ~ -1),
 
 ```{r}
 #| label: 2015 - day 3 - part 2
-#| collapse: true
 tibble(move_x = case_match(input, "^" ~  0, ">" ~  1, "v" ~  0, "<" ~ -1),
        move_y = case_match(input, "^" ~  1, ">" ~  0, "v" ~ -1, "<" ~  0),
        pos_x  = cumsum(move_x),

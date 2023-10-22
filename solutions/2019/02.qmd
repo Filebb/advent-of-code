@@ -8,7 +8,6 @@ title: "Day 2: 1202 Program Alarm"
 
 ```{r}
 #| label: 2019 - day 2 - part 1
-#| collapse: true
 library(stringr)
 
 input <- readLines(con = "../../inputs/2019/02.txt") |> 
@@ -49,8 +48,6 @@ cat(input[1])
 
 ```{r}
 #| label: 2019 - day 2 - part 2
-#| collapse: true
-
 # create a function
 output <- function(input){
     # starting position
