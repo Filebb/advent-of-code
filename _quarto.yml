@@ -84,6 +84,7 @@ website:
             - solutions/2022/01.qmd
             - solutions/2022/02.qmd
             - solutions/2022/03.qmd
+            - solutions/2022/04.qmd
 
 format:
   html:

@@ -1,0 +1,86 @@
+---
+title: "Day 4: Camp Cleanup"
+---
+
+[Reference](https://adventofcode.com/2022/day/4)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2022 - day 4 - part 1
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2022/04.txt")
+
+assignments <- tibble(original = input) |> 
+    
+    separate_wider_delim(col = original,
+                         delim = ",",
+                         names = c("elf1", "elf2")) |> 
+    
+    separate_wider_delim(col = elf1,
+                         delim = "-",
+                         names = c("elf1_min", "elf1_max")) |> 
+    
+    separate_wider_delim(col = elf2,
+                         delim = "-",
+                         names = c("elf2_min", "elf2_max")) |> 
+    
+    mutate(across(everything(), as.integer)) |> 
+    
+    mutate(fully_contains =
+               (elf1_min >= elf2_min & elf1_max <= elf2_max) |
+               (elf2_min >= elf1_min & elf2_max <= elf1_max)
+           )
+
+assignments |> 
+    summarise(total_fully_contains = sum(fully_contains)) |> 
+    pull(total_fully_contains) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2022 - day 4 - full table part 1
+head(input)
+
+assignments |> print(n = nrow(assignments))
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2022 - day 3 - part 2
+assignments <- assignments |> 
+    mutate(overlap =
+               between(elf1_min, elf2_min, elf2_max) |
+               between(elf1_max, elf2_min, elf2_max) |
+               between(elf2_min, elf1_min, elf1_max) |
+               between(elf2_max, elf1_min, elf1_max)
+           )
+
+assignments |> 
+    summarise(total_fully_overlap = sum(overlap)) |> 
+    pull(total_fully_overlap) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2022 - day 3 - full table part 2
+assignments |> print(n = nrow(assignments))
+```
+
+:::
