@@ -1,0 +1,91 @@
+---
+title: "Day 3: Rucksack Reorganization"
+---
+
+[Reference](https://adventofcode.com/2022/day/3)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2022 - day 3 - part 1
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2022/03.txt")
+
+match_one <- function(first, second) {
+    str_extract(string  = first,
+                pattern = str_flatten(str_split_1(second, ""),
+                                      collapse = "|"))
+}
+
+priority <- 1:52
+names(priority) <- c(letters, LETTERS)
+
+rucksacks <- tibble(original = input,
+                    length   = str_length(original),
+                    first    = str_sub(original, 1, length/2),
+                    second   = str_sub(original, length/2 + 1, length),
+                    match    = map2_chr(first, second, match_one),
+                    priority = priority[match])
+
+rucksacks |> 
+    summarise(total_priority = sum(priority)) |> 
+    pull(total_priority) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2022 - day 3 - full table part 1
+rucksacks |> print(n = nrow(rucksacks))
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2022 - day 3 - part 2
+match_more <- function(first, second) {
+    str_extract_all(string  = first,
+                    pattern = str_flatten(str_split_1(second, ""),
+                                          collapse = "|")) |> 
+        unlist() |> # str_extract_all returns a list!
+        unique() |> # remove duplicates
+        str_flatten(collapse = "")
+}
+
+groups <- tibble(rucksack = input,
+                 elf      = rep(c("elf1", "elf2", "elf3"),
+                                times = length(input)/3),
+                 group    = rep(1:(length(input)/3), each = 3)) |> 
+    
+    pivot_wider(names_from = elf, values_from = rucksack) |> 
+    
+    mutate(match_1_and_2 = map2_chr(elf1, elf2, match_more),
+           match         = map2_chr(match_1_and_2, elf3, match_one),
+           priority      = priority[match])
+
+groups |> 
+    summarise(total_priority = sum(priority)) |> 
+    pull(total_priority) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2022 - day 3 - full table part 2
+groups |> print(n = nrow(groups))
+```
+
+:::
