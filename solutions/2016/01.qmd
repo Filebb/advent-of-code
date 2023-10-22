@@ -12,8 +12,6 @@ title: "Day 1: No Time for a Taxicab"
 
 ```{r}
 #| label: 2016 - day 1 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -90,8 +88,6 @@ moves |>
 
 ```{r}
 #| label: 2016 - day 1 - change_direction() tests
-#| message: false
-#| warning: false
 #| collapse: true
 # tests for change_direction()
 
@@ -112,8 +108,6 @@ change_direction(c(-1, 0), "L")
 
 ```{r}
 #| label: 2016 - day 1 - full table
-#| message: false
-#| warning: false
 #| collapse: true
 # look at the full table
 moves|> print(n = 178)
@@ -129,8 +123,6 @@ moves|> print(n = 178)
 
 ```{r}
 #| label: 2016 - day 1 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 
 # change_direction() allows no change in direction
@@ -216,8 +208,6 @@ moves_unit |>
 
 ```{r}
 #| label: 2016 - day 1 - visited twice
-#| message: false
-#| warning: false
 #| collapse: true
 moves_unit |> 
     rowid_to_column("time") |> 
@@ -234,8 +224,6 @@ moves_unit |>
 
 ```{r}
 #| label: 2016 - day 1 - plot
-#| message: false
-#| warning: false
 #| collapse: true
 moves |> 
     ggplot(mapping = aes(x = position_x, y = position_y)) + 

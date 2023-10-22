@@ -12,8 +12,6 @@ title: "Day 1: The Tyranny of the Rocket Equation"
 
 ```{r}
 #| label: 2019 - day 1 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -32,8 +30,6 @@ input |>
 
 ```{r}
 #| label: 2019 - day 1 - full table part one
-#| message: false
-#| warning: false
 #| collapse: true
 # look at the full table
 input |> print(n = nrow(input))
@@ -49,8 +45,6 @@ input |> print(n = nrow(input))
 
 ```{r}
 #| label: 2019 - day 1 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 calculate_fuel_adj <- function(mass) {
     
@@ -78,8 +72,6 @@ input |>
 
 ```{r}
 #| label: 2019 - day 1 - full table part two
-#| message: false
-#| warning: false
 #| collapse: true
 # look at the full table
 input |> print(n = nrow(input))

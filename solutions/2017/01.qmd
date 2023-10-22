@@ -8,8 +8,6 @@ title: "Day 1: Inverse Captcha"
 
 ```{r}
 #| label: 2017 - day 1 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -31,8 +29,6 @@ digits |>
 
 ```{r}
 #| label: 2017 - day 1 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 mid <- nrow(digits) / 2
 

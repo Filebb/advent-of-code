@@ -8,8 +8,6 @@ title: "Day 1: Not Quite Lisp"
 
 ```{r}
 #| label: 2015 - day 1 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -30,8 +28,6 @@ moves |>
 
 ```{r}
 #| label: 2015 - day 1 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 moves |> 
     filter(position == -1) |> 
@@ -44,8 +40,6 @@ moves |>
 
 ```{r}
 #| label: 2015 - day 1 - plot
-#| message: false
-#| warning: false
 #| collapse: true
 moves |> 
     ggplot(mapping = aes(x = time, y = position)) +

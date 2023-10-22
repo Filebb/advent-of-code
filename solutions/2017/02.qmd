@@ -8,8 +8,6 @@ title: "Day 2: Corruption Checksum"
 
 ```{r}
 #| label: 2017 - day 2 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -30,8 +28,6 @@ input |>
 
 ```{r}
 #| label: 2017 - day 2 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 division <- function(x) {
     for(i in seq_along(x)) {

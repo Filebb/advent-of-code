@@ -8,8 +8,6 @@ title: "Day 1: Chronal Calibration"
 
 ```{r}
 #| label: 2018 - day 1 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 input <- readLines(con = "../../inputs/2018/01.txt") |> as.integer()
 
@@ -20,8 +18,6 @@ cat(sum(input))
 
 ```{r}
 #| label: 2018 - day 1 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 

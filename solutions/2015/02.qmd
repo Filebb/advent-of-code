@@ -12,8 +12,6 @@ title: "Day 2: I Was Told There Would Be No Math"
 
 ```{r}
 #| label: 2015 - day 2 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -39,8 +37,6 @@ paper |>
 
 ```{r}
 #| label: 2015 - day 2 - full table
-#| message: false
-#| warning: false
 #| collapse: true
 # look at the full table
 paper |> print(n = nrow(paper))
@@ -52,8 +48,6 @@ paper |> print(n = nrow(paper))
 
 ```{r}
 #| label: 2015 - day 2 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 ribbon_length <- function(l, w, h){
     2L * (l+w+h - max(l, w, h)) + l*w*h

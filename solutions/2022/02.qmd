@@ -8,8 +8,6 @@ title: "Day 2: Rock Paper Scissors"
 
 ```{r}
 #| label: 2022 - day 2 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -61,8 +59,6 @@ guide |>
 
 ```{r}
 #| label: 2022 - day 2 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 guide <- tibble(original = input) |> 
     separate_wider_delim(cols = original,

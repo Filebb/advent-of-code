@@ -8,8 +8,6 @@ title: "Day 2: Password Philosophy"
 
 ```{r}
 #| label: 2020 - day 2 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(tidyverse)
 
@@ -46,8 +44,6 @@ validation_1 |>
 
 ```{r}
 #| label: 2020 - day 2 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 validation_2 <- passwords |> 
     mutate(first   = str_sub(password, start = min, end = min),

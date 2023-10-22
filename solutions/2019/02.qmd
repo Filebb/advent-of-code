@@ -8,8 +8,6 @@ title: "Day 2: 1202 Program Alarm"
 
 ```{r}
 #| label: 2019 - day 2 - part 1
-#| message: false
-#| warning: false
 #| collapse: true
 library(stringr)
 
@@ -51,8 +49,6 @@ cat(input[1])
 
 ```{r}
 #| label: 2019 - day 2 - part 2
-#| message: false
-#| warning: false
 #| collapse: true
 
 # create a function
