@@ -1,0 +1,78 @@
+---
+title: "Day 4: The Ideal Stocking Stuffer"
+---
+
+[Reference](https://adventofcode.com/2015/day/4)
+
+::: {.callout-note}
+I learned how to evaluate MD5 hash in R from [here](https://emilhvitfeldt.github.io/rstats-adventofcode/2015.html?panelset=day-4).
+:::
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2015 - day 4 - part 1
+library(tidyverse)
+
+# input given
+input <- "bgvyzdsv"
+
+# get md5 function from digest package
+# when using it remember to set serialize = FALSE
+# see help for more details
+md5 <- digest::getVDigest(algo = "md5")
+
+# number of attempts, this is empirically enough
+n <- 2.55e5
+
+five_leading_0s <- tibble(number = 1:n,
+                          value  = paste0(input, number),
+                          hash   = map_chr(value, ~md5(., serialize = FALSE))) |>  
+    
+    filter(str_sub(hash, start = 1, end = 5) == "00000")
+
+five_leading_0s
+
+five_leading_0s |> 
+    pull(number) |> 
+    cat()
+```
+
+## `md5()` tests
+
+```{r}
+#| label: 2015 - day 4 - md5 function tests
+# example 1
+md5(paste0("abcdef", 609043), serialize = FALSE)
+
+# example 2
+md5(paste0("pqrstuv", 1048970), serialize = FALSE)
+```
+
+:::
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 4 - part 2
+
+# number of attempts, this is empirically enough
+n <- 1.04e6
+
+six_leading_0s <- tibble(number = 1:n,
+                         value  = paste0(input, number),
+                         hash   = map_chr(value, ~md5(., serialize = FALSE))) |>  
+    
+    filter(str_sub(hash, start = 1, end = 6) == "000000")
+
+six_leading_0s
+
+six_leading_0s |> 
+    pull(number) |> 
+    cat()
+```
+
