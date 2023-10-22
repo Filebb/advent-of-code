@@ -30,19 +30,22 @@ guide <- tibble(original = input) |>
 
 score <- function(opponent, me) {
     if (me == "Rock")
-        score <- 1 + case_when(opponent == "Rock"     ~ 3,
-                               opponent == "Paper"    ~ 0,
-                               opponent == "Scissors" ~ 6)
+        score <- 1 + case_match(opponent,
+                               "Rock"     ~ 3,
+                               "Paper"    ~ 0,
+                               "Scissors" ~ 6)
     
     else if (me == "Paper")
-        score <- 2 + case_when(opponent == "Rock"     ~ 6,
-                               opponent == "Paper"    ~ 3,
-                               opponent == "Scissors" ~ 0)
+        score <- 2 + case_match(opponent, 
+                                "Rock"     ~ 6,
+                                "Paper"    ~ 3,
+                                "Scissors" ~ 0)
     
     else if (me == "Scissors")
-        score <- 3 + case_when(opponent == "Rock"     ~ 0,
-                               opponent == "Paper"    ~ 6,
-                               opponent == "Scissors" ~ 3)
+        score <- 3 + case_match(opponent,
+                                "Rock"     ~ 0,
+                                "Paper"    ~ 6,
+                                "Scissors" ~ 3)
     
     return(score)
 }
@@ -76,19 +79,21 @@ guide <- tibble(original = input) |>
 
 me <- function(opponent, outcome) {
     if (opponent == "Rock")
-        me <- case_when(outcome == "lose" ~ "Scissors",
-                        outcome == "draw" ~ "Rock",
-                        outcome == "win"  ~ "Paper")
+        me <- case_match(outcome,
+                         "lose" ~ "Scissors",
+                         "draw" ~ "Rock",
+                         "win"  ~ "Paper")
     
     else if (opponent == "Paper")
-        me <- case_when(outcome == "lose" ~ "Rock",
-                        outcome == "draw" ~ "Paper",
-                        outcome == "win"  ~ "Scissors")
+        me <- case_match(outcome,"lose" ~ "Rock",
+                         "draw" ~ "Paper",
+                         "win"  ~ "Scissors")
     
     else if (opponent == "Scissors")
-        me <- case_when(outcome == "lose" ~ "Paper",
-                        outcome == "draw" ~ "Scissors",
-                        outcome == "win"  ~ "Rock")
+        me <- case_match(outcome,
+                         "lose" ~ "Paper",
+                         "draw" ~ "Scissors",
+                         "win"  ~ "Rock")
     
     return(me)
 }
