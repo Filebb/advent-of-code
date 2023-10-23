@@ -59,6 +59,7 @@ website:
         - text: "2018"
           contents:
             - solutions/2018/01.qmd
+            - solutions/2018/02.qmd
 
     - title: "2019"
       contents:

@@ -1,0 +1,50 @@
+---
+title: "Day 2: Inventory Management System"
+---
+
+[Reference](https://adventofcode.com/2018/day/2)
+
+::: {.callout-note}
+I tried using regular expressions to solve **part one** problem without success.
+[This idea](https://emilhvitfeldt.github.io/rstats-adventofcode/2018.html?panelset=day-2) is what I used.
+
+For **part two** reference uses `stringdist` package. I used a different
+approach (nested for loops and `utils::adist()`).
+:::
+
+## Part One
+
+```{r}
+#| label: 2018 - day 2 - part 1
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2018/02.txt")
+
+doubles <- function(x)
+    any(table(str_split_1(x, pattern = "")) == 2)
+
+triples <- function(x)
+    any(table(str_split_1(x, pattern = "")) == 3)
+
+cat(sum(map_lgl(input, doubles)) * sum(map_lgl(input, triples)))
+```
+
+## Part Two
+
+```{r}
+#| label: 2018 - day 2 - part 2
+find_almost_equal <- function(input)
+    for (i in 1:(length(input) - 1))
+        for (j in (i+1):length(input))
+            if (adist(input[i], input[j]) == 1)
+                return(c(i,j))
+
+targets <- find_almost_equal(input)
+
+target_1 <- str_split_1(input[targets[1]], pattern = "")
+target_2 <- str_split_1(input[targets[2]], pattern = "")
+
+str_split_1(input[targets[1]], pattern = "")[target_1 == target_2] |> 
+    paste0(collapse = "") |> 
+    cat()
+```
