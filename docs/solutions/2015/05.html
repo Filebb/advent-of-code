@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Advent of Code - Day 3: Perfectly Spherical Houses in a Vacuum</title>
+<title>Advent of Code - Day 5: Doesn’t He Have Intern-Elves For This?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../solutions/2015/01.html">2015</a></li><li class="breadcrumb-item"><a href="../../solutions/2015/03.html">Day 3: Perfectly Spherical Houses in a Vacuum</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../solutions/2015/01.html">2015</a></li><li class="breadcrumb-item"><a href="../../solutions/2015/05.html">Day 5: Doesn’t He Have Intern-Elves For This?</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -203,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../solutions/2015/03.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../solutions/2015/03.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Day 3: Perfectly Spherical Houses in a Vacuum</span></a>
   </div>
 </li>
@@ -215,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../solutions/2015/05.html" class="sidebar-item-text sidebar-link">
+  <a href="../../solutions/2015/05.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Day 5: Doesn’t He Have Intern-Elves For This?</span></a>
   </div>
 </li>
@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Day 3: Perfectly Spherical Houses in a Vacuum</h1>
+<h1 class="title">Day 5: Doesn’t He Have Intern-Elves For This?</h1>
 </div>
 
 
@@ -247,46 +247,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p><a href="https://adventofcode.com/2015/day/3">Reference</a></p>
+<p><a href="https://adventofcode.com/2015/day/5">Reference</a></p>
 <section id="part-one" class="level2">
 <h2 class="anchored" data-anchor-id="part-one">Part One</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="at">con =</span> <span class="st">"../../inputs/2015/03.txt"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_split_1</span>(<span class="at">pattern =</span> <span class="st">""</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">move_x =</span> <span class="fu">case_match</span>(input, <span class="st">"^"</span> <span class="sc">~</span>  <span class="dv">0</span>, <span class="st">"&gt;"</span> <span class="sc">~</span>  <span class="dv">1</span>, <span class="st">"v"</span> <span class="sc">~</span>  <span class="dv">0</span>, <span class="st">"&lt;"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>),</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">move_y =</span> <span class="fu">case_match</span>(input, <span class="st">"^"</span> <span class="sc">~</span>  <span class="dv">1</span>, <span class="st">"&gt;"</span> <span class="sc">~</span>  <span class="dv">0</span>, <span class="st">"v"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>, <span class="st">"&lt;"</span> <span class="sc">~</span>  <span class="dv">0</span>),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">pos_x  =</span> <span class="fu">cumsum</span>(move_x),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">pos_y  =</span> <span class="fu">cumsum</span>(move_y)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_row</span>(<span class="at">move_x =</span> <span class="cn">NA</span>, <span class="at">move_y =</span> <span class="cn">NA</span>, <span class="at">pos_x =</span> <span class="dv">0</span>, <span class="at">pos_y =</span> <span class="dv">0</span>, <span class="at">.before =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(pos_x, pos_y) <span class="sc">|&gt;</span> </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 2081</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="at">con =</span> <span class="st">"../../inputs/2015/05.txt"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>has_at_least_three_vowels <span class="ot">&lt;-</span> <span class="cf">function</span>(string)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_count</span>(<span class="at">string =</span> string, <span class="at">pattern =</span> <span class="st">"[aeiou]"</span>) <span class="sc">&gt;=</span> <span class="dv">3</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>has_at_least_one_double_letter <span class="ot">&lt;-</span> <span class="cf">function</span>(string)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_count</span>(<span class="at">string =</span> string, <span class="at">pattern =</span> <span class="st">"([a-z])</span><span class="sc">\\</span><span class="st">1"</span>) <span class="sc">&gt;=</span> <span class="dv">1</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>has_not_some_strings <span class="ot">&lt;-</span> <span class="cf">function</span>(string)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(<span class="at">string =</span> string, <span class="at">pattern =</span> <span class="st">"ab|cd|pq|xy"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>is_nice <span class="ot">&lt;-</span> <span class="cf">function</span>(string) </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">has_at_least_three_vowels</span>(string) <span class="sc">&amp;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">has_at_least_one_double_letter</span>(string) <span class="sc">&amp;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">has_not_some_strings</span>(string)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">string =</span> input) <span class="sc">|&gt;</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">total_nice =</span> <span class="fu">sum</span>(<span class="fu">is_nice</span>(string))) <span class="sc">|&gt;</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(total_nice) <span class="sc">|&gt;</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 258</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="part-two" class="level2">
 <h2 class="anchored" data-anchor-id="part-two">Part Two</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">move_x =</span> <span class="fu">case_match</span>(input, <span class="st">"^"</span> <span class="sc">~</span>  <span class="dv">0</span>, <span class="st">"&gt;"</span> <span class="sc">~</span>  <span class="dv">1</span>, <span class="st">"v"</span> <span class="sc">~</span>  <span class="dv">0</span>, <span class="st">"&lt;"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>),</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">move_y =</span> <span class="fu">case_match</span>(input, <span class="st">"^"</span> <span class="sc">~</span>  <span class="dv">1</span>, <span class="st">"&gt;"</span> <span class="sc">~</span>  <span class="dv">0</span>, <span class="st">"v"</span> <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span>, <span class="st">"&lt;"</span> <span class="sc">~</span>  <span class="dv">0</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">pos_x  =</span> <span class="fu">cumsum</span>(move_x),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">pos_y  =</span> <span class="fu">cumsum</span>(move_y)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">who =</span> <span class="fu">if_else</span>(<span class="fu">row_number</span>() <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"santa"</span>, <span class="st">"robo"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pos_x =</span> <span class="fu">cumsum</span>(move_x), <span class="at">pos_y =</span> <span class="fu">cumsum</span>(move_y), <span class="at">.by =</span> who) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>has_couple_twice <span class="ot">&lt;-</span> <span class="cf">function</span>(string)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(<span class="at">string =</span> string, <span class="at">pattern =</span> <span class="st">"[a-z]*([a-z]{2})[a-z]*</span><span class="sc">\\</span><span class="st">1[a-z]*"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>has_letter_anything_letter <span class="ot">&lt;-</span> <span class="cf">function</span>(string)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(<span class="at">string =</span> string, <span class="at">pattern =</span> <span class="st">"([a-z])[a-z]</span><span class="sc">\\</span><span class="st">1"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>is_nice_new <span class="ot">&lt;-</span> <span class="cf">function</span>(string)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">has_couple_twice</span>(string) <span class="sc">&amp;</span> <span class="fu">has_letter_anything_letter</span>(string)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_row</span>(<span class="at">move_x =</span> <span class="cn">NA</span>, <span class="at">move_y =</span> <span class="cn">NA</span>, <span class="at">pos_x =</span> <span class="dv">0</span>, <span class="at">pos_y =</span> <span class="dv">0</span>, <span class="at">.before =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(pos_x, pos_y) <span class="sc">|&gt;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 2341</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">string =</span> input) <span class="sc">|&gt;</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">total_nice =</span> <span class="fu">sum</span>(<span class="fu">is_nice_new</span>(string))) <span class="sc">|&gt;</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(total_nice) <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 53</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

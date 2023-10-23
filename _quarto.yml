@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Advent of Code"
+
   navbar:
     left:
       - text: "Events"
@@ -37,6 +38,7 @@ website:
             - solutions/2015/02.qmd
             - solutions/2015/03.qmd
             - solutions/2015/04.qmd
+            - solutions/2015/05.qmd
 
     - title: "2016"
       contents:

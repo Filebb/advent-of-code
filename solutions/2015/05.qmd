@@ -1,0 +1,53 @@
+---
+title: "Day 5: Doesn't He Have Intern-Elves For This?"
+---
+
+[Reference](https://adventofcode.com/2015/day/5)
+
+## Part One
+
+```{r}
+#| label: 2015 - day 5 - part 1
+library(tidyverse)
+
+input <- readLines(con = "../../inputs/2015/05.txt")
+
+has_at_least_three_vowels <- function(string)
+    str_count(string = string, pattern = "[aeiou]") >= 3
+
+has_at_least_one_double_letter <- function(string)
+    str_count(string = string, pattern = "([a-z])\\1") >= 1
+
+has_not_some_strings <- function(string)
+    !str_detect(string = string, pattern = "ab|cd|pq|xy")
+
+is_nice <- function(string) 
+    has_at_least_three_vowels(string) &
+    has_at_least_one_double_letter(string) &
+    has_not_some_strings(string)
+
+tibble(string = input) |> 
+    summarise(total_nice = sum(is_nice(string))) |> 
+    pull(total_nice) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 5 - part 2
+has_couple_twice <- function(string)
+    str_detect(string = string, pattern = "[a-z]*([a-z]{2})[a-z]*\\1[a-z]*")
+
+has_letter_anything_letter <- function(string)
+    str_detect(string = string, pattern = "([a-z])[a-z]\\1")
+
+is_nice_new <- function(string)
+    has_couple_twice(string) & has_letter_anything_letter(string)
+
+tibble(string = input) |> 
+    summarise(total_nice = sum(is_nice_new(string))) |> 
+    pull(total_nice) |> 
+    cat()
+```
+
