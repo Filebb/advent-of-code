@@ -80,6 +80,7 @@ website:
         - text: "2021"
           contents:
             - solutions/2021/01.qmd
+            - solutions/2021/02.qmd
 
     - title: "2022"
       contents:
