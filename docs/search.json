@@ -326,14 +326,14 @@
     "href": "solutions/2016/02.html#part-one",
     "title": "Day 2: Bathroom Security",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)"
+    "text": "Part One\n\nlibrary(stringr)\n\ninput &lt;- readLines(con = \"../../inputs/2016/02.txt\")\n\nmoves &lt;- list(\"U\" = c(-1, 0), \"D\" = c(1, 0), \"L\" = c(0, -1), \"R\" = c(0, 1))\n\nnumpad &lt;- matrix(c(NA,  NA,  NA,  NA, NA,\n                   NA, \"1\", \"2\", \"3\", NA,\n                   NA, \"4\", \"5\", \"6\", NA,\n                   NA, \"7\", \"8\", \"9\", NA,\n                   NA,  NA,  NA,  NA, NA), ncol = 5, byrow = TRUE)\n\ncurrent &lt;- c(2, 2)\n\ncode &lt;- character(0)\n\nfor (digit in input) {\n    for (move in str_split_1(digit, pattern = \"\")){\n        after &lt;- current + moves[[move]]\n        \n        if (!is.na(numpad[after[1], after[2]]))\n            current &lt;- after\n    }\n    \n    code &lt;- c(code, numpad[current[1], current[2]])\n}\n\ncat(paste0(code, collapse = \"\"))\n## 12578"
   },
   {
     "objectID": "solutions/2016/02.html#part-two",
     "href": "solutions/2016/02.html#part-two",
     "title": "Day 2: Bathroom Security",
     "section": "Part Two",
-    "text": "Part Two"
+    "text": "Part Two\n\n# input &lt;- c(\"ULL\", \"RRDDD\", \"LURDL\", \"UUUUD\")\n\npad &lt;- matrix(c(NA,  NA,  NA,  NA,  NA,  NA, NA,\n                NA,  NA,  NA, \"1\",  NA,  NA, NA,\n                NA,  NA, \"2\", \"3\", \"4\",  NA, NA,\n                NA, \"5\", \"6\", \"7\", \"8\", \"9\", NA,\n                NA,  NA, \"A\", \"B\", \"C\",  NA, NA,\n                NA,  NA,  NA, \"D\",  NA,  NA, NA,\n                NA,  NA,  NA,  NA,  NA,  NA, NA), ncol = 7, byrow = TRUE)\n\ncurrent &lt;- c(4, 2)\n\ncode &lt;- character(0)\n\nfor (digit in input) {\n    for (move in str_split_1(digit, pattern = \"\")){\n        after &lt;- current + moves[[move]]\n        \n        if (!is.na(pad[after[1], after[2]])) \n            current &lt;- after\n    }\n    \n    code &lt;- c(code, pad[current[1], current[2]])\n}\n\ncat(paste0(code, collapse = \"\"))\n## 516DD"
   },
   {
     "objectID": "solutions/2017/02.html",

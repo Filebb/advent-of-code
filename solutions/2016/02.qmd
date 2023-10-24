@@ -8,11 +8,64 @@ title: "Day 2: Bathroom Security"
 
 ```{r}
 #| label: 2016 - day 2 - part 1
-library(tidyverse)
+library(stringr)
+
+input <- readLines(con = "../../inputs/2016/02.txt")
+
+moves <- list("U" = c(-1, 0), "D" = c(1, 0), "L" = c(0, -1), "R" = c(0, 1))
+
+numpad <- matrix(c(NA,  NA,  NA,  NA, NA,
+                   NA, "1", "2", "3", NA,
+                   NA, "4", "5", "6", NA,
+                   NA, "7", "8", "9", NA,
+                   NA,  NA,  NA,  NA, NA), ncol = 5, byrow = TRUE)
+
+current <- c(2, 2)
+
+code <- character(0)
+
+for (digit in input) {
+    for (move in str_split_1(digit, pattern = "")){
+        after <- current + moves[[move]]
+        
+        if (!is.na(numpad[after[1], after[2]]))
+            current <- after
+    }
+    
+    code <- c(code, numpad[current[1], current[2]])
+}
+
+cat(paste0(code, collapse = ""))
 ```
 
 ## Part Two
 
 ```{r}
 #| label: 2016 - day 2 - part 2
+# input <- c("ULL", "RRDDD", "LURDL", "UUUUD")
+
+pad <- matrix(c(NA,  NA,  NA,  NA,  NA,  NA, NA,
+                NA,  NA,  NA, "1",  NA,  NA, NA,
+                NA,  NA, "2", "3", "4",  NA, NA,
+                NA, "5", "6", "7", "8", "9", NA,
+                NA,  NA, "A", "B", "C",  NA, NA,
+                NA,  NA,  NA, "D",  NA,  NA, NA,
+                NA,  NA,  NA,  NA,  NA,  NA, NA), ncol = 7, byrow = TRUE)
+
+current <- c(4, 2)
+
+code <- character(0)
+
+for (digit in input) {
+    for (move in str_split_1(digit, pattern = "")){
+        after <- current + moves[[move]]
+        
+        if (!is.na(pad[after[1], after[2]])) 
+            current <- after
+    }
+    
+    code <- c(code, pad[current[1], current[2]])
+}
+
+cat(paste0(code, collapse = ""))
 ```
