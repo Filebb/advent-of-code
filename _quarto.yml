@@ -47,6 +47,7 @@ website:
           contents:
             - solutions/2016/01.qmd
             - solutions/2016/02.qmd
+            - solutions/2016/03.qmd
 
     - title: "2017"
       contents:
