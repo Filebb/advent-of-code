@@ -4,3 +4,27 @@ title: "Welcome"
 
 This website contains my solutions to programming challenges proposed by
 [**Advent of Code**](https://adventofcode.com)
+
+```{r}
+#| label: progress plot
+#| echo: false
+#| fig-height: 3
+library(tidyverse)
+
+tibble(year     = 2015:2023,
+       progress = c("2015" = 6,
+                    "2016" = 3,
+                    "2017" = 2,
+                    "2018" = 2,
+                    "2019" = 2,
+                    "2020" = 2,
+                    "2021" = 3,
+                    "2022" = 4,
+                    "2023" = 0)) |> 
+    ggplot(mapping = aes(x = year, y = progress)) + 
+    geom_col() +
+    scale_x_continuous(breaks = 2015:2023) +
+    scale_y_continuous(limits = c(0, 25)) +
+    theme_minimal()
+```
+
