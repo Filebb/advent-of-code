@@ -7,7 +7,7 @@ title: "Day 2: Dive!"
 ## Part One
 
 ```{r}
-#| label: 2021 - day 1 - part 1
+#| label: 2021 - day 2 - part 1
 library(tidyverse)
 
 commands <- read_delim(file      = "../../inputs/2021/02.txt",
@@ -40,8 +40,6 @@ commands <- read_delim(file      = "../../inputs/2021/02.txt",
                        col_names = c("direction", "length")) |> 
     mutate(aim = NA_real_, x = NA_real_, y = NA_real_) |> 
     add_row(direction = NA, length = NA, aim = 0, x = 0, y = 0, .before = 1)
-
-
 
 for (i in 2:nrow(commands)){
     if (commands[i, "direction"] == "down") {

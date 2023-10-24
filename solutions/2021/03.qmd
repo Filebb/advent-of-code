@@ -1,0 +1,114 @@
+---
+title: "Day 3: Binary Diagnostic"
+---
+
+[Reference](https://adventofcode.com/2021/day/3)
+
+::: {.callout-note}
+To calculate the mode I used [this](https://stackoverflow.com/questions/2547402/how-to-find-the-statistical-mode) approach.
+:::
+
+## Part One
+
+```{r}
+#| label: 2021 - day 3 - part 1
+library(tidyverse)
+
+most_common <- function(x) {
+    ux <- unique(x)
+    ux[which.max(tabulate(match(x, ux)))]
+}
+
+least_common <- function(x) {
+    ux <- unique(x)
+    ux[which.min(tabulate(match(x, ux)))]
+}
+
+input <- readLines(con = "../../inputs/2021/03.txt")
+
+widths <- rep(1, 12) # each line has 12 digits
+names <- map2_chr(rep("d", 12), 1:12, paste0)
+names(widths) <- names
+
+digits <- tibble(original = input) |> 
+    separate_wider_position(cols = original, widths = widths)
+
+gamma_rate <- digits |>
+    map_chr(most_common) |> 
+    paste0(collapse = "") |> 
+    strtoi(base = 2)
+
+epsilon_rate <- digits |>
+    map_chr(least_common) |> 
+    paste0(collapse = "")|> 
+    strtoi(base = 2)
+
+cat(gamma_rate * epsilon_rate)
+```
+
+## Part Two
+
+```{r}
+#| label: 2021 - day 3 - part 2
+most_common <- function(x) {
+    ux <- sort(unique(x))
+    
+    table <- tabulate(match(x, ux))
+    
+    # if 0 and 1 are equally common, keep values with a 1
+    # in the position being considered
+    if (table[1] == table[2]) return(ux[2])
+    
+    else return(ux[which.max(table)])
+}
+
+least_common <- function(x) {
+    ux <- sort(unique(x))
+    
+    table <- tabulate(match(x, ux))
+    
+    # if 0 and 1 are equally common, keep values with a 0
+    # in the position being considered
+    if (table[1] == table[2]) return(ux[1])
+    
+    else return(ux[which.min(table)])
+}
+
+oxygen_generator_rating <- digits
+
+for (i in names) {
+    value <- oxygen_generator_rating |>
+        select(all_of(i)) |>
+        map_chr(most_common)
+    
+    oxygen_generator_rating <- oxygen_generator_rating |>
+        filter(.data[[i]] == value)
+    
+    # if only one number left, stop
+    if (nrow(oxygen_generator_rating) == 1) break
+}
+
+oxygen_generator_rating <- oxygen_generator_rating |>
+    paste0(collapse = "")|>
+    strtoi(base = 2)
+
+CO2_scrubber_rating <- digits
+
+for (i in names) {
+    value <- CO2_scrubber_rating |>
+        select(all_of(i)) |>
+        map_chr(least_common)
+    
+    CO2_scrubber_rating <- CO2_scrubber_rating |>
+        filter(.data[[i]] == value)
+    
+    # if only one number left, stop
+    if (nrow(CO2_scrubber_rating) == 1) break
+}
+
+CO2_scrubber_rating <- CO2_scrubber_rating |>
+    paste0(collapse = "")|>
+    strtoi(base = 2)
+
+cat(oxygen_generator_rating * CO2_scrubber_rating)
+```
