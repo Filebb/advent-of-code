@@ -39,6 +39,7 @@ website:
             - solutions/2015/03.qmd
             - solutions/2015/04.qmd
             - solutions/2015/05.qmd
+            - solutions/2015/06.qmd
 
     - title: "2016"
       contents:
