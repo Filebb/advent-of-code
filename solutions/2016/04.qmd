@@ -1,0 +1,108 @@
+---
+title: "Day 4: Security Through Obscurity"
+---
+
+[Reference](https://adventofcode.com/2016/day/4)
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 4 - part 1
+library(tidyverse)
+
+chesum_eval <- function(x) {
+    letters <- x |>
+        str_split_1(pattern = "") |> 
+        table() |> 
+        sort(decreasing = TRUE) |> 
+        names()
+    
+    return(paste0(letters[1:5], collapse = ""))
+}
+
+
+input <- read_csv(file = "../../inputs/2016/04.txt", col_names = "original") |>
+    
+    mutate(sector_id      = str_extract(original,          pattern = "[0-9]+"),
+           checksum       = str_extract(original,          pattern = "\\[[a-z]+\\]"),
+           checksum       = str_remove_all(checksum,       pattern = "\\[|\\]"),
+           encrypted_name = str_remove_all(original,       pattern = "\\[|\\]"),
+           encrypted_name = str_remove(encrypted_name,     pattern = str_c(sector_id, checksum)),
+           encrypted_name = str_remove_all(encrypted_name, pattern = "\\-"),
+           sector_id      = as.numeric(sector_id))
+
+input <- input |> 
+    mutate(chesum_eval = map_chr(encrypted_name, chesum_eval),
+           test        = checksum == chesum_eval)
+
+input |> 
+    filter(test == TRUE) |>
+    summarise(total = sum(sector_id)) |> 
+    pull(total) |> 
+    cat()
+```
+
+## Tests
+
+```{r}
+#| label: 2016 - day 4 - part 1 tests
+n <- 1
+
+print(input[n, "original"])
+print(input[n, "checksum"])
+print(input[n, "encrypted_name"])
+print(input[n, "sector_id"])
+print(input[n, "chesum_eval"])
+print(input[n, "test"])
+
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 4 - part 2
+input <- input |> 
+    mutate(no_checksum = str_remove(original,  pattern = "-[0-9]+\\[[a-z]+\\]"))
+
+decrypt <- function(string, sector_id) {
+    decrypted <- character(0)
+    
+    for (element in str_split_1(string, pattern = "")) {
+        if (element == "-")
+            decrypted <- c(decrypted, " ")
+        else {
+            index <- (which(letters == element) + sector_id) %% 26
+            decrypted <- c(decrypted, letters[index])
+        }
+    }
+    return(paste(decrypted, collapse = ""))
+}
+
+input <- input |> 
+    mutate(decrypted = map2_chr(no_checksum, sector_id, decrypt))
+
+input |> 
+    filter(decrypted == "northpole object storage") |> 
+    pull(sector_id)
+```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 4 - part 2 full table
+input |> 
+    select(sector_id, decrypted) |> 
+    print(n = nrow(input))
+```
+
+:::
