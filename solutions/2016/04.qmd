@@ -93,7 +93,8 @@ input <- input |>
 
 input |> 
     filter(decrypted == "northpole object storage") |> 
-    pull(sector_id)
+    pull(sector_id) |> 
+    cat()
 ```
 
 ## Full Table
