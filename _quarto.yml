@@ -26,6 +26,8 @@ website:
             href: solutions/2021/01.qmd
           - text: "2022"
             href: solutions/2022/01.qmd
+          - text: "2023"
+            href: solutions/2023/01.qmd
 
   sidebar:
     - title: "2015"

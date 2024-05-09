@@ -15,6 +15,7 @@ tibble(year     = list.files(path = "solutions"),
        progress = map_int(year, ~length(list.files(path = paste0("solutions/", .))))) |> 
     ggplot(mapping = aes(x = year, y = progress)) + 
     geom_col() +
+    geom_text(mapping = aes(y = progress + 2.5, label = paste0(progress, "/25")), vjust = 1.5, colour = "black") +
     scale_y_continuous(limits = c(0, 25)) +
     theme_bw()
 ```
