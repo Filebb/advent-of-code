@@ -24,7 +24,7 @@ least_common <- function(x) {
     ux[which.min(tabulate(match(x, ux)))]
 }
 
-input <- readLines(con = "inputs/2021/03.txt")
+input <- read_lines(file = "inputs/2021/03.txt")
 
 widths <- rep(1, 12) # each line has 12 digits
 names <- map2_chr(rep("d", 12), 1:12, paste0)

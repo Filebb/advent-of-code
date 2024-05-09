@@ -18,7 +18,7 @@ approach (nested for loops and `utils::adist()`).
 #| label: 2018 - day 2 - part 1
 library(tidyverse)
 
-input <- readLines(con = "inputs/2018/02.txt")
+input <- read_lines(file = "inputs/2018/02.txt")
 
 doubles <- function(x)
     any(table(str_split_1(x, pattern = "")) == 2)

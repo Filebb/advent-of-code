@@ -8,9 +8,9 @@ title: "Day 6: Probably a Fire Hazard"
 
 ```{r}
 #| label: 2015 - day 6 - part 1
-library(stringr)
+library(tidyverse)
 
-input <- readLines(con = "inputs/2015/06.txt")
+input <- read_lines(file = "inputs/2015/06.txt")
 
 grid <- matrix(FALSE, 1e3, 1e3)
 

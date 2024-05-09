@@ -10,7 +10,7 @@ title: "Day 1: Inverse Captcha"
 #| label: 2017 - day 1 - part 1
 library(tidyverse)
 
-input <- readLines(con = "inputs/2017/01.txt")
+input <- read_lines(file = "inputs/2017/01.txt")
 
 input <- str_split_1(string = input, pattern = "") |> as.integer()
 

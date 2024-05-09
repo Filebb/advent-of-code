@@ -8,7 +8,8 @@ title: "Day 1: Chronal Calibration"
 
 ```{r}
 #| label: 2018 - day 1 - part 1
-input <- readLines(con = "inputs/2018/01.txt") |> as.integer()
+library(tidyverse)
+input <- read_lines(file = "inputs/2018/01.txt") |> as.integer()
 
 cat(sum(input))
 ```
@@ -17,8 +18,6 @@ cat(sum(input))
 
 ```{r}
 #| label: 2018 - day 1 - part 2
-library(tidyverse)
-
 # 136 found after some trials, using optimal value to optimize execution
 frequencies <- tibble(change = rep(input, times = 136),
                       result = cumsum(change)) |> 

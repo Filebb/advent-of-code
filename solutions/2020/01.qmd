@@ -8,7 +8,9 @@ title: "Day 1: Report Repair"
 
 ```{r}
 #| label: 2020 - day 1 - part 1
-input <- readLines(con = "inputs/2020/01.txt") |> as.integer()
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2020/01.txt") |> as.integer()
 
 for (i in 1:(length(input)-1)) {
     for (j in (i+1):length(input)) {

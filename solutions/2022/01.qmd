@@ -14,7 +14,7 @@ title: "Day 1: Calorie Counting"
 #| label: 2022 - day 1 - part 1
 library(tidyverse)
 
-input <- readLines(con = "inputs/2022/01.txt") |> as.integer()
+input <- read_lines(file = "inputs/2022/01.txt") |> as.integer()
 
 elf_calories <- tibble(calories = input,
                        elf = cumsum(is.na(input)) + 1L) |> 

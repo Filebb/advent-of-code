@@ -8,9 +8,9 @@ title: "Day 2: 1202 Program Alarm"
 
 ```{r}
 #| label: 2019 - day 2 - part 1
-library(stringr)
+library(tidyverse)
 
-input <- readLines(con = "inputs/2019/02.txt") |> 
+input <- read_lines(file = "inputs/2019/02.txt") |> 
     str_split_1(pattern = ",") |> 
     as.integer()
 
@@ -80,7 +80,7 @@ output <- function(input){
 # search for noun and verb
 for (noun in 0:99) {
     for (verb in 0:99) {
-        input <- readLines(con = "inputs/2019/02.txt") |> 
+        input <- read_lines(file = "inputs/2019/02.txt") |> 
             str_split_1(pattern = ",") |> 
             as.integer()
         

@@ -10,7 +10,7 @@ title: "Day 5: Doesn't He Have Intern-Elves For This?"
 #| label: 2015 - day 5 - part 1
 library(tidyverse)
 
-input <- readLines(con = "inputs/2015/05.txt")
+input <- read_lines(file = "inputs/2015/05.txt")
 
 has_at_least_three_vowels <- function(string)
     str_count(string = string, pattern = "[aeiou]") >= 3

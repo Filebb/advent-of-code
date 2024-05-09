@@ -10,7 +10,7 @@ title: "Day 3: Perfectly Spherical Houses in a Vacuum"
 #| label: 2015 - day 3 - part 1
 library(tidyverse)
 
-input <- readLines(con = "inputs/2015/03.txt") |> 
+input <- read_lines(file = "inputs/2015/03.txt") |> 
     str_split_1(pattern = "")
 
 tibble(move_x = case_match(input, "^" ~  0, ">" ~  1, "v" ~  0, "<" ~ -1),
