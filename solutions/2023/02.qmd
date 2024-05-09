@@ -1,0 +1,75 @@
+---
+title: "Day 2: Cube Conundrum"
+---
+
+[Reference](https://adventofcode.com/2023/day/2)
+
+## Part One
+
+```{r}
+#| label: 2023 - day 2 - part 1
+
+library(tidyverse)
+
+extract_number <- function(x) {
+    as.integer(str_extract(string = x, pattern = "\\d+"))
+}
+
+extract_color <- function(x, color) {
+    out <- extract_number(str_extract(x, pattern = paste("\\d+", color)))
+    
+    coalesce(out, 0)
+}
+
+possible_extraction <- function(extraction) {
+    limits <- c(red = 12, green = 13, blue = 14)
+    
+    comparison <- names(limits) |> 
+        map_int(\(color) extract_color(extraction, color))
+    
+    comparison <- comparison <= limits
+    
+    reduce(comparison, `&`)
+}
+
+possible_game <- function(game) {
+    game |> 
+        str_split_1(pattern = "; ") |> 
+        map_lgl(possible_extraction) |> 
+        reduce(`&`)
+}
+
+tibble(original = read_lines(file = "inputs/2023/02.txt")) |> 
+    separate_wider_delim(original, delim = ": ", names = c("game_number", "game")) |> 
+    mutate(game_number   = extract_number(game_number),
+           possible_game = map_lgl(game, possible_game)) |> 
+    filter(possible_game) |> 
+    summarise(game_number_sum = sum(game_number)) |> 
+    pull(game_number_sum) |> 
+    cat()
+```
+
+## Part One
+
+```{r}
+#| label: 2023 - day 2 - part 2
+game_max_color <- function(game, color) {
+    str_extract_all(game, pattern = paste("\\d+", color)) |> 
+        map(extract_number) |> 
+        unlist() |> 
+        max()
+}
+
+game_power <- function(game) {
+    c("red", "green", "blue") |> 
+        map_int(\(color) game_max_color(game, color)) |> 
+        prod()
+}
+
+tibble(original = read_lines(file = "inputs/2023/02.txt")) |> 
+    separate_wider_delim(original, delim = ": ", names = c("game_number", "game")) |> 
+    mutate(game_power = map_int(game, game_power)) |> 
+    summarise(game_power_sum = sum(game_power)) |> 
+    pull(game_power_sum) |> 
+    cat()
+```
