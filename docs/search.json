@@ -4,21 +4,33 @@
     "href": "solutions/2023/02.html",
     "title": "Day 2: Cube Conundrum",
     "section": "",
-    "text": "Reference"
+    "text": "Reference",
+    "crumbs": [
+      "2023",
+      "Day 2: Cube Conundrum"
+    ]
   },
   {
     "objectID": "solutions/2023/02.html#part-one",
     "href": "solutions/2023/02.html#part-one",
     "title": "Day 2: Cube Conundrum",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\nextract_number &lt;- function(x) {\n    as.integer(str_extract(string = x, pattern = \"\\\\d+\"))\n}\n\nextract_color &lt;- function(x, color) {\n    out &lt;- extract_number(str_extract(x, pattern = paste(\"\\\\d+\", color)))\n    \n    coalesce(out, 0)\n}\n\npossible_extraction &lt;- function(extraction) {\n    limits &lt;- c(red = 12, green = 13, blue = 14)\n    \n    comparison &lt;- names(limits) |&gt; \n        map_int(\\(color) extract_color(extraction, color))\n    \n    comparison &lt;- comparison &lt;= limits\n    \n    reduce(comparison, `&`)\n}\n\npossible_game &lt;- function(game) {\n    game |&gt; \n        str_split_1(pattern = \"; \") |&gt; \n        map_lgl(possible_extraction) |&gt; \n        reduce(`&`)\n}\n\ntibble(original = read_lines(file = \"inputs/2023/02.txt\")) |&gt; \n    separate_wider_delim(original, delim = \": \", names = c(\"game_number\", \"game\")) |&gt; \n    mutate(game_number   = extract_number(game_number),\n           possible_game = map_lgl(game, possible_game)) |&gt; \n    filter(possible_game) |&gt; \n    summarise(game_number_sum = sum(game_number)) |&gt; \n    pull(game_number_sum) |&gt; \n    cat()\n## 2204"
+    "text": "Part One\n\nlibrary(tidyverse)\n\nextract_number &lt;- function(x) {\n    as.integer(str_extract(string = x, pattern = \"\\\\d+\"))\n}\n\nextract_color &lt;- function(x, color) {\n    out &lt;- extract_number(str_extract(x, pattern = paste(\"\\\\d+\", color)))\n    \n    coalesce(out, 0)\n}\n\npossible_extraction &lt;- function(extraction) {\n    limits &lt;- c(red = 12, green = 13, blue = 14)\n    \n    comparison &lt;- names(limits) |&gt; \n        map_int(\\(color) extract_color(extraction, color))\n    \n    comparison &lt;- comparison &lt;= limits\n    \n    reduce(comparison, `&`)\n}\n\npossible_game &lt;- function(game) {\n    game |&gt; \n        str_split_1(pattern = \"; \") |&gt; \n        map_lgl(possible_extraction) |&gt; \n        reduce(`&`)\n}\n\ntibble(original = read_lines(file = \"inputs/2023/02.txt\")) |&gt; \n    separate_wider_delim(original, delim = \": \", names = c(\"game_number\", \"game\")) |&gt; \n    mutate(game_number   = extract_number(game_number),\n           possible_game = map_lgl(game, possible_game)) |&gt; \n    filter(possible_game) |&gt; \n    summarise(game_number_sum = sum(game_number)) |&gt; \n    pull(game_number_sum) |&gt; \n    cat()\n## 2204",
+    "crumbs": [
+      "2023",
+      "Day 2: Cube Conundrum"
+    ]
   },
   {
     "objectID": "solutions/2023/02.html#part-one-1",
     "href": "solutions/2023/02.html#part-one-1",
     "title": "Day 2: Cube Conundrum",
     "section": "Part One",
-    "text": "Part One\n\ngame_max_color &lt;- function(game, color) {\n    str_extract_all(game, pattern = paste(\"\\\\d+\", color)) |&gt; \n        map(extract_number) |&gt; \n        unlist() |&gt; \n        max()\n}\n\ngame_power &lt;- function(game) {\n    c(\"red\", \"green\", \"blue\") |&gt; \n        map_int(\\(color) game_max_color(game, color)) |&gt; \n        prod()\n}\n\ntibble(original = read_lines(file = \"inputs/2023/02.txt\")) |&gt; \n    separate_wider_delim(original, delim = \": \", names = c(\"game_number\", \"game\")) |&gt; \n    mutate(game_power = map_int(game, game_power)) |&gt; \n    summarise(game_power_sum = sum(game_power)) |&gt; \n    pull(game_power_sum) |&gt; \n    cat()\n## 71036"
+    "text": "Part One\n\ngame_max_color &lt;- function(game, color) {\n    str_extract_all(game, pattern = paste(\"\\\\d+\", color)) |&gt; \n        map(extract_number) |&gt; \n        unlist() |&gt; \n        max()\n}\n\ngame_power &lt;- function(game) {\n    c(\"red\", \"green\", \"blue\") |&gt; \n        map_int(\\(color) game_max_color(game, color)) |&gt; \n        prod()\n}\n\ntibble(original = read_lines(file = \"inputs/2023/02.txt\")) |&gt; \n    separate_wider_delim(original, delim = \": \", names = c(\"game_number\", \"game\")) |&gt; \n    mutate(game_power = map_int(game, game_power)) |&gt; \n    summarise(game_power_sum = sum(game_power)) |&gt; \n    pull(game_power_sum) |&gt; \n    cat()\n## 71036",
+    "crumbs": [
+      "2023",
+      "Day 2: Cube Conundrum"
+    ]
   },
   {
     "objectID": "solutions/2022/04.html",
