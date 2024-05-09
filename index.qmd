@@ -18,4 +18,3 @@ tibble(year     = list.files(path = "solutions"),
     scale_y_continuous(limits = c(0, 25)) +
     theme_bw()
 ```
-
