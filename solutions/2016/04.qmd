@@ -25,7 +25,7 @@ chesum_eval <- function(x) {
 }
 
 
-input <- read_csv(file = "../../inputs/2016/04.txt", col_names = "original") |>
+input <- read_csv(file = "inputs/2016/04.txt", col_names = "original") |>
     
     mutate(sector_id      = str_extract(original,          pattern = "[0-9]+"),
            checksum       = str_extract(original,          pattern = "\\[[a-z]+\\]"),

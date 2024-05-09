@@ -10,7 +10,7 @@ title: "Day 2: Corruption Checksum"
 #| label: 2017 - day 2 - part 1
 library(tidyverse)
 
-input <- read_table(file = "../../inputs/2017/02.txt", col_names = FALSE)
+input <- read_table(file = "inputs/2017/02.txt", col_names = FALSE)
 
 max_minus_min <- function(x) max(x) - min(x)
 

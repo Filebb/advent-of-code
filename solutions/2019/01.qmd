@@ -16,7 +16,7 @@ library(tidyverse)
 
 calculate_fuel <- function(mass) floor(mass / 3) - 2
 
-input <- read_csv(file = "../../inputs/2019/01.txt", col_names = "mass") |> 
+input <- read_csv(file = "inputs/2019/01.txt", col_names = "mass") |> 
     mutate(fuel = map_dbl(mass, calculate_fuel))
 
 input |> 

@@ -13,7 +13,7 @@ library(tidyverse)
 is_triangle <- function(x, y, z)
     max(x, y, z) < x + y + z - max(x, y, z)
 
-sides <- read_table(file = "../../inputs/2016/03.txt",
+sides <- read_table(file = "inputs/2016/03.txt",
                     col_names = c("x", "y", "z"))
 
 sides |> 

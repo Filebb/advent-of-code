@@ -15,7 +15,7 @@ title: "Day 1: No Time for a Taxicab"
 library(tidyverse)
 
 # read input
-input <- readLines(con = "../../inputs/2016/01.txt")
+input <- readLines(con = "inputs/2016/01.txt")
 
 # extract direction and length from input (first entry NA)
 move <- c(NA, str_split_1(string = input, pattern = ", "))

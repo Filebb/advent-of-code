@@ -14,7 +14,7 @@ title: "Day 2: I Was Told There Would Be No Math"
 #| label: 2015 - day 2 - part 1
 library(tidyverse)
 
-input <- readLines(con = "../../inputs/2015/02.txt")
+input <- readLines(con = "inputs/2015/02.txt")
 
 paper_area <- function(l, w, h) {
     2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)
