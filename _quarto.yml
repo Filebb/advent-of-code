@@ -96,6 +96,12 @@ website:
             - solutions/2022/03.qmd
             - solutions/2022/04.qmd
 
+    - title: "2023"
+      contents:
+        - text: "2023"
+          contents:
+            - solutions/2023/01.qmd
+
 format:
   html:
     theme: cosmo

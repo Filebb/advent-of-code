@@ -1,0 +1,60 @@
+---
+title: "Day 1: Trebuchet?!"
+---
+
+[Reference](https://adventofcode.com/2022/day/1)
+
+## Part One
+
+```{r}
+#| label: 2023 - day 1 - part 1
+
+library(tidyverse)
+
+tibble(original = read_lines(file = "inputs/2023/01.txt")) |> 
+    
+    mutate(first       = str_extract(original, pattern = "\\d"),
+           last        = str_extract(original, pattern = "\\d(?=\\D*$)"),
+           calibration = as.integer(paste0(first, last))) |> 
+    
+    summarise(sum = sum(calibration)) |>
+    
+    pull(sum) |> 
+    cat()
+```
+
+## Part One
+
+```{r}
+#| label: 2023 - day 1 - part 2
+convert_number <- function(x) {
+    if (x %in% as.character(0:9))
+        return(x)
+    
+    else {
+        numbers <- c("one", "two", "three", "four", "five", "six",
+                     "seven", "eight", "nine")
+        
+        return(as.character(match(x, numbers)))
+    }
+}
+
+tibble(original = read_lines(file = "inputs/2023/01.txt")) |> 
+    mutate(first = str_extract(original, pattern = "\\d|one|two|three|four|five|six|seven|eight|nine"),
+           # this has problems with overlaps (for example "2911threeninesdvxvheightwobm" matches "eight" not "two")
+           #last  = str_extract(original,
+           #                    pattern = "(\\d|one|two|three|four|five|six|seven|eight|nine)(?!.*(\\d|one|two|three|four|five|six|seven|eight|nine).*$)")
+           original_rev = stringi::stri_reverse(original),
+           last = str_extract(original_rev, pattern = "\\d|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin"),
+           last = stringi::stri_reverse(last)) |> 
+    
+    mutate(first = map_chr(first, convert_number),
+           last  = map_chr(last, convert_number)) |> 
+    
+    mutate(calibration = as.integer(paste0(first, last))) |> 
+    
+    summarise(sum = sum(calibration)) |>
+    
+    pull(sum) |> 
+    cat()
+```
