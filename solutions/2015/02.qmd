@@ -12,18 +12,26 @@ title: "Day 2: I Was Told There Would Be No Math"
 
 ```{r}
 #| label: 2015 - day 2 - part 1
+
 library(tidyverse)
 
 input <- read_lines(file = "inputs/2015/02.txt")
 
 paper_area <- function(l, w, h) {
+
     2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)
+
 }
 
 paper <- tibble(original = input) |> 
-    separate_wider_delim(cols = original, names = c("l", "w", "h"),
-                         delim = "x", cols_remove = FALSE) |> 
-    mutate(across(c(l, w, h), ~as.integer(.))) |> 
+
+    separate_wider_delim(cols        = original,
+                         names       = c("l", "w", "h"),
+                         delim       = "x",
+                         cols_remove = FALSE) |> 
+
+    mutate(across(c(l, w, h), as.integer)) |> 
+
     mutate(paper = pmap_int(list(l, w, h), paper_area))
 
 paper |> 
@@ -36,8 +44,9 @@ paper |>
 
 ```{r}
 #| label: 2015 - day 2 - full table
-# look at the full table
-paper |> print(n = nrow(paper))
+
+paper |>
+    print(n = nrow(paper))
 ```
 
 :::
@@ -46,14 +55,15 @@ paper |> print(n = nrow(paper))
 
 ```{r}
 #| label: 2015 - day 2 - part 2
+
 ribbon_length <- function(l, w, h){
+
     2L * (l+w+h - max(l, w, h)) + l*w*h
+
 }
 
-paper <- paper |>
-    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length))
-
-paper |> 
+paper |>
+    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length)) |> 
     summarise(total_ribbon = sum(ribbon)) |> 
     pull(total_ribbon) |> 
     cat()
