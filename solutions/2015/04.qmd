@@ -53,8 +53,8 @@ md5(paste0("pqrstuv", 1048970), serialize = FALSE)
 n <- 2.55e5
 
 md5_hashes <- tibble(number = 1:n,
-                     value  = paste0(input, number),
-                     hash   = map_chr(value, ~md5(., serialize = FALSE)))
+                     string = paste0(input, number),
+                     hash   = map_chr(string, \(x) md5(x, serialize = FALSE)))
 
 md5_hashes |> 
     filter(str_sub(hash, start = 1, end = 5) == "00000") |> 
@@ -65,7 +65,7 @@ md5_hashes |>
 ## Partial Table
 
 ```{r}
-#| label: 2015 - day 4 - part 1 full table
+#| label: 2015 - day 4 - part 1 partial table
 #| echo: false
 
 md5_hashes |> 
@@ -88,8 +88,8 @@ md5_hashes |>
 n <- 1.04e6
 
 md5_hashes <- tibble(number = 1:n,
-                     value  = paste0(input, number),
-                     hash   = map_chr(value, ~md5(., serialize = FALSE))) 
+                     string = paste0(input, number),
+                     hash   = map_chr(string, \(x) md5(x, serialize = FALSE))) 
     
 md5_hashes |> 
     filter(str_sub(hash, start = 1, end = 6) == "000000") |> 
@@ -100,7 +100,7 @@ md5_hashes |>
 ## Partial Table
 
 ```{r}
-#| label: 2015 - day 4 - part 2 full table
+#| label: 2015 - day 4 - part 2 partial table
 #| echo: false
 
 md5_hashes |> 

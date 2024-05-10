@@ -46,3 +46,7 @@ po/*~
 rsconnect/
 
 /.quarto/
+
+# temp folders
+temp*/
+
