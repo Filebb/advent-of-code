@@ -4,44 +4,104 @@ title: "Day 3: Perfectly Spherical Houses in a Vacuum"
 
 [Reference](https://adventofcode.com/2015/day/3)
 
+```{r}
+#| label: 2015 - day 1 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2015/03.txt")
+```
+
 ## Part One
+
+::: {.panel-tabset}
+
+## Solution
 
 ```{r}
 #| label: 2015 - day 3 - part 1
-library(tidyverse)
 
-input <- read_lines(file = "inputs/2015/03.txt") |> 
-    str_split_1(pattern = "")
-
-tibble(move_x = case_match(input, "^" ~  0, ">" ~  1, "v" ~  0, "<" ~ -1),
-       move_y = case_match(input, "^" ~  1, ">" ~  0, "v" ~ -1, "<" ~  0),
-       pos_x  = cumsum(move_x),
-       pos_y  = cumsum(move_y)) |> 
+moves <- tibble(input  = str_split_1(input, pattern = ""),
+                move_x = case_match(input, "^" ~  0, ">" ~  1,
+                                           "v" ~  0, "<" ~ -1),
+                move_y = case_match(input, "^" ~  1, ">" ~  0,
+                                           "v" ~ -1, "<" ~  0),
+                pos_x  = cumsum(move_x),
+                pos_y  = cumsum(move_y)) |> 
     
-    add_row(move_x = NA, move_y = NA, pos_x = 0, pos_y = 0, .before = 1) |> 
+    add_row(pos_x = 0, pos_y = 0, .before = 1)
     
+moves |> 
     distinct(pos_x, pos_y) |> 
     nrow() |>
     cat()
 ```
 
+## Full Table
+
+```{r}
+#| label: 2015 - day 3 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(moves)
+```
+
+## Plot
+
+```{r}
+#| label: 2015 - day 3 - part 1 plot
+
+moves |> 
+    ggplot(mapping = aes(x = pos_x, y = pos_y)) +
+    geom_path() +
+    theme_bw()
+```
+
+:::
+
 ## Part Two
+
+::: {.panel-tabset}
+
+## Solution
 
 ```{r}
 #| label: 2015 - day 3 - part 2
-tibble(move_x = case_match(input, "^" ~  0, ">" ~  1, "v" ~  0, "<" ~ -1),
-       move_y = case_match(input, "^" ~  1, ">" ~  0, "v" ~ -1, "<" ~  0),
-       pos_x  = cumsum(move_x),
-       pos_y  = cumsum(move_y)) |> 
 
-    mutate(who = if_else(row_number() %% 2 == 1, "santa", "robo")) |>
+moves <- moves |> 
 
-    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |>
+    mutate(who = case_when(row_number() - 1  == 0 ~ "both",
+                           row_number() %% 2 == 0 ~ "santa",
+                           .default = "robo")) |> 
 
-    add_row(move_x = NA, move_y = NA, pos_x = 0, pos_y = 0, .before = 1) |> 
-    
+    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |> 
+
+    mutate(across(starts_with("pos"), \(x) coalesce(x, 0)))
+
+moves |>
     distinct(pos_x, pos_y) |>
     nrow() |>
     cat()
 ```
 
+## Full Table
+
+```{r}
+#| label: 2015 - day 3 - part 2 full table
+#| echo: false
+
+rmarkdown::paged_table(moves)
+```
+
+## Plot
+
+```{r}
+#| label: 2015 - day 3 - part 2 plot
+
+moves |> 
+    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +
+    geom_path() +
+    theme_bw()
+```
+
+:::

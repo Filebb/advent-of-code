@@ -4,6 +4,14 @@ title: "Day 2: I Was Told There Would Be No Math"
 
 [Reference](https://adventofcode.com/2015/day/2)
 
+```{r}
+#| label: 2015 - day 2 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2015/02.txt")
+```
+
 ## Part One
 
 ::: {.panel-tabset}
@@ -12,10 +20,6 @@ title: "Day 2: I Was Told There Would Be No Math"
 
 ```{r}
 #| label: 2015 - day 2 - part 1
-
-library(tidyverse)
-
-input <- read_lines(file = "inputs/2015/02.txt")
 
 paper_area <- function(l, w, h) {
 
@@ -43,15 +47,18 @@ paper |>
 ## Full Table
 
 ```{r}
-#| label: 2015 - day 2 - full table
+#| label: 2015 - day 2 - pat 1 full table
 
-paper |>
-    print(n = nrow(paper))
+rmarkdown::paged_table(paper)
 ```
 
 :::
 
 ## Part Two
+
+::: {.panel-tabset}
+
+## Solution
 
 ```{r}
 #| label: 2015 - day 2 - part 2
@@ -62,9 +69,21 @@ ribbon_length <- function(l, w, h){
 
 }
 
-paper |>
-    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length)) |> 
+paper <- paper |>
+    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length))
+
+paper |> 
     summarise(total_ribbon = sum(ribbon)) |> 
     pull(total_ribbon) |> 
     cat()
 ```
+
+## Full Table
+
+```{r}
+#| label: 2015 - day 2 - pat 2 full table
+
+rmarkdown::paged_table(paper)
+```
+
+:::
