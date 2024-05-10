@@ -119,7 +119,6 @@ format:
 execute:
   message: false
   warning: false
-  cache: true
 
 knitr:
   opts_chunk:

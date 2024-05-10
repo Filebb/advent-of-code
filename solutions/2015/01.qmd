@@ -1,46 +1,49 @@
----
-title: "Day 1: Not Quite Lisp"
----
+# Day 1: Not Quite Lisp
 
 [Reference](https://adventofcode.com/2015/day/1)
 
 ## Part One
 
+::: {.panel-tabset}
+
+## Solution
+
 ```{r}
 #| label: 2015 - day 1 - part 1
+
 library(tidyverse)
 
 input <- read_lines(file = "inputs/2015/01.txt")
 
-moves <- tibble(move     = str_split_1(string = input, pattern = ""),
-                number   = case_match(move, "(" ~  1, ")" ~ -1),
-                position = cumsum(number)) |> 
-    rowid_to_column("time")
-    
+moves <- tibble(input    = str_split_1(string = input, pattern = ""),
+                move     = case_match(input, "(" ~  1L, ")" ~ -1L),
+                position = cumsum(move))
+
 moves |> 
-    summarize(position = sum(number)) |> 
+    tail(1) |> 
     pull(position) |> 
     cat()
 ```
+
+## Full Table
+
+```{r}
+#| label: 2015 - day 1 - full table
+moves |> 
+    print(n = nrow(moves))
+```
+
+:::
 
 ## Part Two
 
 ```{r}
 #| label: 2015 - day 1 - part 2
+
 moves |> 
+    rowid_to_column("time") |> 
     filter(position == -1) |> 
-    slice(1) |> 
+    head(1) |> 
     pull(time) |> 
     cat()
 ```
-
-## Plot
-
-```{r}
-#| label: 2015 - day 1 - plot
-moves |> 
-    ggplot(mapping = aes(x = time, y = position)) +
-    geom_point() +
-    theme_minimal()
-```
-
