@@ -33,7 +33,7 @@ moves |>
 
 ## Full Table
 
-```{r, max.print=10000}
+```{r}
 #| label: 2015 - day 1 - part 1 full table
 #| echo: false
 
