@@ -5,7 +5,7 @@ title: "Day 3: Perfectly Spherical Houses in a Vacuum"
 [Reference](https://adventofcode.com/2015/day/3)
 
 ```{r}
-#| label: 2015 - day 1 - load data
+#| label: 2015 - day 3 - load data
 
 library(tidyverse)
 

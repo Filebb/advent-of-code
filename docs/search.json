@@ -528,7 +528,7 @@
     "href": "solutions/2015/04.html",
     "title": "Day 4: The Ideal Stocking Stuffer",
     "section": "",
-    "text": "Reference",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"bgvyzdsv\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")",
     "crumbs": [
       "2015",
       "Day 4: The Ideal Stocking Stuffer"
@@ -539,7 +539,7 @@
     "href": "solutions/2015/04.html#part-one",
     "title": "Day 4: The Ideal Stocking Stuffer",
     "section": "Part One",
-    "text": "Part One\n\nSolutionmd5() tests\n\n\n\nlibrary(tidyverse)\n\n# input given\ninput &lt;- \"bgvyzdsv\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nfive_leading_0s &lt;- tibble(number = 1:n,\n                          value  = paste0(input, number),\n                          hash   = map_chr(value, ~md5(., serialize = FALSE))) |&gt;  \n    \n    filter(str_sub(hash, start = 1, end = 5) == \"00000\")\n\nfive_leading_0s\n## # A tibble: 1 × 3\n##   number value          hash                            \n##    &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;                           \n## 1 254575 bgvyzdsv254575 000004b30d481662b9cb0c105f6549b2\n\nfive_leading_0s |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575\n\n\n\n\n# example 1\nmd5(paste0(\"abcdef\", 609043), serialize = FALSE)\n## [1] \"000001dbbfa3a5c83a2d506429c7b00e\"\n\n# example 2\nmd5(paste0(\"pqrstuv\", 1048970), serialize = FALSE)\n## [1] \"000006136ef2ff3b291c85725f17325c\"",
+    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     value  = paste0(input, number),\n                     hash   = map_chr(value, ~md5(., serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
     "crumbs": [
       "2015",
       "Day 4: The Ideal Stocking Stuffer"
@@ -550,7 +550,7 @@
     "href": "solutions/2015/04.html#part-two",
     "title": "Day 4: The Ideal Stocking Stuffer",
     "section": "Part Two",
-    "text": "Part Two\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nsix_leading_0s &lt;- tibble(number = 1:n,\n                         value  = paste0(input, number),\n                         hash   = map_chr(value, ~md5(., serialize = FALSE))) |&gt;  \n    \n    filter(str_sub(hash, start = 1, end = 6) == \"000000\")\n\nsix_leading_0s\n## # A tibble: 1 × 3\n##    number value           hash                            \n##     &lt;int&gt; &lt;chr&gt;           &lt;chr&gt;                           \n## 1 1038736 bgvyzdsv1038736 000000b1b64bf5eb55aad89986126953\n\nsix_leading_0s |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
+    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     value  = paste0(input, number),\n                     hash   = map_chr(value, ~md5(., serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
     "crumbs": [
       "2015",
       "Day 4: The Ideal Stocking Stuffer"
