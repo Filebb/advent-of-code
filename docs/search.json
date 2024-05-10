@@ -660,28 +660,44 @@
     "href": "solutions/2016/05.html",
     "title": "Day 5: How About a Nice Game of Chess?",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"uqwqemis\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")"
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"uqwqemis\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")",
+    "crumbs": [
+      "2016",
+      "Day 5: How About a Nice Game of Chess?"
+    ]
   },
   {
     "objectID": "solutions/2016/05.html#md5-tests",
     "href": "solutions/2016/05.html#md5-tests",
     "title": "Day 5: How About a Nice Game of Chess?",
     "section": "md5() tests",
-    "text": "md5() tests\n\n# example 1\nmd5(paste0(\"abc\", 3231929), serialize = FALSE)\n## [1] \"00000155f8105dff7f56ee10fa9b9abd\"\n\n# example 2\nmd5(paste0(\"abc\", 5017308), serialize = FALSE)\n## [1] \"000008f82c5b3924a1ecbebf60344e00\"\n\n# example 3\nmd5(paste0(\"abc\", 5278568), serialize = FALSE)\n## [1] \"00000f9a2c309875e05c5a5d09f1b8c4\""
+    "text": "md5() tests\n\n# example 1\nmd5(paste0(\"abc\", 3231929), serialize = FALSE)\n## [1] \"00000155f8105dff7f56ee10fa9b9abd\"\n\n# example 2\nmd5(paste0(\"abc\", 5017308), serialize = FALSE)\n## [1] \"000008f82c5b3924a1ecbebf60344e00\"\n\n# example 3\nmd5(paste0(\"abc\", 5278568), serialize = FALSE)\n## [1] \"00000f9a2c309875e05c5a5d09f1b8c4\"",
+    "crumbs": [
+      "2016",
+      "Day 5: How About a Nice Game of Chess?"
+    ]
   },
   {
     "objectID": "solutions/2016/05.html#part-one",
     "href": "solutions/2016/05.html#part-one",
     "title": "Day 5: How About a Nice Game of Chess?",
     "section": "Part One",
-    "text": "Part One\n\nSolutionTarget Table\n\n\n\n# CODE TO CREATE THE FILE \"temp/md5_target.csv\"\n# number of attempts, this is empirically enough\n# n &lt;- 1.7e7\n# \n# md5_hashes &lt;- tibble(number = 1:n,\n#                      string = paste0(input, number),\n#                      hash   = map_chr(string, \\(x) md5(x, serialize = FALSE)))\n# \n# md5_target &lt;- md5_hashes |&gt; \n#     filter(str_sub(hash, start = 1, end = 5) == \"00000\")\n# \n# if(!dir.exists(\"temp\")) dir.create(\"temp\")\n# \n# md5_target |&gt; \n#     write_csv(file = \"temp/md5_target.csv\")\n\nmd5_target &lt;- read_csv(file = \"temp/md5_target.csv\")\n\nmd5_target |&gt; \n    mutate(char = str_sub(hash, start = 6, end = 6)) |&gt; \n    summarise(password = str_flatten(char)) |&gt; \n    pull(password) |&gt; \n    cat()\n## 1a3099aa"
+    "text": "Part One\n\nSolutionTarget Table\n\n\n\n# CODE TO CREATE THE FILE \"temp/md5_target.csv\"\n# number of attempts, this is empirically enough\n# n &lt;- 1.7e7\n# \n# md5_hashes &lt;- tibble(number = 1:n,\n#                      string = paste0(input, number),\n#                      hash   = map_chr(string, \\(x) md5(x, serialize = FALSE)))\n# \n# md5_target &lt;- md5_hashes |&gt; \n#     filter(str_sub(hash, start = 1, end = 5) == \"00000\")\n# \n# if(!dir.exists(\"temp\")) dir.create(\"temp\")\n# \n# md5_target |&gt; \n#     write_csv(file = \"temp/md5_target.csv\")\n\nmd5_target &lt;- read_csv(file = \"temp/md5_target.csv\")\n\nmd5_target |&gt; \n    mutate(char = str_sub(hash, start = 6, end = 6)) |&gt; \n    summarise(password = str_flatten(char)) |&gt; \n    pull(password) |&gt; \n    cat()\n## 1a3099aa",
+    "crumbs": [
+      "2016",
+      "Day 5: How About a Nice Game of Chess?"
+    ]
   },
   {
     "objectID": "solutions/2016/05.html#part-two",
     "href": "solutions/2016/05.html#part-two",
     "title": "Day 5: How About a Nice Game of Chess?",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFiltered TableValid PositionsFirst PositionsSorted Positions\n\n\n\nlibrary(arrow)\n\n# CODE TO CREATE THE CSV FILES IN \"temp_2016_5_csv\"\n# number of attempts, this is empirically enough\n# n &lt;- 1:3e7 # number of attempts\n# n_parts &lt;- 1e2  # number of parts\n# parts &lt;- split(n, cut_number(n, n_parts))\n# \n# if(!dir.exists(\"temp_2016_5_csv\")) dir.create(\"temp_2016_5_csv\")\n# \n# map2(.x = parts,\n#      .y = 1:n_parts,\n#      .f = \\(parts, id) tibble(id = id,\n#                                number = parts,\n#                                string = paste0(input, number),\n#                                hash   = map_chr(string, \\(x) md5(x, serialize = FALSE))),\n#      .progress = TRUE) |&gt; \n# \n# walk2(.x = _,\n#       .y = 1:n_parts,\n#       .f = \\(data, id) write_csv(data, file = paste0(\"temp_2016_5_csv/chunk\", id, \".csv\")),\n#       .progress = TRUE)\n\ncsvs &lt;- open_dataset(\"temp_2016_5_csv\", format = \"csv\")\n\nif(!dir.exists(\"temp_2016_5_parquet\")) dir.create(\"temp_2016_5_parquet\")\ncsvs |&gt; \n    write_dataset(path         = \"temp_2016_5_parquet\",\n                  format       = \"parquet\",\n                  partitioning = \"id\")\n\nmd5_hashes &lt;- open_dataset(sources = \"temp_2016_5_parquet\",\n                           schema  = schema(number = int64(),\n                                            string = string(),\n                                            hash   = string()))\n\nmd5_hashes_filtered &lt;- md5_hashes |&gt; \n    filter(str_sub(hash, start = 1, end = 5) == \"00000\") |&gt; \n    as_tibble() |&gt; \n    mutate(position = str_sub(hash, start = 6, end = 6),\n           char     = str_sub(hash, start = 7, end = 7))\n\nmd5_hashes_valid_positions &lt;- md5_hashes_filtered |&gt; \n    filter(position %in% 0:7)\n\nmd5_hashes_first_positions &lt;- md5_hashes_valid_positions |&gt; \n    summarise(across(everything(), first), .by = position)\n\nmd5_hashes_sorted_positions &lt;- md5_hashes_first_positions |&gt; \n    arrange(position) \n\nmd5_hashes_sorted_positions |&gt; \n    summarise(password = str_flatten(char)) |&gt; \n    pull(password) |&gt; \n    cat()\n## 6941906d"
+    "text": "Part Two\n\nSolutionFiltered TableValid PositionsFirst PositionsSorted Positions\n\n\n\nlibrary(arrow)\n\n# CODE TO CREATE THE CSV FILES IN \"temp_2016_5_csv\"\n# number of attempts, this is empirically enough\n# n &lt;- 1:3e7 # number of attempts\n# n_parts &lt;- 1e2  # number of parts\n# parts &lt;- split(n, cut_number(n, n_parts))\n# \n# if(!dir.exists(\"temp_2016_5_csv\")) dir.create(\"temp_2016_5_csv\")\n# \n# map2(.x = parts,\n#      .y = 1:n_parts,\n#      .f = \\(parts, id) tibble(id = id,\n#                                number = parts,\n#                                string = paste0(input, number),\n#                                hash   = map_chr(string, \\(x) md5(x, serialize = FALSE))),\n#      .progress = TRUE) |&gt; \n# \n# walk2(.x = _,\n#       .y = 1:n_parts,\n#       .f = \\(data, id) write_csv(data, file = paste0(\"temp_2016_5_csv/chunk\", id, \".csv\")),\n#       .progress = TRUE)\n\ncsvs &lt;- open_dataset(\"temp_2016_5_csv\", format = \"csv\")\n\nif(!dir.exists(\"temp_2016_5_parquet\")) dir.create(\"temp_2016_5_parquet\")\ncsvs |&gt; \n    write_dataset(path         = \"temp_2016_5_parquet\",\n                  format       = \"parquet\",\n                  partitioning = \"id\")\n\nmd5_hashes &lt;- open_dataset(sources = \"temp_2016_5_parquet\",\n                           schema  = schema(number = int64(),\n                                            string = string(),\n                                            hash   = string()))\n\nmd5_hashes_filtered &lt;- md5_hashes |&gt; \n    filter(str_sub(hash, start = 1, end = 5) == \"00000\") |&gt; \n    as_tibble() |&gt; \n    mutate(position = str_sub(hash, start = 6, end = 6),\n           char     = str_sub(hash, start = 7, end = 7))\n\nmd5_hashes_valid_positions &lt;- md5_hashes_filtered |&gt; \n    filter(position %in% 0:7)\n\nmd5_hashes_first_positions &lt;- md5_hashes_valid_positions |&gt; \n    summarise(across(everything(), first), .by = position)\n\nmd5_hashes_sorted_positions &lt;- md5_hashes_first_positions |&gt; \n    arrange(position) \n\nmd5_hashes_sorted_positions |&gt; \n    summarise(password = str_flatten(char)) |&gt; \n    pull(password) |&gt; \n    cat()\n## 6941906d",
+    "crumbs": [
+      "2016",
+      "Day 5: How About a Nice Game of Chess?"
+    ]
   },
   {
     "objectID": "solutions/2017/02.html",

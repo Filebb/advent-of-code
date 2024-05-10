@@ -52,6 +52,7 @@ website:
             - solutions/2016/02.qmd
             - solutions/2016/03.qmd
             - solutions/2016/04.qmd
+            - solutions/2016/05.qmd
 
     - title: "2017"
       contents:
