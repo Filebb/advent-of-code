@@ -1,0 +1,75 @@
+---
+title: "Day 7: Internet Protocol Version 7"
+---
+
+[Reference](https://adventofcode.com/2016/day/6)
+
+```{r}
+#| label: 2016 - day 7 - load data
+
+library(tidyverse)
+
+input <- read_csv(file = "inputs/2016/07.txt", col_names = "original")
+```
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 7 - part 1
+
+remove_squadre_brackets <- function(string) {
+    str_remove_all(string = string, pattern = "\\[|\\]")
+}
+
+has_abba <- function(string) {
+    str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\2\\1") |> 
+        coalesce(FALSE)
+}
+
+support_tls <- input |> 
+    mutate(inside  = str_extract_all(string = original, pattern = "\\[[a-z]*\\]"),
+           outside = str_extract_all(string = original, pattern = "^[a-z]*\\[|\\][a-z]*\\[|\\][a-z]*$")) |> 
+    unnest_wider(col = inside,  names_sep = "_") |> 
+    unnest_wider(col = outside, names_sep = "_") |> 
+    mutate(across(-original, remove_squadre_brackets)) |> 
+    filter(if_all(starts_with("inside"), compose(`!`, has_abba))) |>
+    filter(if_any(starts_with("outside"), has_abba))
+
+cat(nrow(support_tls))
+```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 7 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(support_tls)
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 7 - part 2
+
+```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 7 - part 2 full table
+#| echo: false
+
+```
+
+:::
