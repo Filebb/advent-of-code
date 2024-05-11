@@ -1,0 +1,93 @@
+---
+title: "Day 6: Signals and Noise"
+---
+
+[Reference](https://adventofcode.com/2016/day/6)
+
+```{r}
+#| label: 2016 - day 6 - load data
+
+library(tidyverse)
+
+input <- read_csv(file = "inputs/2016/06.txt", col_names = "original")
+```
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 6 - part 1
+
+mode <- function(x, na.rm = FALSE) {
+  if (na.rm) x <- x[!is.na(x)]
+
+  ux <- unique(x)
+  return(ux[which.max(tabulate(match(x, ux)))])
+}
+
+splitted_strings <- input |> 
+    mutate(char = str_split(string = original, pattern = "")) |> 
+    unnest_wider(col = char, names_sep = "_")
+
+splitted_strings |> 
+    summarise(across(-original, mode)) |> 
+    unite("error_corrected", everything(), sep = "") |> 
+    pull(error_corrected) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 6 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(splitted_strings)
+
+splitted_strings |> 
+    summarise(across(-original, mode)) |> 
+    rmarkdown::paged_table()
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2016 - day 6 - part 2
+
+least_common <- function(x, na.rm = FALSE) {
+  if (na.rm) x <- x[!is.na(x)]
+
+  ux <- unique(x)
+  return(ux[which.min(tabulate(match(x, ux)))])
+}
+
+splitted_strings |> 
+    summarise(across(-original, least_common)) |> 
+    unite("error_corrected", everything(), sep = "") |> 
+    pull(error_corrected) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 6 - part 2 full table
+#| echo: false
+
+rmarkdown::paged_table(splitted_strings)
+
+splitted_strings |> 
+    summarise(across(-original, least_common)) |> 
+    rmarkdown::paged_table()
+```
+
+:::

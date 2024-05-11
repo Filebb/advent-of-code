@@ -53,7 +53,7 @@ input |>
 
 ## Full Table
 
-```{r, max.print=10000}
+```{r}
 #| label: 2015 - day 5 - part 1 full table
 #| echo: false
 
@@ -97,7 +97,7 @@ input |>
 
 ## Full Table
 
-```{r, max.print=10000}
+```{r}
 #| label: 2015 - day 5 - part 2 full table
 #| echo: false
 

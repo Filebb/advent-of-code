@@ -60,7 +60,7 @@ md5(paste0("abc", 5278568), serialize = FALSE)
 md5_target <- read_csv(file = "temp/md5_target.csv")
 
 md5_target |> 
-    mutate(char = str_sub(hash, start = 6, end = 6)) |> 
+    mutate(char = str_sub(string = hash, start = 6, end = 6)) |> 
     summarise(password = str_flatten(char)) |> 
     pull(password) |> 
     cat()
@@ -73,7 +73,7 @@ md5_target |>
 #| echo: false
 
 md5_target |> 
-    mutate(char = str_sub(hash, start = 6, end = 6)) |> 
+    mutate(char = str_sub(string = hash, start = 6, end = 6)) |> 
     rmarkdown::paged_table()
 ```
 
@@ -125,10 +125,10 @@ md5_hashes <- open_dataset(sources = "temp_2016_5_parquet",
                                             hash   = string()))
 
 md5_hashes_filtered <- md5_hashes |> 
-    filter(str_sub(hash, start = 1, end = 5) == "00000") |> 
+    filter(str_sub(string = hash, start = 1, end = 5) == "00000") |> 
     as_tibble() |> 
-    mutate(position = str_sub(hash, start = 6, end = 6),
-           char     = str_sub(hash, start = 7, end = 7))
+    mutate(position = str_sub(string = hash, start = 6, end = 6),
+           char     = str_sub(string = hash, start = 7, end = 7))
 
 md5_hashes_valid_positions <- md5_hashes_filtered |> 
     filter(position %in% 0:7)
