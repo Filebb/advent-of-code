@@ -134,6 +134,7 @@ md5_hashes_valid_positions <- md5_hashes_filtered |>
     filter(position %in% 0:7)
 
 md5_hashes_first_positions <- md5_hashes_valid_positions |> 
+    arrange(number) |> 
     summarise(across(everything(), first), .by = position)
 
 md5_hashes_sorted_positions <- md5_hashes_first_positions |> 
