@@ -466,7 +466,7 @@
     "href": "solutions/2015/02.html",
     "title": "Day 2: I Was Told There Would Be No Math",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/02.txt\")",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/02.txt\", col_names = \"original\")",
     "crumbs": [
       "2015",
       "Day 2: I Was Told There Would Be No Math"
@@ -477,7 +477,7 @@
     "href": "solutions/2015/02.html#part-one",
     "title": "Day 2: I Was Told There Would Be No Math",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n\n}\n\npaper &lt;- tibble(original = input) |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(c(l, w, h), as.integer)) |&gt; \n\n    mutate(paper = pmap_int(list(l, w, h), paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(c(l, w, h), as.integer)) |&gt; \n\n    mutate(paper = pmap_int(list(l, w, h), paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
     "crumbs": [
       "2015",
       "Day 2: I Was Told There Would Be No Math"

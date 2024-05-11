@@ -9,7 +9,7 @@ title: "Day 2: I Was Told There Would Be No Math"
 
 library(tidyverse)
 
-input <- read_lines(file = "inputs/2015/02.txt")
+input <- read_csv(file = "inputs/2015/02.txt", col_names = "original")
 ```
 
 ## Part One
@@ -27,7 +27,7 @@ paper_area <- function(l, w, h) {
 
 }
 
-paper <- tibble(original = input) |> 
+paper <- input |> 
 
     separate_wider_delim(cols        = original,
                          names       = c("l", "w", "h"),
