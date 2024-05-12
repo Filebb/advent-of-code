@@ -572,7 +572,7 @@
     "href": "solutions/2015/03.html#part-two",
     "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- moves |&gt; \n\n    mutate(who = case_when(row_number() - 1  == 0 ~ \"both\",\n                           row_number() %% 2 == 0 ~ \"santa\",\n                           .default = \"robo\")) |&gt; \n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt; \n\n    mutate(across(starts_with(\"pos\"), \\(x) coalesce(x, 0)))\n\nmoves |&gt;\n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +\n    geom_path() +\n    theme_bw()",
+    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- moves |&gt; \n\n    mutate(who = case_when(row_number() - 1  == 0 ~ \"both\",\n                           row_number() %% 2 == 0 ~ \"santa\",\n                           .default = \"robo\")) |&gt; \n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt; \n\n    mutate(across(.cols = starts_with(\"pos\"), .fns = \\(x) coalesce(x, 0)))\n\nmoves |&gt;\n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +\n    geom_path() +\n    theme_bw()",
     "crumbs": [
       "2015",
       "Day 3: Perfectly Spherical Houses in a Vacuum"

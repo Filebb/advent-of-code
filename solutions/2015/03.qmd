@@ -76,7 +76,7 @@ moves <- moves |>
 
     mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |> 
 
-    mutate(across(starts_with("pos"), \(x) coalesce(x, 0)))
+    mutate(across(.cols = starts_with("pos"), .fns = \(x) coalesce(x, 0)))
 
 moves |>
     distinct(pos_x, pos_y) |>
