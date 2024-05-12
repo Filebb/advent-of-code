@@ -47,17 +47,18 @@ md5(paste0("abc", 5278568), serialize = FALSE)
 # 
 # md5_hashes <- tibble(number = 1:n,
 #                      string = paste0(input, number),
-#                      hash   = map_chr(string, \(x) md5(x, serialize = FALSE)))
+#                      hash   = map_chr(string, \(x) md5(x, serialize = FALSE), .progress = TRUE))
 # 
-# md5_target <- md5_hashes |> 
+# md5_target <- md5_hashes |>
 #     filter(str_sub(hash, start = 1, end = 5) == "00000")
 # 
 # if(!dir.exists("temp")) dir.create("temp")
+# if(!dir.exists("temp/temp_2016_5_part1")) dir.create("temp/temp_2016_5_part1")
 # 
-# md5_target |> 
-#     write_csv(file = "temp/md5_target.csv")
+# md5_target |>
+#     write_csv(file = "temp/temp_2016_5_part1/md5_target.csv")
 
-md5_target <- read_csv(file = "temp/md5_target.csv")
+md5_target <- read_csv(file = "temp/temp_2016_5_part1/md5_target.csv")
 
 md5_target |> 
     mutate(char = str_sub(string = hash, start = 6, end = 6)) |> 
@@ -96,30 +97,33 @@ library(arrow)
 # n_parts <- 1e2  # number of parts
 # parts <- split(n, cut_number(n, n_parts))
 # 
-# if(!dir.exists("temp_2016_5_csv")) dir.create("temp_2016_5_csv")
+# if(!dir.exists("temp/temp_2016_5_part2")) dir.create("temp/temp_2016_5_part2")
+# if(!dir.exists("temp/temp_2016_5_part2/csv")) dir.create("temp/temp_2016_5_part2/csv")
 # 
 # map2(.x = parts,
 #      .y = 1:n_parts,
-#      .f = \(parts, id) tibble(id = id,
-#                                number = parts,
-#                                string = paste0(input, number),
-#                                hash   = map_chr(string, \(x) md5(x, serialize = FALSE))),
-#      .progress = TRUE) |> 
+#      .f = \(parts, id) tibble(id     = id,
+#                               number = parts,
+#                               string = paste0(input, number),
+#                               hash   = map_chr(.x = string,
+#                                                .f = \(x) md5(x, serialize = FALSE))),
+#      .progress = TRUE) |>
 # 
 # walk2(.x = _,
 #       .y = 1:n_parts,
-#       .f = \(data, id) write_csv(data, file = paste0("temp_2016_5_csv/chunk", id, ".csv")),
+#       .f = \(data, id) write_csv(data, file = paste0("temp/temp_2016_5_part2/csv/chunk", id, ".csv")),
 #       .progress = TRUE)
 
-csvs <- open_dataset("temp_2016_5_csv", format = "csv")
+# csvs <- open_dataset(sources = "temp/temp_2016_5_part2/csv", format = "csv")
+# 
+# if(!dir.exists("temp/temp_2016_5_part2/parquet")) dir.create("temp/temp_2016_5_part2/parquet")
+# 
+# csvs |> 
+#     write_dataset(path         = "temp/temp_2016_5_part2/parquet",
+#                   format       = "parquet",
+#                   partitioning = "id")
 
-if(!dir.exists("temp_2016_5_parquet")) dir.create("temp_2016_5_parquet")
-csvs |> 
-    write_dataset(path         = "temp_2016_5_parquet",
-                  format       = "parquet",
-                  partitioning = "id")
-
-md5_hashes <- open_dataset(sources = "temp_2016_5_parquet",
+md5_hashes <- open_dataset(sources = "temp/temp_2016_5_part2/parquet",
                            schema  = schema(number = int64(),
                                             string = string(),
                                             hash   = string()))
