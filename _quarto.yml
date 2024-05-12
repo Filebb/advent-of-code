@@ -7,6 +7,9 @@ website:
   title: "Advent of Code"
 
   navbar:
+    tools:
+        - icon: github
+          href:  https://github.com/Filebb/advent-of-code
     left:
       - text: "Events"
         menu:
