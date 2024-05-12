@@ -2,7 +2,7 @@
 title: "Day 7: Internet Protocol Version 7"
 ---
 
-[Reference](https://adventofcode.com/2016/day/6)
+[Reference](https://adventofcode.com/2016/day/7)
 
 ```{r}
 #| label: 2016 - day 7 - load data
@@ -62,6 +62,35 @@ rmarkdown::paged_table(support_tls)
 ```{r}
 #| label: 2016 - day 7 - part 2
 
+# test <- "ada[cac]xyz[dad]dcx[rrdac]zzaca"
+# 
+# test |> 
+#     str_view(pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2")
+# 
+# test |> 
+#     str_view(pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2")
+
+has_aba <- function(string) {
+    one <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2")
+
+    two <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2")
+
+    return(one | two)
+}
+
+support_ssl <- input |>
+    filter(has_aba(original))
+
+input |> 
+    mutate(
+        one_s = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2"),
+        one   = str_detect(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2"),
+        two_s = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2"),
+        two   = str_detect(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2"),
+        has_aba = one | two
+    ) |> 
+    filter(has_aba(original)) |> 
+    view()
 ```
 
 ## Full Table
@@ -69,6 +98,7 @@ rmarkdown::paged_table(support_tls)
 ```{r}
 #| label: 2016 - day 7 - part 2 full table
 #| echo: false
+
 
 ```
 
