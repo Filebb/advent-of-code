@@ -4,35 +4,78 @@ title: "Day 3: Squares With Three Sides"
 
 [Reference](https://adventofcode.com/2016/day/3)
 
+```{r}
+#| label: 2016 - day 3 - load data
+
+library(tidyverse)
+
+input <- read_table(file = "inputs/2016/03.txt", col_names = c("x", "y", "z"))
+```
+
 ## Part One
+
+::: {.panel-tabset}
+
+## Solution
 
 ```{r}
 #| label: 2016 - day 3 - part 1
-library(tidyverse)
 
-is_triangle <- function(x, y, z)
+is_triangle <- function(x, y, z) {
     max(x, y, z) < x + y + z - max(x, y, z)
+}
 
-sides <- read_table(file = "inputs/2016/03.txt",
-                    col_names = c("x", "y", "z"))
+triangles <- input |> 
+    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle))
 
-sides |> 
-    mutate(flag = pmap_lgl(list(x, y, z), is_triangle)) |> 
-    summarise(n = sum(flag)) |> 
+triangles |> 
+    summarise(n = sum(is_triangle)) |> 
     pull(n) |> 
     cat()
 ```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 3 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(triangles)
+```
+
+:::
 
 ## Part Two
 
+::: {.panel-tabset}
+
+## Solution
+
 ```{r}
 #| label: 2016 - day 3 - part 2
-tibble(numbers = c(pull(sides, x), pull(sides, y), pull(sides, z))) |> 
-    mutate(triangle = rep(1:1911, each = 3),
-           side     = rep(c("x", "y", "z"), times = 1911)) |> 
-    pivot_wider(values_from = numbers, names_from = side) |> 
-    mutate(flag = pmap_lgl(list(x, y, z), is_triangle)) |> 
-    summarise(n = sum(flag)) |> 
+
+triangles <- tibble(sides = c(pull(input, x), pull(input, y), pull(input, z))) |> 
+
+    mutate(triangle = rep(x = 1:nrow(input),    each = 3),
+           side     = rep(x = c("x", "y", "z"), times = nrow(input))) |> 
+
+    pivot_wider(values_from = sides, names_from = side) |> 
+
+    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle), .keep = "used")
+
+triangles |> 
+    summarise(n = sum(is_triangle)) |> 
     pull(n) |> 
     cat()
 ```
+
+## Full Table
+
+```{r}
+#| label: 2016 - day 3 - part 2 full table
+#| echo: false
+
+rmarkdown::paged_table(triangles)
+```
+
+:::

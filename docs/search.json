@@ -660,7 +660,7 @@
     "href": "solutions/2016/03.html",
     "title": "Day 3: Squares With Three Sides",
     "section": "",
-    "text": "Reference",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_table(file = \"inputs/2016/03.txt\", col_names = c(\"x\", \"y\", \"z\"))",
     "crumbs": [
       "2016",
       "Day 3: Squares With Three Sides"
@@ -671,7 +671,7 @@
     "href": "solutions/2016/03.html#part-one",
     "title": "Day 3: Squares With Three Sides",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\nis_triangle &lt;- function(x, y, z)\n    max(x, y, z) &lt; x + y + z - max(x, y, z)\n\nsides &lt;- read_table(file = \"inputs/2016/03.txt\",\n                    col_names = c(\"x\", \"y\", \"z\"))\n\nsides |&gt; \n    mutate(flag = pmap_lgl(list(x, y, z), is_triangle)) |&gt; \n    summarise(n = sum(flag)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 993",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nis_triangle &lt;- function(x, y, z) {\n    max(x, y, z) &lt; x + y + z - max(x, y, z)\n}\n\ntriangles &lt;- input |&gt; \n    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle))\n\ntriangles |&gt; \n    summarise(n = sum(is_triangle)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 993",
     "crumbs": [
       "2016",
       "Day 3: Squares With Three Sides"
@@ -682,7 +682,7 @@
     "href": "solutions/2016/03.html#part-two",
     "title": "Day 3: Squares With Three Sides",
     "section": "Part Two",
-    "text": "Part Two\n\ntibble(numbers = c(pull(sides, x), pull(sides, y), pull(sides, z))) |&gt; \n    mutate(triangle = rep(1:1911, each = 3),\n           side     = rep(c(\"x\", \"y\", \"z\"), times = 1911)) |&gt; \n    pivot_wider(values_from = numbers, names_from = side) |&gt; \n    mutate(flag = pmap_lgl(list(x, y, z), is_triangle)) |&gt; \n    summarise(n = sum(flag)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 1849",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\ntriangles &lt;- tibble(sides = c(pull(input, x), pull(input, y), pull(input, z))) |&gt; \n\n    mutate(triangle = rep(x = 1:nrow(input),    each = 3),\n           side     = rep(x = c(\"x\", \"y\", \"z\"), times = nrow(input))) |&gt; \n\n    pivot_wider(values_from = sides, names_from = side) |&gt; \n\n    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle), .keep = \"used\")\n\ntriangles |&gt; \n    summarise(n = sum(is_triangle)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 1849",
     "crumbs": [
       "2016",
       "Day 3: Squares With Three Sides"
