@@ -477,7 +477,7 @@
     "href": "solutions/2015/02.html#part-one",
     "title": "Day 2: I Was Told There Would Be No Math",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(c(l, w, h), as.integer)) |&gt; \n\n    mutate(paper = pmap_int(list(l, w, h), paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |&gt; \n\n    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
     "crumbs": [
       "2015",
       "Day 2: I Was Told There Would Be No Math"
@@ -488,7 +488,7 @@
     "href": "solutions/2015/02.html#part-two",
     "title": "Day 2: I Was Told There Would Be No Math",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nribbon_length &lt;- function(l, w, h){\n\n    2L * (l+w+h - max(l, w, h)) + l*w*h\n\n}\n\npaper &lt;- paper |&gt;\n    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length))\n\npaper |&gt; \n    summarise(total_ribbon = sum(ribbon)) |&gt; \n    pull(total_ribbon) |&gt; \n    cat()\n## 3842356",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nribbon_length &lt;- function(l, w, h) {\n    2L * (l+w+h - max(l, w, h)) + l*w*h\n}\n\npaper &lt;- paper |&gt;\n    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))\n\npaper |&gt; \n    summarise(total_ribbon = sum(ribbon)) |&gt; \n    pull(total_ribbon) |&gt; \n    cat()\n## 3842356",
     "crumbs": [
       "2015",
       "Day 2: I Was Told There Would Be No Math"
@@ -759,7 +759,7 @@
     "href": "solutions/2016/07.html#part-two",
     "title": "Day 7: Internet Protocol Version 7",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\n# test &lt;- \"ada[cac]xyz[dad]dcx[rrdac]zzaca\"\n# \n# test |&gt; \n#     str_view(pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\")\n# \n# test |&gt; \n#     str_view(pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\")\n\nhas_aba &lt;- function(string) {\n    one &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\")\n\n    two &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\")\n\n    return(one | two)\n}\n\nsupport_ssl &lt;- input |&gt;\n    filter(has_aba(original))\n\ninput |&gt; \n    mutate(\n        one_s = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\"),\n        one   = str_detect(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\"),\n        two_s = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\"),\n        two   = str_detect(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\"),\n        has_aba = one | two\n    ) |&gt; \n    filter(has_aba(original)) |&gt; \n    view()",
     "crumbs": [
       "2016",
       "Day 7: Internet Protocol Version 7"

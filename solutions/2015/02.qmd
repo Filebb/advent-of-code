@@ -22,9 +22,7 @@ input <- read_csv(file = "inputs/2015/02.txt", col_names = "original")
 #| label: 2015 - day 2 - part 1
 
 paper_area <- function(l, w, h) {
-
     2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)
-
 }
 
 paper <- input |> 
@@ -34,9 +32,9 @@ paper <- input |>
                          delim       = "x",
                          cols_remove = FALSE) |> 
 
-    mutate(across(c(l, w, h), as.integer)) |> 
+    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |> 
 
-    mutate(paper = pmap_int(list(l, w, h), paper_area))
+    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))
 
 paper |> 
     summarise(total_paper = sum(paper)) |> 
@@ -64,14 +62,12 @@ rmarkdown::paged_table(paper)
 ```{r}
 #| label: 2015 - day 2 - part 2
 
-ribbon_length <- function(l, w, h){
-
+ribbon_length <- function(l, w, h) {
     2L * (l+w+h - max(l, w, h)) + l*w*h
-
 }
 
 paper <- paper |>
-    mutate(ribbon = pmap_int(list(l, w, h), ribbon_length))
+    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))
 
 paper |> 
     summarise(total_ribbon = sum(ribbon)) |> 
