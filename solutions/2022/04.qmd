@@ -4,6 +4,14 @@ title: "Day 4: Camp Cleanup"
 
 [Reference](https://adventofcode.com/2022/day/4)
 
+```{r}
+#| label: 2022 - day 4 - load data
+
+library(tidyverse)
+
+input <- read_csv(file = "inputs/2022/04.txt", col_names = c("elf1", "elf2"))
+```
+
 ## Part One
 
 ::: {.panel-tabset}
@@ -12,34 +20,27 @@ title: "Day 4: Camp Cleanup"
 
 ```{r}
 #| label: 2022 - day 4 - part 1
-library(tidyverse)
 
-input <- read_lines(file = "inputs/2022/04.txt")
+elfs <- input |> 
+    
+    separate_wider_delim(col = elf1, delim = "-", names = c("elf1_min", "elf1_max")) |> 
+    separate_wider_delim(col = elf2, delim = "-", names = c("elf2_min", "elf2_max")) |> 
+    
+    mutate(across(.cols = everything(), .fns = as.integer))
 
-assignments <- tibble(original = input) |> 
-    
-    separate_wider_delim(col = original,
-                         delim = ",",
-                         names = c("elf1", "elf2")) |> 
-    
-    separate_wider_delim(col = elf1,
-                         delim = "-",
-                         names = c("elf1_min", "elf1_max")) |> 
-    
-    separate_wider_delim(col = elf2,
-                         delim = "-",
-                         names = c("elf2_min", "elf2_max")) |> 
-    
-    mutate(across(everything(), as.integer)) |> 
-    
-    mutate(fully_contains =
-               (elf1_min >= elf2_min & elf1_max <= elf2_max) |
-               (elf2_min >= elf1_min & elf2_max <= elf1_max)
-           )
+contains <- function(a_min, a_max, b_min, b_max) {
+    a_contains_b <- a_min <= b_min & b_max <= a_max
+    b_contains_a <- b_min <= a_min & a_max <= b_max
 
-assignments |> 
-    summarise(total_fully_contains = sum(fully_contains)) |> 
-    pull(total_fully_contains) |> 
+    return(a_contains_b | b_contains_a)
+}
+
+contain <- elfs |>     
+    mutate(contains = pmap_lgl(.l = list(elf1_min, elf1_max, elf2_min, elf2_max), .f = contains))
+
+contain |> 
+    summarise(n_contain = sum(contains)) |> 
+    pull(n_contain) |> 
     cat()
 ```
 
@@ -47,9 +48,9 @@ assignments |>
 
 ```{r}
 #| label: 2022 - day 4 - full table part 1
-head(input)
+#| echo: false
 
-assignments |> print(n = nrow(assignments))
+rmarkdown::paged_table(contain)
 ```
 
 :::
@@ -61,26 +62,33 @@ assignments |> print(n = nrow(assignments))
 ## Solution
 
 ```{r}
-#| label: 2022 - day 3 - part 2
-assignments <- assignments |> 
-    mutate(overlap =
-               between(elf1_min, elf2_min, elf2_max) |
-               between(elf1_max, elf2_min, elf2_max) |
-               between(elf2_min, elf1_min, elf1_max) |
-               between(elf2_max, elf1_min, elf1_max)
-           )
+#| label: 2022 - day 4 - part 2
 
-assignments |> 
-    summarise(total_fully_overlap = sum(overlap)) |> 
-    pull(total_fully_overlap) |> 
+overlaps <- function(a_min, a_max, b_min, b_max) {
+    if (contains(a_min, a_max, b_min, b_max)) return(TRUE)
+    
+    a_min_in_b <- between(a_min, b_min, b_max)
+    a_max_in_b <- between(a_max, b_min, b_max)
+
+    return(a_min_in_b | a_max_in_b)
+}
+
+overlap <- elfs |>     
+    mutate(overlaps = pmap_lgl(.l = list(elf1_min, elf1_max, elf2_min, elf2_max), .f = overlaps))
+
+overlap |> 
+    summarise(n_overlap = sum(overlaps)) |> 
+    pull(n_overlap) |> 
     cat()
 ```
 
 ## Full Table
 
 ```{r}
-#| label: 2022 - day 3 - full table part 2
-assignments |> print(n = nrow(assignments))
+#| label: 2022 - day 4 - full table part 2
+#| echo: false
+
+rmarkdown::paged_table(overlap)
 ```
 
 :::
