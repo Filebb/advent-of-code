@@ -39,13 +39,13 @@ is_nice <- function(string) {
     has_not_ab_cd_pq_xy(string)
 }
 
-input <- input |> 
-    mutate(three_more_vowels = map_lgl(original, has_3more_vowels),
-           one_more_double   = map_lgl(original, has_1more_double),
-           not_ab_cd_pq_xy   = map_lgl(original, has_not_ab_cd_pq_xy),
-           nice              = map_lgl(original, is_nice))
+nice <- input |> 
+    mutate(three_more_vowels = map_lgl(.x = original, .f = has_3more_vowels),
+           one_more_double   = map_lgl(.x = original, .f = has_1more_double),
+           not_ab_cd_pq_xy   = map_lgl(.x = original, .f = has_not_ab_cd_pq_xy),
+           nice              = map_lgl(.x = original, .f = is_nice))
 
-input |> 
+nice |> 
     summarise(total_nice = sum(nice)) |> 
     pull(total_nice) |> 
     cat()
@@ -57,7 +57,7 @@ input |>
 #| label: 2015 - day 5 - part 1 full table
 #| echo: false
 
-rmarkdown::paged_table(input)
+rmarkdown::paged_table(nice)
 ```
 
 :::
@@ -84,12 +84,12 @@ is_nice_new <- function(string) {
     has_az_any_az(string)
 }
 
-input <- input |> 
-    mutate(couple_twice = map_lgl(original, has_couple_twice),
-           az_any_az    = map_lgl(original, has_az_any_az),
-           nice_new     = map_lgl(original, is_nice_new))
+nice_new <- input |> 
+    mutate(couple_twice = map_lgl(.x = original, .f = has_couple_twice),
+           az_any_az    = map_lgl(.x = original, .f = has_az_any_az),
+           nice_new     = map_lgl(.x = original, .f = is_nice_new))
 
-input |> 
+nice_new |> 
     summarise(total_nice = sum(nice_new)) |> 
     pull(total_nice) |> 
     cat()
@@ -101,9 +101,7 @@ input |>
 #| label: 2015 - day 5 - part 2 full table
 #| echo: false
 
-input |> 
-    select(original, couple_twice, az_any_az, nice_new) |> 
-    rmarkdown::paged_table()
+rmarkdown::paged_table(nice_new)
 ```
 
 :::
