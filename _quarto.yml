@@ -1,134 +1,126 @@
 project:
-  type: website
-  output-dir: _site
-  execute-dir: project
+    type: website
+    output-dir: _site
+    execute-dir: project
 
 website:
-  title: "Advent of Code"
+    title: "Advent of Code"
 
-  navbar:
-    tools:
-        - icon: github
-          href:  https://github.com/Filebb/advent-of-code
-    left:
-      - text: "Events"
-        menu:
-          - text: "2015"
-            href: solutions/2015/01.qmd
-          - text: "2016"
-            href: solutions/2016/01.qmd
-          - text: "2017"
-            href: solutions/2017/01.qmd
-          - text: "2018"
-            href: solutions/2018/01.qmd
-          - text: "2019"
-            href: solutions/2019/01.qmd
-          - text: "2020"
-            href: solutions/2020/01.qmd
-          - text: "2021"
-            href: solutions/2021/01.qmd
-          - text: "2022"
-            href: solutions/2022/01.qmd
-          - text: "2023"
-            href: solutions/2023/01.qmd
+    navbar:
+        tools:
+            - icon: github
+              href:  https://github.com/Filebb/advent-of-code
+        left:
+            - text: "Events"
+              menu:
+                  - text: "2015"
+                    href: solutions/2015/01.qmd
+                  - text: "2016"
+                    href: solutions/2016/01.qmd
+                  - text: "2017"
+                    href: solutions/2017/01.qmd
+                  - text: "2018"
+                    href: solutions/2018/01.qmd
+                  - text: "2019"
+                    href: solutions/2019/01.qmd
+                  - text: "2020"
+                    href: solutions/2020/01.qmd
+                  - text: "2021"
+                    href: solutions/2021/01.qmd
+                  - text: "2022"
+                    href: solutions/2022/01.qmd
+                  - text: "2023"
+                    href: solutions/2023/01.qmd
 
-  sidebar:
-    - title: "2015"
-      style: "docked"
-      collapse-level: 2
-      align: left
-      contents:
-        - text: "2015"
-          contents:
-            - solutions/2015/01.qmd
-            - solutions/2015/02.qmd
-            - solutions/2015/03.qmd
-            - solutions/2015/04.qmd
-            - solutions/2015/05.qmd
-            - solutions/2015/06.qmd
-
-    - title: "2016"
-      contents:
-        - text: "2016"
-          contents:
-            - solutions/2016/01.qmd
-            - solutions/2016/02.qmd
-            - solutions/2016/03.qmd
-            - solutions/2016/04.qmd
-            - solutions/2016/05.qmd
-            - solutions/2016/06.qmd
-            - solutions/2016/07.qmd
-
-    - title: "2017"
-      contents:
-        - text: "2017"
-          contents:
-            - solutions/2017/01.qmd
-            - solutions/2017/02.qmd
-
-    - title: "2018"
-      contents:
-        - text: "2018"
-          contents:
-            - solutions/2018/01.qmd
-            - solutions/2018/02.qmd
-
-    - title: "2019"
-      contents:
-        - text: "2019"
-          contents:
-            - solutions/2019/01.qmd
-            - solutions/2019/02.qmd
-
-    - title: "2020"
-      contents:
-        - text: "2020"
-          contents:
-            - solutions/2020/01.qmd
-            - solutions/2020/02.qmd
-
-    - title: "2021"
-      contents:
-        - text: "2021"
-          contents:
-            - solutions/2021/01.qmd
-            - solutions/2021/02.qmd
-            - solutions/2021/03.qmd
-
-    - title: "2022"
-      contents:
-        - text: "2022"
-          contents:
-            - solutions/2022/01.qmd
-            - solutions/2022/02.qmd
-            - solutions/2022/03.qmd
-            - solutions/2022/04.qmd
-
-    - title: "2023"
-      contents:
-        - text: "2023"
-          contents:
-            - solutions/2023/01.qmd
-            - solutions/2023/02.qmd
+    sidebar:
+      - title: "2015"
+        style: "docked"
+        collapse-level: 2
+        align: left
+        contents:
+            - text: "2015"
+              contents:
+                - solutions/2015/01.qmd
+                - solutions/2015/02.qmd
+                - solutions/2015/03.qmd
+                - solutions/2015/04.qmd
+                - solutions/2015/05.qmd
+                - solutions/2015/06.qmd
+      - title: "2016"
+        contents:
+            - text: "2016"
+              contents:
+                - solutions/2016/01.qmd
+                - solutions/2016/02.qmd
+                - solutions/2016/03.qmd
+                - solutions/2016/04.qmd
+                - solutions/2016/05.qmd
+                - solutions/2016/06.qmd
+                - solutions/2016/07.qmd
+      - title: "2017"
+        contents:
+            - text: "2017"
+              contents:
+                - solutions/2017/01.qmd
+                - solutions/2017/02.qmd
+      - title: "2018"
+        contents:
+            - text: "2018"
+              contents:
+                - solutions/2018/01.qmd
+                - solutions/2018/02.qmd
+      - title: "2019"
+        contents:
+            - text: "2019"
+              contents:
+                - solutions/2019/01.qmd
+                - solutions/2019/02.qmd
+      - title: "2020"
+        contents:
+            - text: "2020"
+              contents:
+                - solutions/2020/01.qmd
+                - solutions/2020/02.qmd
+      - title: "2021"
+        contents:
+            - text: "2021"
+              contents:
+                - solutions/2021/01.qmd
+                - solutions/2021/02.qmd
+                - solutions/2021/03.qmd
+      - title: "2022"
+        contents:
+            - text: "2022"
+              contents:
+                - solutions/2022/01.qmd
+                - solutions/2022/02.qmd
+                - solutions/2022/03.qmd
+                - solutions/2022/04.qmd
+      - title: "2023"
+        contents:
+            - text: "2023"
+              contents:
+                - solutions/2023/01.qmd
+                - solutions/2023/02.qmd
 
 format:
-  html:
-    theme: cosmo
-    highlight-style: atom-one
-    css: styles.css
-    toc: false
-    header-includes: |
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    html:
+        theme: cosmo
+        highlight-style: atom-one
+        css: styles.css
+        toc: false
+        header-includes: |
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
 
 execute:
-  message: false
-  warning: false
+    message: false
+    warning: false
 
 knitr:
-  opts_chunk:
-    collapse: true
+    opts_chunk:
+        collapse: true
 
 monofont: Roboto Mono
 editor: source
