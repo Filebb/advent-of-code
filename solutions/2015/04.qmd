@@ -54,10 +54,10 @@ n <- 2.55e5
 
 md5_hashes <- tibble(number = 1:n,
                      string = paste0(input, number),
-                     hash   = map_chr(string, \(x) md5(x, serialize = FALSE)))
+                     hash   = map_chr(.x = string, .f = \(x) md5(x, serialize = FALSE)))
 
 md5_hashes |> 
-    filter(str_sub(hash, start = 1, end = 5) == "00000") |> 
+    filter(str_sub(string = hash, start = 1, end = 5) == "00000") |> 
     pull(number) |> 
     cat()
 ```
@@ -89,10 +89,10 @@ n <- 1.04e6
 
 md5_hashes <- tibble(number = 1:n,
                      string = paste0(input, number),
-                     hash   = map_chr(string, \(x) md5(x, serialize = FALSE))) 
+                     hash   = map_chr(.x = string, .f = \(x) md5(x, serialize = FALSE))) 
     
 md5_hashes |> 
-    filter(str_sub(hash, start = 1, end = 6) == "000000") |> 
+    filter(str_sub(string = hash, start = 1, end = 6) == "000000") |> 
     pull(number) |> 
     cat()
 ```

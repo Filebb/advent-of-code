@@ -444,7 +444,7 @@
     "href": "solutions/2015/04.html#part-one",
     "title": "Day 4: The Ideal Stocking Stuffer",
     "section": "Part One",
-    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(string, \\(x) md5(x, serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
+    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
     "crumbs": [
       "2015",
       "Day 4: The Ideal Stocking Stuffer"
@@ -455,7 +455,7 @@
     "href": "solutions/2015/04.html#part-two",
     "title": "Day 4: The Ideal Stocking Stuffer",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(string, \\(x) md5(x, serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
+    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
     "crumbs": [
       "2015",
       "Day 4: The Ideal Stocking Stuffer"

@@ -324,10 +324,10 @@ Note
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>md5_hashes <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">number =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">string =</span> <span class="fu">paste0</span>(input, number),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">hash   =</span> <span class="fu">map_chr</span>(string, \(x) <span class="fu">md5</span>(x, <span class="at">serialize =</span> <span class="cn">FALSE</span>)))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">hash   =</span> <span class="fu">map_chr</span>(<span class="at">.x =</span> string, <span class="at">.f =</span> \(x) <span class="fu">md5</span>(x, <span class="at">serialize =</span> <span class="cn">FALSE</span>)))</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>md5_hashes <span class="sc">|&gt;</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_sub</span>(hash, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">5</span>) <span class="sc">==</span> <span class="st">"00000"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_sub</span>(<span class="at">string =</span> hash, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">5</span>) <span class="sc">==</span> <span class="st">"00000"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(number) <span class="sc">|&gt;</span> </span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 254575</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -359,10 +359,10 @@ Note
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>md5_hashes <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">number =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">string =</span> <span class="fu">paste0</span>(input, number),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">hash   =</span> <span class="fu">map_chr</span>(string, \(x) <span class="fu">md5</span>(x, <span class="at">serialize =</span> <span class="cn">FALSE</span>))) </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">hash   =</span> <span class="fu">map_chr</span>(<span class="at">.x =</span> string, <span class="at">.f =</span> \(x) <span class="fu">md5</span>(x, <span class="at">serialize =</span> <span class="cn">FALSE</span>))) </span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>md5_hashes <span class="sc">|&gt;</span> </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_sub</span>(hash, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">6</span>) <span class="sc">==</span> <span class="st">"000000"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_sub</span>(<span class="at">string =</span> hash, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">6</span>) <span class="sc">==</span> <span class="st">"000000"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(number) <span class="sc">|&gt;</span> </span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 1038736</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
