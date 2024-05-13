@@ -45,28 +45,32 @@ action <- function(instruction, x_range, y_range, grid) {
     return(grid)
 }
 
-# initialize list
-grid_story <- vector(mode = "list", length = nrow(instructions))
-for (i in 1:nrow(instructions)) grid_story[[i]] <- grid_start
-
-# perform instructions
-for (i in seq_along(grid_story)) {
+make_story <- function(instructions, action, grid_start) {
+    # initialize list
+    grid_story <- vector(mode = "list", length = nrow(instructions))
+    for (i in 1:nrow(instructions)) grid_story[[i]] <- grid_start
     
-    if (i == 1) {
-        grid_story[[1]] <- action(instruction = instructions[[1, "instruction"]][[1]],
-                                  x_range     = instructions[[1, "x_range"]][[1]],
-                                  y_range     = instructions[[1, "y_range"]][[1]],
-                                  grid        = grid_story[[1]])
-    } else {
-        grid_story[[i]] <- action(instruction = instructions[[i, "instruction"]][[1]],
-                                  x_range     = instructions[[i, "x_range"]][[1]],
-                                  y_range     = instructions[[i, "y_range"]][[1]],
-                                  grid        = grid_story[[i-1]])
+    # perform instructions
+    for (i in seq_along(grid_story)) {
+        
+        if (i == 1) {
+            grid_story[[1]] <- action(instruction = instructions[[1, "instruction"]][[1]],
+                                      x_range     = instructions[[1, "x_range"]][[1]],
+                                      y_range     = instructions[[1, "y_range"]][[1]],
+                                      grid        = grid_story[[1]])
+        } else {
+            grid_story[[i]] <- action(instruction = instructions[[i, "instruction"]][[1]],
+                                      x_range     = instructions[[i, "x_range"]][[1]],
+                                      y_range     = instructions[[i, "y_range"]][[1]],
+                                      grid        = grid_story[[i-1]])
+        }
     }
+    
+    return(grid_story)
 }
 
 instructions <- instructions |> 
-    mutate(grid = grid_story,
+    mutate(grid = make_story(instructions, action, grid_start),
            n_on = map_int(grid, sum))
 
 instructions |> 
@@ -129,28 +133,8 @@ new_action <- function(instruction, x_range, y_range, grid) {
     return(grid)
 }
 
-# initialize list
-grid_story <- vector(mode = "list", length = nrow(instructions))
-for (i in 1:nrow(instructions)) grid_story[[i]] <- grid_start
-
-# perform instructions
-for (i in seq_along(grid_story)) {
-    
-    if (i == 1) {
-        grid_story[[1]] <- new_action(instruction = instructions[[1, "instruction"]][[1]],
-                                      x_range     = instructions[[1, "x_range"]][[1]],
-                                      y_range     = instructions[[1, "y_range"]][[1]],
-                                      grid        = grid_story[[1]])
-    } else {
-        grid_story[[i]] <- new_action(instruction = instructions[[i, "instruction"]][[1]],
-                                      x_range     = instructions[[i, "x_range"]][[1]],
-                                      y_range     = instructions[[i, "y_range"]][[1]],
-                                      grid        = grid_story[[i-1]])
-    }
-}
-
 instructions <- instructions |> 
-    mutate(grid       = grid_story,
+    mutate(grid       = make_story(instructions, new_action, grid_start),
            brightness = map_int(grid, sum))
 
 instructions |> 
