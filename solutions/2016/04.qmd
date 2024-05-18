@@ -1,8 +1,18 @@
 ---
 title: "Day 4: Security Through Obscurity"
+editor_options: 
+  chunk_output_type: console
 ---
 
 [Reference](https://adventofcode.com/2016/day/4)
+
+```{r}
+#| label: 2016 - day 4 - load data
+
+library(tidyverse)
+
+input <- read_csv(file = "inputs/2016/04.txt", col_names = "original")
+```
 
 ## Part One
 
@@ -12,53 +22,39 @@ title: "Day 4: Security Through Obscurity"
 
 ```{r}
 #| label: 2016 - day 4 - part 1
-library(tidyverse)
 
 chesum_eval <- function(x) {
     letters <- x |>
         str_split_1(pattern = "") |> 
         table() |> 
         sort(decreasing = TRUE) |> 
-        names()
-    
-    return(paste0(letters[1:5], collapse = ""))
+        names() |> 
+        _[1:5] |> 
+        paste0(collapse = "")
 }
 
+real_rooms <- input |> 
+    mutate(sector_id      = as.numeric(str_extract(string = original, pattern = "[0-9]+")),
+           checksum       = str_extract(string = original, pattern = "(?<=\\[)[a-z]*"),
+           encrypted_name = str_extract(string = original, pattern = "[a-z\\-]*(?=-\\d+)"),    
+           encrypted_name = str_remove_all(string = encrypted_name, pattern = "\\-"),
+           chesum_eval    = map_chr(.x = encrypted_name, .f = chesum_eval),
+           real_room      = checksum == chesum_eval)
 
-input <- read_csv(file = "inputs/2016/04.txt", col_names = "original") |>
-    
-    mutate(sector_id      = str_extract(original,          pattern = "[0-9]+"),
-           checksum       = str_extract(original,          pattern = "\\[[a-z]+\\]"),
-           checksum       = str_remove_all(checksum,       pattern = "\\[|\\]"),
-           encrypted_name = str_remove_all(original,       pattern = "\\[|\\]"),
-           encrypted_name = str_remove(encrypted_name,     pattern = str_c(sector_id, checksum)),
-           encrypted_name = str_remove_all(encrypted_name, pattern = "\\-"),
-           sector_id      = as.numeric(sector_id))
-
-input <- input |> 
-    mutate(chesum_eval = map_chr(encrypted_name, chesum_eval),
-           test        = checksum == chesum_eval)
-
-input |> 
-    filter(test == TRUE) |>
+real_rooms |> 
+    filter(real_room == TRUE) |>
     summarise(total = sum(sector_id)) |> 
     pull(total) |> 
     cat()
 ```
 
-## Tests
+## Full Table
 
 ```{r}
-#| label: 2016 - day 4 - part 1 tests
-n <- 1
+#| label: 2016 - day 4 - part 1 full table
+#| echo: false
 
-print(input[n, "original"])
-print(input[n, "checksum"])
-print(input[n, "encrypted_name"])
-print(input[n, "sector_id"])
-print(input[n, "chesum_eval"])
-print(input[n, "test"])
-
+rmarkdown::paged_table(real_rooms)
 ```
 
 :::
@@ -71,13 +67,15 @@ print(input[n, "test"])
 
 ```{r}
 #| label: 2016 - day 4 - part 2
-input <- input |> 
-    mutate(no_checksum = str_remove(original,  pattern = "-[0-9]+\\[[a-z]+\\]"))
+
+room_names <- input |> 
+    mutate(sector_id = as.numeric(str_extract(string = original, pattern = "[0-9]+")),
+           encrypted = str_remove(string = original, pattern = "-[0-9]+\\[[a-z]+\\]"))
 
 decrypt <- function(string, sector_id) {
     decrypted <- character(0)
     
-    for (element in str_split_1(string, pattern = "")) {
+    for (element in str_split_1(string = string, pattern = "")) {
         if (element == "-")
             decrypted <- c(decrypted, " ")
         else {
@@ -85,13 +83,14 @@ decrypt <- function(string, sector_id) {
             decrypted <- c(decrypted, letters[index])
         }
     }
+    
     return(paste(decrypted, collapse = ""))
 }
 
-input <- input |> 
-    mutate(decrypted = map2_chr(no_checksum, sector_id, decrypt))
+room_names <- room_names |> 
+    mutate(decrypted = map2_chr(.x = encrypted, .y = sector_id, .f = decrypt))
 
-input |> 
+room_names |> 
     filter(decrypted == "northpole object storage") |> 
     pull(sector_id) |> 
     cat()
@@ -100,10 +99,20 @@ input |>
 ## Full Table
 
 ```{r}
+#| label: 2016 - day 4 - part 2 target row number
+
+room_names |> 
+    rowid_to_column("row_number") |> 
+    filter(decrypted == "northpole object storage") |> 
+    pull("row_number") |> 
+    cat()
+```
+
+```{r}
 #| label: 2016 - day 4 - part 2 full table
-input |> 
-    select(sector_id, decrypted) |> 
-    print(n = nrow(input))
+#| echo: false
+
+rmarkdown::paged_table(room_names)
 ```
 
 :::
