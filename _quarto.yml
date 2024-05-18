@@ -109,6 +109,7 @@ format:
         highlight-style: atom-one
         css: styles.css
         toc: false
+        link-external-newwindow: true
         header-includes: |
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
