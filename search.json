@@ -4,7 +4,7 @@
     "href": "solutions/2023/02.html",
     "title": "Day 2: Cube Conundrum",
     "section": "",
-    "text": "Reference",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2023/02.txt\")",
     "crumbs": [
       "2023",
       "Day 2: Cube Conundrum"
@@ -15,18 +15,18 @@
     "href": "solutions/2023/02.html#part-one",
     "title": "Day 2: Cube Conundrum",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\nextract_number &lt;- function(x) {\n    as.integer(str_extract(string = x, pattern = \"\\\\d+\"))\n}\n\nextract_color &lt;- function(x, color) {\n    out &lt;- extract_number(str_extract(x, pattern = paste(\"\\\\d+\", color)))\n    \n    coalesce(out, 0)\n}\n\npossible_extraction &lt;- function(extraction) {\n    limits &lt;- c(red = 12, green = 13, blue = 14)\n    \n    comparison &lt;- names(limits) |&gt; \n        map_int(\\(color) extract_color(extraction, color))\n    \n    comparison &lt;- comparison &lt;= limits\n    \n    reduce(comparison, `&`)\n}\n\npossible_game &lt;- function(game) {\n    game |&gt; \n        str_split_1(pattern = \"; \") |&gt; \n        map_lgl(possible_extraction) |&gt; \n        reduce(`&`)\n}\n\ntibble(original = read_lines(file = \"inputs/2023/02.txt\")) |&gt; \n    separate_wider_delim(original, delim = \": \", names = c(\"game_number\", \"game\")) |&gt; \n    mutate(game_number   = extract_number(game_number),\n           possible_game = map_lgl(game, possible_game)) |&gt; \n    filter(possible_game) |&gt; \n    summarise(game_number_sum = sum(game_number)) |&gt; \n    pull(game_number_sum) |&gt; \n    cat()\n## 2204",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nextract_number &lt;- function(x) {\n    as.integer(str_extract(string = x, pattern = \"\\\\d+\"))\n}\n\nextract_color &lt;- function(x, color) {\n    out &lt;- extract_number(str_extract(x, pattern = paste(\"\\\\d+\", color)))\n    \n    coalesce(out, 0)\n}\n\npossible_extraction &lt;- function(extraction) {\n    limits &lt;- c(red = 12, green = 13, blue = 14)\n    \n    comparison &lt;- names(limits) |&gt; \n        map_int(\\(color) extract_color(extraction, color))\n    \n    comparison &lt;- comparison &lt;= limits\n    \n    reduce(comparison, `&`)\n}\n\npossible_game &lt;- function(game) {\n    game |&gt; \n        str_split_1(pattern = \"; \") |&gt; \n        map_lgl(possible_extraction) |&gt; \n        reduce(`&`)\n}\n\npossible_games &lt;- tibble(original = input) |&gt; \n    separate_wider_delim(original,\n                         delim = \": \",\n                         names = c(\"game_number\", \"game\"),\n                         cols_remove = FALSE) |&gt; \n    mutate(game_number   = extract_number(game_number),\n           possible_game = map_lgl(game, possible_game))\n\npossible_games |&gt; \n    filter(possible_game) |&gt; \n    summarise(game_number_sum = sum(game_number)) |&gt; \n    pull(game_number_sum) |&gt; \n    cat()\n## 2204",
     "crumbs": [
       "2023",
       "Day 2: Cube Conundrum"
     ]
   },
   {
-    "objectID": "solutions/2023/02.html#part-one-1",
-    "href": "solutions/2023/02.html#part-one-1",
+    "objectID": "solutions/2023/02.html#part-two",
+    "href": "solutions/2023/02.html#part-two",
     "title": "Day 2: Cube Conundrum",
-    "section": "Part One",
-    "text": "Part One\n\ngame_max_color &lt;- function(game, color) {\n    str_extract_all(game, pattern = paste(\"\\\\d+\", color)) |&gt; \n        map(extract_number) |&gt; \n        unlist() |&gt; \n        max()\n}\n\ngame_power &lt;- function(game) {\n    c(\"red\", \"green\", \"blue\") |&gt; \n        map_int(\\(color) game_max_color(game, color)) |&gt; \n        prod()\n}\n\ntibble(original = read_lines(file = \"inputs/2023/02.txt\")) |&gt; \n    separate_wider_delim(original, delim = \": \", names = c(\"game_number\", \"game\")) |&gt; \n    mutate(game_power = map_int(game, game_power)) |&gt; \n    summarise(game_power_sum = sum(game_power)) |&gt; \n    pull(game_power_sum) |&gt; \n    cat()\n## 71036",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\ngame_max_color &lt;- function(game, color) {\n    str_extract_all(game, pattern = paste(\"\\\\d+\", color)) |&gt; \n        map(extract_number) |&gt; \n        unlist() |&gt; \n        max()\n}\n\ngame_power &lt;- function(game) {\n    c(\"red\", \"green\", \"blue\") |&gt; \n        map_int(\\(color) game_max_color(game, color)) |&gt; \n        prod()\n}\n\ngames_power &lt;- tibble(original = input) |&gt; \n    separate_wider_delim(original,\n                         delim = \": \",\n                         names = c(\"game_number\", \"game\"),\n                         cols_remove = FALSE) |&gt; \n    mutate(game_power = map_int(game, game_power))\n\ngames_power |&gt; \n    summarise(game_power_sum = sum(game_power)) |&gt; \n    pull(game_power_sum) |&gt; \n    cat()\n## 71036",
     "crumbs": [
       "2023",
       "Day 2: Cube Conundrum"
@@ -769,7 +769,7 @@
     "href": "solutions/2016/07.html#part-one",
     "title": "Day 7: Internet Protocol Version 7",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nremove_squadre_brackets &lt;- function(string) {\n    str_remove_all(string = string, pattern = \"\\\\[|\\\\]\")\n}\n\nhas_abba &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\2\\\\1\") |&gt; \n        coalesce(FALSE)\n}\n\nsupport_tls &lt;- input |&gt; \n    mutate(inside  = str_extract_all(string = original, pattern = \"\\\\[[a-z]*\\\\]\"),\n           outside = str_extract_all(string = original, pattern = \"^[a-z]*\\\\[|\\\\][a-z]*\\\\[|\\\\][a-z]*$\")) |&gt; \n    unnest_wider(col = inside,  names_sep = \"_\") |&gt; \n    unnest_wider(col = outside, names_sep = \"_\") |&gt; \n    mutate(across(-original, remove_squadre_brackets)) |&gt; \n    filter(if_all(starts_with(\"inside\"), compose(`!`, has_abba))) |&gt;\n    filter(if_any(starts_with(\"outside\"), has_abba))\n\ncat(nrow(support_tls))\n## 118",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_abba &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\2\\\\1\") |&gt; \n        coalesce(FALSE)\n}\n\nsupport_tls &lt;- input |&gt; \n    mutate(inside  = str_extract_all(string  = original,\n                                     pattern = \"(?&lt;=\\\\[)([a-z]*)(?=\\\\])\"),\n           outside = str_extract_all(string = original,\n                                     pattern = \"(?&lt;!\\\\])([a-z]*)(?=\\\\[)|(?&lt;=\\\\])([a-z]*)(?=\\\\[)|(?&lt;=\\\\])([a-z]*)(?!\\\\[)\")) |&gt; \n    unnest_wider(col = inside,  names_sep = \"_\") |&gt; \n    unnest_wider(col = outside, names_sep = \"_\") |&gt; \n    filter(if_all(starts_with(\"inside\"), compose(`!`, has_abba))) |&gt;\n    filter(if_any(starts_with(\"outside\"), has_abba))\n\ncat(nrow(support_tls))\n## 118",
     "crumbs": [
       "2016",
       "Day 7: Internet Protocol Version 7"
@@ -780,7 +780,7 @@
     "href": "solutions/2016/07.html#part-two",
     "title": "Day 7: Internet Protocol Version 7",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\n# test &lt;- \"ada[cac]xyz[dad]dcx[rrdac]zzaca\"\n# \n# test |&gt; \n#     str_view(pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\")\n# \n# test |&gt; \n#     str_view(pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\")\n\nhas_aba &lt;- function(string) {\n    one &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\")\n\n    two &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\")\n\n    return(one | two)\n}\n\nsupport_ssl &lt;- input |&gt;\n    filter(has_aba(original))\n\ninput |&gt; \n    mutate(\n        one_s = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\"),\n        one   = str_detect(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\"),\n        two_s = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\"),\n        two   = str_detect(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\"),\n        has_aba = one | two\n    ) |&gt; \n    filter(has_aba(original)) |&gt; \n    view()",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\n# test &lt;- \"ada[cac]xyz[dad]dcx[rrdac]zzaca\"\n# \n# test |&gt; \n#     str_view(pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\")\n# \n# test |&gt; \n#     str_view(pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\")\n\nhas_aba &lt;- function(string) {\n    one &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\")\n\n    two &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\")\n\n    return(one | two)\n}\n\nsupport_ssl &lt;- input |&gt;\n    filter(has_aba(original))\n\ninput |&gt; \n    mutate(\n        one_s = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\"),\n        one   = str_detect(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\[[a-z]*\\\\2\\\\1\\\\2\"),\n        two_s = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\"),\n        two   = str_detect(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z\\\\[\\\\]]*\\\\][a-z]*\\\\2\\\\1\\\\2\"),\n        has_aba = one | two\n    ) |&gt; \n    # filter(has_aba(original)) |&gt; \n    view()",
     "crumbs": [
       "2016",
       "Day 7: Internet Protocol Version 7"
@@ -1022,7 +1022,7 @@
     "href": "solutions/2023/01.html",
     "title": "Day 1: Trebuchet?!",
     "section": "",
-    "text": "Reference",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2023/01.txt\")",
     "crumbs": [
       "2023",
       "Day 1: Trebuchet?!"
@@ -1033,18 +1033,18 @@
     "href": "solutions/2023/01.html#part-one",
     "title": "Day 1: Trebuchet?!",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ntibble(original = read_lines(file = \"inputs/2023/01.txt\")) |&gt; \n    \n    mutate(first       = str_extract(original, pattern = \"\\\\d\"),\n           last        = str_extract(original, pattern = \"\\\\d(?=\\\\D*$)\"),\n           calibration = as.integer(paste0(first, last))) |&gt; \n    \n    summarise(sum = sum(calibration)) |&gt;\n    \n    pull(sum) |&gt; \n    cat()\n## 54338",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\ncalibrations_digits &lt;- tibble(original = input) |&gt; \n    \n    mutate(first       = str_extract(original, pattern = \"\\\\d\"),\n           last        = str_extract(original, pattern = \"\\\\d(?=\\\\D*$)\"),\n           calibration = as.integer(paste0(first, last)))\n\ncalibrations_digits |&gt; \n    summarise(sum = sum(calibration)) |&gt;\n    pull(sum) |&gt; \n    cat()\n## 54338",
     "crumbs": [
       "2023",
       "Day 1: Trebuchet?!"
     ]
   },
   {
-    "objectID": "solutions/2023/01.html#part-one-1",
-    "href": "solutions/2023/01.html#part-one-1",
+    "objectID": "solutions/2023/01.html#part-two",
+    "href": "solutions/2023/01.html#part-two",
     "title": "Day 1: Trebuchet?!",
-    "section": "Part One",
-    "text": "Part One\n\nconvert_number &lt;- function(x) {\n    if (x %in% as.character(0:9))\n        return(x)\n    \n    else {\n        numbers &lt;- c(\"one\", \"two\", \"three\", \"four\", \"five\", \"six\",\n                     \"seven\", \"eight\", \"nine\")\n        \n        return(as.character(match(x, numbers)))\n    }\n}\n\ntibble(original = read_lines(file = \"inputs/2023/01.txt\")) |&gt; \n    mutate(first = str_extract(original, pattern = \"\\\\d|one|two|three|four|five|six|seven|eight|nine\"),\n           # this has problems with overlaps (for example \"2911threeninesdvxvheightwobm\" matches \"eight\" not \"two\")\n           #last  = str_extract(original,\n           #                    pattern = \"(\\\\d|one|two|three|four|five|six|seven|eight|nine)(?!.*(\\\\d|one|two|three|four|five|six|seven|eight|nine).*$)\")\n           original_rev = stringi::stri_reverse(original),\n           last = str_extract(original_rev, pattern = \"\\\\d|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin\"),\n           last = stringi::stri_reverse(last)) |&gt; \n    \n    mutate(first = map_chr(first, convert_number),\n           last  = map_chr(last, convert_number)) |&gt; \n    \n    mutate(calibration = as.integer(paste0(first, last))) |&gt; \n    \n    summarise(sum = sum(calibration)) |&gt;\n    \n    pull(sum) |&gt; \n    cat()\n## 53389",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nconvert_number &lt;- function(x) {\n    if (x %in% as.character(0:9))\n        return(x)\n    \n    else {\n        numbers &lt;- c(\"one\", \"two\", \"three\", \"four\", \"five\", \"six\",\n                     \"seven\", \"eight\", \"nine\")\n        \n        return(as.character(match(x, numbers)))\n    }\n}\n\ncalibrations_all &lt;- tibble(original = input) |&gt; \n    mutate(first = str_extract(original, pattern = \"\\\\d|one|two|three|four|five|six|seven|eight|nine\"),\n           # this has problems with overlaps (for example \"2911threeninesdvxvheightwobm\" matches \"eight\" not \"two\")\n           #last  = str_extract(original,\n           #                    pattern = \"(\\\\d|one|two|three|four|five|six|seven|eight|nine)(?!.*(\\\\d|one|two|three|four|five|six|seven|eight|nine).*$)\")\n           original_rev = stringi::stri_reverse(original),\n           last = str_extract(original_rev, pattern = \"\\\\d|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin\"),\n           last = stringi::stri_reverse(last)) |&gt; \n    \n    mutate(first = map_chr(first, convert_number),\n           last  = map_chr(last, convert_number)) |&gt; \n    \n    mutate(calibration = as.integer(paste0(first, last)))\n\ncalibrations_all |&gt; \n    summarise(sum = sum(calibration)) |&gt; \n    pull(sum) |&gt; \n    cat()\n## 53389",
     "crumbs": [
       "2023",
       "Day 1: Trebuchet?!"
