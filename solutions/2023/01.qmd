@@ -4,29 +4,55 @@ title: "Day 1: Trebuchet?!"
 
 [Reference](https://adventofcode.com/2023/day/1)
 
-## Part One
-
 ```{r}
-#| label: 2023 - day 1 - part 1
+#| label: 2023 - day 1 - load data
 
 library(tidyverse)
 
-tibble(original = read_lines(file = "inputs/2023/01.txt")) |> 
-    
-    mutate(first       = str_extract(original, pattern = "\\d"),
-           last        = str_extract(original, pattern = "\\d(?=\\D*$)"),
-           calibration = as.integer(paste0(first, last))) |> 
-    
-    summarise(sum = sum(calibration)) |>
-    
-    pull(sum) |> 
-    cat()
+input <- read_lines(file = "inputs/2023/01.txt")
 ```
 
 ## Part One
 
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2023 - day 1 - part 1
+
+calibrations_digits <- tibble(original = input) |> 
+    
+    mutate(first       = str_extract(original, pattern = "\\d"),
+           last        = str_extract(original, pattern = "\\d(?=\\D*$)"),
+           calibration = as.integer(paste0(first, last)))
+
+calibrations_digits |> 
+    summarise(sum = sum(calibration)) |>
+    pull(sum) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2023 - day 1 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(calibrations_digits)
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
 ```{r}
 #| label: 2023 - day 1 - part 2
+
 convert_number <- function(x) {
     if (x %in% as.character(0:9))
         return(x)
@@ -39,7 +65,7 @@ convert_number <- function(x) {
     }
 }
 
-tibble(original = read_lines(file = "inputs/2023/01.txt")) |> 
+calibrations_all <- tibble(original = input) |> 
     mutate(first = str_extract(original, pattern = "\\d|one|two|three|four|five|six|seven|eight|nine"),
            # this has problems with overlaps (for example "2911threeninesdvxvheightwobm" matches "eight" not "two")
            #last  = str_extract(original,
@@ -51,10 +77,21 @@ tibble(original = read_lines(file = "inputs/2023/01.txt")) |>
     mutate(first = map_chr(first, convert_number),
            last  = map_chr(last, convert_number)) |> 
     
-    mutate(calibration = as.integer(paste0(first, last))) |> 
-    
-    summarise(sum = sum(calibration)) |>
-    
+    mutate(calibration = as.integer(paste0(first, last)))
+
+calibrations_all |> 
+    summarise(sum = sum(calibration)) |> 
     pull(sum) |> 
     cat()
 ```
+
+## Full Table
+
+```{r}
+#| label: 2023 - day 1 - part 2 full table
+#| echo: false
+
+rmarkdown::paged_table(calibrations_all)
+```
+
+:::
