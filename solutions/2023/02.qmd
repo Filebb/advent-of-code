@@ -4,12 +4,22 @@ title: "Day 2: Cube Conundrum"
 
 [Reference](https://adventofcode.com/2023/day/2)
 
+```{r}
+#| label: 2023 - day 2 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2023/02.txt")
+```
+
 ## Part One
+
+::: {.panel-tabset}
+
+## Solution
 
 ```{r}
 #| label: 2023 - day 2 - part 1
-
-library(tidyverse)
 
 extract_number <- function(x) {
     as.integer(str_extract(string = x, pattern = "\\d+"))
@@ -39,20 +49,41 @@ possible_game <- function(game) {
         reduce(`&`)
 }
 
-tibble(original = read_lines(file = "inputs/2023/02.txt")) |> 
-    separate_wider_delim(original, delim = ": ", names = c("game_number", "game")) |> 
+possible_games <- tibble(original = input) |> 
+    separate_wider_delim(original,
+                         delim = ": ",
+                         names = c("game_number", "game"),
+                         cols_remove = FALSE) |> 
     mutate(game_number   = extract_number(game_number),
-           possible_game = map_lgl(game, possible_game)) |> 
+           possible_game = map_lgl(game, possible_game))
+
+possible_games |> 
     filter(possible_game) |> 
     summarise(game_number_sum = sum(game_number)) |> 
     pull(game_number_sum) |> 
     cat()
 ```
 
-## Part One
+## Full Table
+
+```{r}
+#| label: 2023 - day 2 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(possible_games)
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
 
 ```{r}
 #| label: 2023 - day 2 - part 2
+
 game_max_color <- function(game, color) {
     str_extract_all(game, pattern = paste("\\d+", color)) |> 
         map(extract_number) |> 
@@ -66,10 +97,26 @@ game_power <- function(game) {
         prod()
 }
 
-tibble(original = read_lines(file = "inputs/2023/02.txt")) |> 
-    separate_wider_delim(original, delim = ": ", names = c("game_number", "game")) |> 
-    mutate(game_power = map_int(game, game_power)) |> 
+games_power <- tibble(original = input) |> 
+    separate_wider_delim(original,
+                         delim = ": ",
+                         names = c("game_number", "game"),
+                         cols_remove = FALSE) |> 
+    mutate(game_power = map_int(game, game_power))
+
+games_power |> 
     summarise(game_power_sum = sum(game_power)) |> 
     pull(game_power_sum) |> 
     cat()
 ```
+
+## Full Table
+
+```{r}
+#| label: 2023 - day 2 - part 2 full table
+#| echo: false
+
+rmarkdown::paged_table(games_power)
+```
+
+:::
