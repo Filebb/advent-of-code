@@ -780,7 +780,7 @@
     "href": "solutions/2016/07.html#part-two",
     "title": "Day 7: Internet Protocol Version 7",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nhas_aba &lt;- function(string) {\n    one &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\](.*\\\\])?[a-z]*\\\\2\\\\1\\\\2\")\n    two &lt;- str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\[(.*\\\\[)?[a-z]*\\\\2\\\\1\\\\2\")\n\n    return(one | two)\n}\n\naba_tests &lt;- input |&gt;\n    mutate(one = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\](.*\\\\])?[a-z]*\\\\2\\\\1\\\\2\"),\n           two = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\[(.*\\\\[)?[a-z]*\\\\2\\\\1\\\\2\"),\n           has_aba = has_aba(original))\n\nsupport_ssl &lt;- aba_tests |&gt; \n    filter(has_aba)\n\ncat(nrow(support_ssl))\n## 260",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\naba_tests &lt;- input |&gt;\n    mutate(in_out = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\](.*\\\\])?[a-z]*\\\\2\\\\1\\\\2\"),\n           out_in = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\[(.*\\\\[)?[a-z]*\\\\2\\\\1\\\\2\"))\n\nsupport_ssl &lt;- aba_tests |&gt; \n    filter(if_any(c(in_out, out_in), compose(`!`, is.na)))\n\ncat(nrow(support_ssl))\n## 260",
     "crumbs": [
       "2016",
       "Day 7: Internet Protocol Version 7"
