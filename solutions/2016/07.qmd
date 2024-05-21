@@ -21,21 +21,20 @@ input <- read_csv(file = "inputs/2016/07.txt", col_names = "original")
 ```{r}
 #| label: 2016 - day 7 - part 1
 
-remove_squadre_brackets <- function(string) {
-    str_remove_all(string = string, pattern = "\\[|\\]")
-}
-
 has_abba <- function(string) {
     str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\2\\1") |> 
         coalesce(FALSE)
 }
 
-support_tls <- input |> 
-    mutate(inside  = str_extract_all(string = original, pattern = "\\[[a-z]*\\]"),
-           outside = str_extract_all(string = original, pattern = "^[a-z]*\\[|\\][a-z]*\\[|\\][a-z]*$")) |> 
+split <- input |> 
+    mutate(inside  = str_extract_all(string  = original,
+                                     pattern = "(?<=\\[)([a-z]*)(?=\\])"),
+           outside = str_extract_all(string = original,
+                                     pattern = "(?<!\\])([a-z]*)(?=\\[)|(?<=\\])([a-z]*)(?=\\[)|(?<=\\])([a-z]*)(?!\\[)")) |> 
     unnest_wider(col = inside,  names_sep = "_") |> 
-    unnest_wider(col = outside, names_sep = "_") |> 
-    mutate(across(-original, remove_squadre_brackets)) |> 
+    unnest_wider(col = outside, names_sep = "_")
+
+support_tls <- split |> 
     filter(if_all(starts_with("inside"), compose(`!`, has_abba))) |>
     filter(if_any(starts_with("outside"), has_abba))
 
@@ -62,35 +61,22 @@ rmarkdown::paged_table(support_tls)
 ```{r}
 #| label: 2016 - day 7 - part 2
 
-# test <- "ada[cac]xyz[dad]dcx[rrdac]zzaca"
-# 
-# test |> 
-#     str_view(pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2")
-# 
-# test |> 
-#     str_view(pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2")
-
 has_aba <- function(string) {
-    one <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2")
-
-    two <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2")
+    one <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\](.*\\])?[a-z]*\\2\\1\\2")
+    two <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\[(.*\\[)?[a-z]*\\2\\1\\2")
 
     return(one | two)
 }
 
-support_ssl <- input |>
-    filter(has_aba(original))
+aba_tests <- input |>
+    mutate(one = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\](.*\\])?[a-z]*\\2\\1\\2"),
+           two = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\[(.*\\[)?[a-z]*\\2\\1\\2"),
+           has_aba = has_aba(original))
 
-input |> 
-    mutate(
-        one_s = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2"),
-        one   = str_detect(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\[[a-z]*\\2\\1\\2"),
-        two_s = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2"),
-        two   = str_detect(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z\\[\\]]*\\][a-z]*\\2\\1\\2"),
-        has_aba = one | two
-    ) |> 
-    filter(has_aba(original)) |> 
-    view()
+support_ssl <- aba_tests |> 
+    filter(has_aba)
+
+cat(nrow(support_ssl))
 ```
 
 ## Full Table
@@ -99,7 +85,7 @@ input |>
 #| label: 2016 - day 7 - part 2 full table
 #| echo: false
 
-
+rmarkdown::paged_table(support_ssl)
 ```
 
 :::
