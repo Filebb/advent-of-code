@@ -61,20 +61,12 @@ rmarkdown::paged_table(support_tls)
 ```{r}
 #| label: 2016 - day 7 - part 2
 
-has_aba <- function(string) {
-    one <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\](.*\\])?[a-z]*\\2\\1\\2")
-    two <- str_detect(string = string, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\[(.*\\[)?[a-z]*\\2\\1\\2")
-
-    return(one | two)
-}
-
 aba_tests <- input |>
     mutate(one = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\](.*\\])?[a-z]*\\2\\1\\2"),
-           two = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\[(.*\\[)?[a-z]*\\2\\1\\2"),
-           has_aba = has_aba(original))
+           two = str_extract(string = original, pattern = "([a-z])(?!\\1)([a-z])\\1[a-z]*\\[(.*\\[)?[a-z]*\\2\\1\\2"))
 
 support_ssl <- aba_tests |> 
-    filter(has_aba)
+    filter(if_any(c(one, two), compose(`!`, is.na)))
 
 cat(nrow(support_ssl))
 ```
