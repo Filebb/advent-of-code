@@ -88,6 +88,7 @@ website:
                 - solutions/2021/01.qmd
                 - solutions/2021/02.qmd
                 - solutions/2021/03.qmd
+                - solutions/2021/04.qmd
       - title: "2022"
         contents:
             - text: "2022"
