@@ -46,7 +46,7 @@ full_rc <- function(board) {
     rows <- indeces |>
         map_lgl(\(r) all(board[r,] == target)) |>
         any()
-
+    
     # rows
     cols <- indeces |>
         map_lgl(\(c) all(board[,c] == target)) |>
@@ -78,6 +78,33 @@ game_1[[index]] |>
 ```{r}
 #| label: 2021 - day 4 - part 2
 
+game_2 <- boards
 
+boards_indeces <- 1:100
+
+for (drawn_number in drawn_numbers) {
+    game_2 <- game_2 |> 
+        map(\(board) board_mark(board, drawn_number))
+    
+    check <- map_lgl(game_2, full_rc)
+    
+    if (any(check)) {
+        index <- which(check == TRUE)
+        boards_indeces <- setdiff(boards_indeces, index)
+    }
+    
+    if (length(boards_indeces) == 1) {
+        last_winner <- boards_indeces
+    }
+    
+    if (length(boards_indeces) == 0) {
+        break
+    }
+}
+
+game_2[[last_winner]] |> 
+    str_remove_all("X") |> 
+    as.integer() |> 
+    sum(na.rm = TRUE) * as.integer(drawn_number)
 ```
 
