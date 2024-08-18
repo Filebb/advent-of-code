@@ -99,614 +99,222 @@
     ]
   },
   {
-    "objectID": "solutions/2021/03.html",
-    "href": "solutions/2021/03.html",
-    "title": "Day 3: Binary Diagnostic",
+    "objectID": "solutions/2021/04.html",
+    "href": "solutions/2021/04.html",
+    "title": "Day 4: Giant Squid",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ndrawn_numbers &lt;- read_lines(file = \"inputs/2021/04.txt\", n_max = 1) |&gt; \n    str_split_1(pattern = \",\")\n\nboards &lt;- seq(from = 2, by = 6, length = 100) |&gt; \n    map(\\(skip) read_table(file = \"inputs/2021/04.txt\",\n                           skip = skip,\n                           n_max = 5,\n                           col_types = \"ccccc\",\n                           col_names = FALSE) |&gt; \n            as.matrix() |&gt; \n            unname())"
+  },
+  {
+    "objectID": "solutions/2021/04.html#part-one",
+    "href": "solutions/2021/04.html#part-one",
+    "title": "Day 4: Giant Squid",
+    "section": "Part One",
+    "text": "Part One\n\ngame_1 &lt;- boards\n\nboard_mark &lt;- function(board, drawn_number) {\n    board |&gt; \n        str_replace(pattern = paste0(\"^\", drawn_number, \"$\"),\n                    replacement = \"X\") |&gt; \n        matrix(ncol = 5)\n}\n\nfull_rc &lt;- function(board) {\n    \n    indeces &lt;- 1:5\n    \n    target &lt;- rep(\"X\", times = 5)\n    \n    # rows\n    rows &lt;- indeces |&gt;\n        map_lgl(\\(r) all(board[r,] == target)) |&gt;\n        any()\n    \n    # rows\n    cols &lt;- indeces |&gt;\n        map_lgl(\\(c) all(board[,c] == target)) |&gt;\n        any()\n    \n    return(rows | cols)\n}\n\nfor (drawn_number in drawn_numbers) {\n    game_1 &lt;- game_1 |&gt; \n        map(\\(board) board_mark(board, drawn_number))\n    \n    check &lt;- map_lgl(game_1, full_rc)\n    \n    if (any(check)) {\n        index &lt;- which(check == TRUE)\n        break\n    }\n}\n\ngame_1[[index]] |&gt; \n    str_remove_all(\"X\") |&gt; \n    as.integer() |&gt; \n    sum(na.rm = TRUE) * as.integer(drawn_number)\n## [1] 16716"
+  },
+  {
+    "objectID": "solutions/2021/04.html#part-two",
+    "href": "solutions/2021/04.html#part-two",
+    "title": "Day 4: Giant Squid",
+    "section": "Part Two",
+    "text": "Part Two\n\ngame_2 &lt;- boards\n\nboards_indeces &lt;- 1:100\n\nfor (drawn_number in drawn_numbers) {\n    game_2 &lt;- game_2 |&gt; \n        map(\\(board) board_mark(board, drawn_number))\n    \n    check &lt;- map_lgl(game_2, full_rc)\n    \n    if (any(check)) {\n        index &lt;- which(check == TRUE)\n        boards_indeces &lt;- setdiff(boards_indeces, index)\n    }\n    \n    if (length(boards_indeces) == 1) {\n        last_winner &lt;- boards_indeces\n    }\n    \n    if (length(boards_indeces) == 0) {\n        break\n    }\n}\n\ngame_2[[last_winner]] |&gt; \n    str_remove_all(\"X\") |&gt; \n    as.integer() |&gt; \n    sum(na.rm = TRUE) * as.integer(drawn_number)\n## [1] 4880"
+  },
+  {
+    "objectID": "solutions/2021/02.html",
+    "href": "solutions/2021/02.html",
+    "title": "Day 2: Dive!",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2021",
-      "Day 3: Binary Diagnostic"
+      "Day 2: Dive!"
     ]
   },
   {
-    "objectID": "solutions/2021/03.html#part-one",
-    "href": "solutions/2021/03.html#part-one",
-    "title": "Day 3: Binary Diagnostic",
+    "objectID": "solutions/2021/02.html#part-one",
+    "href": "solutions/2021/02.html#part-one",
+    "title": "Day 2: Dive!",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\nmost_common &lt;- function(x) {\n    ux &lt;- unique(x)\n    ux[which.max(tabulate(match(x, ux)))]\n}\n\nleast_common &lt;- function(x) {\n    ux &lt;- unique(x)\n    ux[which.min(tabulate(match(x, ux)))]\n}\n\ninput &lt;- read_lines(file = \"inputs/2021/03.txt\")\n\nwidths &lt;- rep(1, 12) # each line has 12 digits\nnames &lt;- map2_chr(rep(\"d\", 12), 1:12, paste0)\nnames(widths) &lt;- names\n\ndigits &lt;- tibble(original = input) |&gt; \n    separate_wider_position(cols = original, widths = widths)\n\ngamma_rate &lt;- digits |&gt;\n    map_chr(most_common) |&gt; \n    paste0(collapse = \"\") |&gt; \n    strtoi(base = 2)\n\nepsilon_rate &lt;- digits |&gt;\n    map_chr(least_common) |&gt; \n    paste0(collapse = \"\")|&gt; \n    strtoi(base = 2)\n\ncat(gamma_rate * epsilon_rate)\n## 3009600",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ncommands &lt;- read_delim(file      = \"inputs/2021/02.txt\",\n                       col_names = c(\"direction\", \"length\"))\n\ncommands &lt;- commands |&gt; \n    mutate(x = if_else(direction == \"forward\", 1, 0),\n           y = case_match(direction,\n                          \"down\"    ~ 1,\n                          \"forward\" ~ 0,\n                          \"up\"      ~ -1)) |&gt; \n    select(-direction) |&gt; \n    mutate(across(everything(), as.integer)) |&gt;\n    mutate(x = x * length,\n           y = y * length)\n\ncommands |&gt;\n    summarise(x = sum(x),\n              y = sum(y)) |&gt;\n    mutate(product = x * y) |&gt;\n    pull(product) |&gt;\n    cat()\n## 1762050",
     "crumbs": [
       "2021",
-      "Day 3: Binary Diagnostic"
+      "Day 2: Dive!"
     ]
   },
   {
-    "objectID": "solutions/2021/03.html#part-two",
-    "href": "solutions/2021/03.html#part-two",
-    "title": "Day 3: Binary Diagnostic",
+    "objectID": "solutions/2021/02.html#part-two",
+    "href": "solutions/2021/02.html#part-two",
+    "title": "Day 2: Dive!",
     "section": "Part Two",
-    "text": "Part Two\n\nmost_common &lt;- function(x) {\n    ux &lt;- sort(unique(x))\n    \n    table &lt;- tabulate(match(x, ux))\n    \n    # if 0 and 1 are equally common, keep values with a 1\n    # in the position being considered\n    if (table[1] == table[2]) return(ux[2])\n    \n    else return(ux[which.max(table)])\n}\n\nleast_common &lt;- function(x) {\n    ux &lt;- sort(unique(x))\n    \n    table &lt;- tabulate(match(x, ux))\n    \n    # if 0 and 1 are equally common, keep values with a 0\n    # in the position being considered\n    if (table[1] == table[2]) return(ux[1])\n    \n    else return(ux[which.min(table)])\n}\n\noxygen_generator_rating &lt;- digits\n\nfor (i in names) {\n    value &lt;- oxygen_generator_rating |&gt;\n        select(all_of(i)) |&gt;\n        map_chr(most_common)\n    \n    oxygen_generator_rating &lt;- oxygen_generator_rating |&gt;\n        filter(.data[[i]] == value)\n    \n    # if only one number left, stop\n    if (nrow(oxygen_generator_rating) == 1) break\n}\n\noxygen_generator_rating &lt;- oxygen_generator_rating |&gt;\n    paste0(collapse = \"\")|&gt;\n    strtoi(base = 2)\n\nCO2_scrubber_rating &lt;- digits\n\nfor (i in names) {\n    value &lt;- CO2_scrubber_rating |&gt;\n        select(all_of(i)) |&gt;\n        map_chr(least_common)\n    \n    CO2_scrubber_rating &lt;- CO2_scrubber_rating |&gt;\n        filter(.data[[i]] == value)\n    \n    # if only one number left, stop\n    if (nrow(CO2_scrubber_rating) == 1) break\n}\n\nCO2_scrubber_rating &lt;- CO2_scrubber_rating |&gt;\n    paste0(collapse = \"\")|&gt;\n    strtoi(base = 2)\n\ncat(oxygen_generator_rating * CO2_scrubber_rating)\n## 6940518",
+    "text": "Part Two\n\ncommands &lt;- read_delim(file      = \"inputs/2021/02.txt\",\n                       col_names = c(\"direction\", \"length\")) |&gt; \n    mutate(aim = NA_real_, x = NA_real_, y = NA_real_) |&gt; \n    add_row(direction = NA, length = NA, aim = 0, x = 0, y = 0, .before = 1)\n\nfor (i in 2:nrow(commands)){\n    if (commands[i, \"direction\"] == \"down\") {\n        commands[i, \"aim\"] = commands[i-1, \"aim\"] + commands[i, \"length\"]\n        commands[i, \"x\"]   = commands[i-1, \"x\"]\n        commands[i, \"y\"]   = commands[i-1, \"y\"]\n    }\n    \n    else if (commands[i, \"direction\"] == \"up\") {\n        commands[i, \"aim\"] = commands[i-1, \"aim\"] - commands[i, \"length\"]\n        commands[i, \"x\"]   = commands[i-1, \"x\"]\n        commands[i, \"y\"]   = commands[i-1, \"y\"]\n    }\n    \n    else if (commands[i, \"direction\"] == \"forward\") {\n        commands[i, \"aim\"] = commands[i-1, \"aim\"]\n        commands[i, \"x\"]   = commands[i-1, \"x\"] + commands[i, \"length\"]\n        commands[i, \"y\"]   = commands[i-1, \"y\"] + commands[i, \"aim\"] * commands[i, \"length\"]\n    }\n}\n\ncommands |&gt;\n    slice(nrow(commands)) |&gt; \n    mutate(product = x * y) |&gt; \n    pull(product) |&gt; \n    cat()\n## 1855892637",
     "crumbs": [
       "2021",
-      "Day 3: Binary Diagnostic"
+      "Day 2: Dive!"
     ]
   },
   {
-    "objectID": "solutions/2021/01.html",
-    "href": "solutions/2021/01.html",
-    "title": "Day 1: Sonar Sweep",
-    "section": "",
-    "text": "Reference",
-    "crumbs": [
-      "2021",
-      "Day 1: Sonar Sweep"
-    ]
-  },
-  {
-    "objectID": "solutions/2021/01.html#part-one",
-    "href": "solutions/2021/01.html#part-one",
-    "title": "Day 1: Sonar Sweep",
-    "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2021/01.txt\") |&gt; as.integer()\n\ncat(sum(diff(input) &gt; 0))\n## 1184",
-    "crumbs": [
-      "2021",
-      "Day 1: Sonar Sweep"
-    ]
-  },
-  {
-    "objectID": "solutions/2021/01.html#part-two",
-    "href": "solutions/2021/01.html#part-two",
-    "title": "Day 1: Sonar Sweep",
-    "section": "Part Two",
-    "text": "Part Two\n\nlibrary(slider)\n\nnew_input &lt;- slide_sum(input, after = 2, complete = TRUE)\ncat(sum(diff(new_input) &gt; 0, na.rm = TRUE))\n## 1158",
-    "crumbs": [
-      "2021",
-      "Day 1: Sonar Sweep"
-    ]
-  },
-  {
-    "objectID": "solutions/2020/01.html",
-    "href": "solutions/2020/01.html",
-    "title": "Day 1: Report Repair",
+    "objectID": "solutions/2020/02.html",
+    "href": "solutions/2020/02.html",
+    "title": "Day 2: Password Philosophy",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2020",
-      "Day 1: Report Repair"
+      "Day 2: Password Philosophy"
     ]
   },
   {
-    "objectID": "solutions/2020/01.html#part-one",
-    "href": "solutions/2020/01.html#part-one",
-    "title": "Day 1: Report Repair",
+    "objectID": "solutions/2020/02.html#part-one",
+    "href": "solutions/2020/02.html#part-one",
+    "title": "Day 2: Password Philosophy",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2020/01.txt\") |&gt; as.integer()\n\nfor (i in 1:(length(input)-1)) {\n    for (j in (i+1):length(input)) {\n        if (input[i] + input[j] == 2020) cat(input[i] * input[j])\n    }\n}\n## 956091",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2020/02.txt\")\n\npasswords &lt;- tibble(original = input) |&gt; \n    \n    separate_wider_delim(cols = original,\n                         names = c(\"range\", \"letter\", \"password\"),\n                         delim = \" \") |&gt;\n    \n    mutate(letter = str_replace(string = letter,\n                                pattern = \":\",\n                                replacement = \"\")) |&gt;\n    \n    separate_wider_delim(cols = range, names = c(\"min\", \"max\"), delim = \"-\") |&gt; \n    \n    mutate(across(c(min, max), as.integer))\n\nvalidation_1 &lt;- passwords |&gt; \n    mutate(matches = str_count(password, pattern = letter),\n           valid   = between(matches, min, max))\n\nvalidation_1\n## # A tibble: 1,000 × 6\n##      min   max letter password             matches valid\n##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                  &lt;int&gt; &lt;lgl&gt;\n##  1    15    16 l      klfbblslvjclmlnqklvg       6 FALSE\n##  2     6    13 h      pghjchdxhnjhjd             4 FALSE\n##  3     4    13 n      nnznntzznqnzbtzj           6 TRUE \n##  4    10    16 r      nrrrrkrjtxwrrrwx           8 FALSE\n##  5     1     6 t      rttftttttttttmdttttt      16 FALSE\n##  6     4    12 l      zhllfxlmvqtnhx             3 FALSE\n##  7     6     8 d      wxpwgdbjtffddkb            3 FALSE\n##  8     7     9 q      rqcqxjqhsm                 3 FALSE\n##  9     6     8 x      xxxfxdxxx                  7 TRUE \n## 10     5     9 d      dwnwnbsddfmc               3 FALSE\n## # ℹ 990 more rows\n\nvalidation_1 |&gt; \n    count(valid) |&gt; \n    filter(valid == TRUE) |&gt; \n    pull(n) |&gt; \n    cat()\n## 424",
     "crumbs": [
       "2020",
-      "Day 1: Report Repair"
+      "Day 2: Password Philosophy"
     ]
   },
   {
-    "objectID": "solutions/2020/01.html#part-two",
-    "href": "solutions/2020/01.html#part-two",
-    "title": "Day 1: Report Repair",
+    "objectID": "solutions/2020/02.html#part-two",
+    "href": "solutions/2020/02.html#part-two",
+    "title": "Day 2: Password Philosophy",
     "section": "Part Two",
-    "text": "Part Two\n\nfor (i in 1:(length(input)-2)) {\n    for (j in (i+1):length(input)-1) {\n        for (k in (j+1):length(input)) {\n        if (input[i] + input[j] + input[k] == 2020)\n            cat(input[i] * input[j] * input[k])\n        }\n    }\n}\n## 79734368",
+    "text": "Part Two\n\nvalidation_2 &lt;- passwords |&gt; \n    mutate(first   = str_sub(password, start = min, end = min),\n           second  = str_sub(password, start = max, end = max),\n           matches = (first == letter) + (second == letter))\n\nvalidation_2\n## # A tibble: 1,000 × 7\n##      min   max letter password             first second matches\n##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                &lt;chr&gt; &lt;chr&gt;    &lt;int&gt;\n##  1    15    16 l      klfbblslvjclmlnqklvg n     q            0\n##  2     6    13 h      pghjchdxhnjhjd       h     j            1\n##  3     4    13 n      nnznntzznqnzbtzj     n     b            1\n##  4    10    16 r      nrrrrkrjtxwrrrwx     x     x            0\n##  5     1     6 t      rttftttttttttmdttttt r     t            1\n##  6     4    12 l      zhllfxlmvqtnhx       l     n            1\n##  7     6     8 d      wxpwgdbjtffddkb      d     j            1\n##  8     7     9 q      rqcqxjqhsm           q     s            1\n##  9     6     8 x      xxxfxdxxx            d     x            1\n## 10     5     9 d      dwnwnbsddfmc         n     d            1\n## # ℹ 990 more rows\n\nvalidation_2 |&gt; \n    filter(matches == 1) |&gt; \n    nrow() |&gt; \n    cat()\n## 747",
     "crumbs": [
       "2020",
-      "Day 1: Report Repair"
+      "Day 2: Password Philosophy"
     ]
   },
   {
-    "objectID": "solutions/2019/01.html",
-    "href": "solutions/2019/01.html",
-    "title": "Day 1: The Tyranny of the Rocket Equation",
+    "objectID": "solutions/2019/02.html",
+    "href": "solutions/2019/02.html",
+    "title": "Day 2: 1202 Program Alarm",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2019",
-      "Day 1: The Tyranny of the Rocket Equation"
+      "Day 2: 1202 Program Alarm"
     ]
   },
   {
-    "objectID": "solutions/2019/01.html#part-one",
-    "href": "solutions/2019/01.html#part-one",
-    "title": "Day 1: The Tyranny of the Rocket Equation",
+    "objectID": "solutions/2019/02.html#part-one",
+    "href": "solutions/2019/02.html#part-one",
+    "title": "Day 2: 1202 Program Alarm",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nlibrary(tidyverse)\n\ncalculate_fuel &lt;- function(mass) floor(mass / 3) - 2\n\ninput &lt;- read_csv(file = \"inputs/2019/01.txt\", col_names = \"mass\") |&gt; \n    mutate(fuel = map_dbl(mass, calculate_fuel))\n\ninput |&gt; \n    summarise(total_fuel = sum(fuel)) |&gt; \n    pull(total_fuel) |&gt; \n    cat()\n## 3457681\n\n\n\n\n# look at the full table\ninput |&gt; print(n = nrow(input))\n## # A tibble: 100 × 2\n##       mass  fuel\n##      &lt;dbl&gt; &lt;dbl&gt;\n##   1 118868 39620\n##   2  88841 29611\n##   3 133680 44558\n##   4 148066 49353\n##   5  70887 23627\n##   6  93213 31069\n##   7 124243 41412\n##   8  92767 30920\n##   9  71322 23772\n##  10  86793 28929\n##  11  53650 17881\n##  12 102703 34232\n##  13 146958 48984\n##  14  53031 17675\n##  15 148282 49425\n##  16 124989 41661\n##  17  74375 24789\n##  18 122044 40679\n##  19 122693 40895\n##  20  74204 24732\n##  21  74869 24954\n##  22  81803 27265\n##  23 124436 41476\n##  24  68495 22829\n##  25  74865 24953\n##  26  70765 23586\n##  27  81537 27177\n##  28  61376 20456\n##  29 145342 48445\n##  30 137159 45717\n##  31 115230 38408\n##  32 119293 39762\n##  33 147126 49040\n##  34 130191 43395\n##  35 131330 43774\n##  36 122891 40961\n##  37 135407 45133\n##  38 116334 38776\n##  39 130325 43439\n##  40 138521 46171\n##  41  71955 23983\n##  42  53806 17933\n##  43 122260 40751\n##  44 102573 34189\n##  45  70032 23342\n##  46  75981 25325\n##  47 111555 37183\n##  48 135654 45216\n##  49  50805 16933\n##  50 122186 40726\n##  51 138172 46055\n##  52  96422 32138\n##  53 124781 41591\n##  54  55894 18629\n##  55  54337 18110\n##  56 149926 49973\n##  57  63809 21267\n##  58 146163 48719\n##  59  55131 18375\n##  60  55796 18596\n##  61  92771 30921\n##  62  80288 26760\n##  63 111619 37204\n##  64 134602 44865\n##  65  82245 27413\n##  66  72505 24166\n##  67 117209 39067\n##  68  92383 30792\n##  69 149101 49698\n##  70 135399 45131\n##  71 112166 37386\n##  72 134000 44664\n##  73  88771 29588\n##  74  63963 21319\n##  75 103731 34575\n##  76  74915 24969\n##  77 146347 48780\n##  78 125390 41794\n##  79 126249 42081\n##  80 131534 43842\n##  81 142038 47344\n##  82  55327 18440\n##  83  58784 19592\n##  84  85003 28332\n##  85  65909 21967\n##  86  89879 29957\n##  87 128715 42903\n##  88 138559 46184\n##  89 146209 48734\n##  90 145040 48344\n##  91 116032 38675\n##  92 130046 43346\n##  93 131664 43886\n##  94 125899 41964\n##  95 141918 47304\n##  96  88426 29473\n##  97  50488 16827\n##  98  67943 22645\n##  99  79677 26557\n## 100  94858 31617",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2019/02.txt\") |&gt; \n    str_split_1(pattern = \",\") |&gt; \n    as.integer()\n\ninput[1 + 1] &lt;- 12\ninput[2 + 1] &lt;- 2\n\n# starting position\npointer &lt;- 0 + 1\n\nrepeat{\n    if (input[pointer] == 99) break\n    \n    # get values (1st value = noun, 2nd value = verb)\n    noun &lt;- input[input[pointer + 1] + 1]\n    verb &lt;- input[input[pointer + 2] + 1]\n    \n    # target location\n    target_pointer &lt;- input[pointer + 3] + 1\n    \n    # replace value\n    if (input[pointer] == 1) \n        input[target_pointer] &lt;- noun + verb\n    \n    else if (input[pointer] == 2)\n        input[target_pointer] &lt;- noun * verb\n    \n    # update pointer\n    pointer &lt;- pointer + 4\n}\n\ncat(input[1])\n## 3562624",
     "crumbs": [
       "2019",
-      "Day 1: The Tyranny of the Rocket Equation"
+      "Day 2: 1202 Program Alarm"
     ]
   },
   {
-    "objectID": "solutions/2019/01.html#part-two",
-    "href": "solutions/2019/01.html#part-two",
-    "title": "Day 1: The Tyranny of the Rocket Equation",
+    "objectID": "solutions/2019/02.html#part-two",
+    "href": "solutions/2019/02.html#part-two",
+    "title": "Day 2: 1202 Program Alarm",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\ncalculate_fuel_adj &lt;- function(mass) {\n    \n    total &lt;- calculate_fuel(mass)\n    \n    repeat{\n        new &lt;- calculate_fuel(total[length(total)])\n        \n        if (new &gt; 0) total &lt;- c(total, new) else break\n    }\n    \n    return(sum(total))\n}\n\ninput &lt;- input |&gt; \n    mutate(fuel_adj = map_dbl(mass, calculate_fuel_adj))\n\ninput |&gt; \n    summarise(total_fuel_adj = sum(fuel_adj)) |&gt; \n    pull(total_fuel_adj) |&gt; \n    cat()\n## 5183653\n\n\n\n\n# look at the full table\ninput |&gt; print(n = nrow(input))\n## # A tibble: 100 × 3\n##       mass  fuel fuel_adj\n##      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n##   1 118868 39620    59402\n##   2  88841 29611    44387\n##   3 133680 44558    66808\n##   4 148066 49353    74001\n##   5  70887 23627    35412\n##   6  93213 31069    46574\n##   7 124243 41412    62088\n##   8  92767 30920    46351\n##   9  71322 23772    35629\n##  10  86793 28929    43366\n##  11  53650 17881    26795\n##  12 102703 34232    51317\n##  13 146958 48984    73447\n##  14  53031 17675    26486\n##  15 148282 49425    74108\n##  16 124989 41661    62464\n##  17  74375 24789    37157\n##  18 122044 40679    60989\n##  19 122693 40895    61313\n##  20  74204 24732    37070\n##  21  74869 24954    37404\n##  22  81803 27265    40869\n##  23 124436 41476    62184\n##  24  68495 22829    34214\n##  25  74865 24953    37401\n##  26  70765 23586    35352\n##  27  81537 27177    40738\n##  28  61376 20456    30657\n##  29 145342 48445    72639\n##  30 137159 45717    68546\n##  31 115230 38408    57582\n##  32 119293 39762    59614\n##  33 147126 49040    73530\n##  34 130191 43395    65063\n##  35 131330 43774    65633\n##  36 122891 40961    61412\n##  37 135407 45133    67669\n##  38 116334 38776    58134\n##  39 130325 43439    65127\n##  40 138521 46171    69229\n##  41  71955 23983    35946\n##  42  53806 17933    26872\n##  43 122260 40751    61097\n##  44 102573 34189    51255\n##  45  70032 23342    34985\n##  46  75981 25325    37959\n##  47 111555 37183    55747\n##  48 135654 45216    67795\n##  49  50805 16933    25373\n##  50 122186 40726    61059\n##  51 138172 46055    69053\n##  52  96422 32138    48178\n##  53 124781 41591    62358\n##  54  55894 18629    27917\n##  55  54337 18110    27137\n##  56 149926 49973    74927\n##  57  63809 21267    31873\n##  58 146163 48719    73048\n##  59  55131 18375    27536\n##  60  55796 18596    27866\n##  61  92771 30921    46354\n##  62  80288 26760    40113\n##  63 111619 37204    55779\n##  64 134602 44865    67267\n##  65  82245 27413    41091\n##  66  72505 24166    36222\n##  67 117209 39067    58571\n##  68  92383 30792    46160\n##  69 149101 49698    74517\n##  70 135399 45131    67665\n##  71 112166 37386    56050\n##  72 134000 44664    66967\n##  73  88771 29588    44352\n##  74  63963 21319    31951\n##  75 103731 34575    51834\n##  76  74915 24969    37425\n##  77 146347 48780    73140\n##  78 125390 41794    62664\n##  79 126249 42081    63093\n##  80 131534 43842    65734\n##  81 142038 47344    70985\n##  82  55327 18440    27633\n##  83  58784 19592    29359\n##  84  85003 28332    42469\n##  85  65909 21967    32924\n##  86  89879 29957    44906\n##  87 128715 42903    64325\n##  88 138559 46184    69247\n##  89 146209 48734    73071\n##  90 145040 48344    72485\n##  91 116032 38675    57983\n##  92 130046 43346    64989\n##  93 131664 43886    65799\n##  94 125899 41964    62918\n##  95 141918 47304    70927\n##  96  88426 29473    44181\n##  97  50488 16827    25215\n##  98  67943 22645    33940\n##  99  79677 26557    39808\n## 100  94858 31617    47398",
+    "text": "Part Two\n\n# create a function\noutput &lt;- function(input){\n    # starting position\n    pointer &lt;- 0 + 1\n    \n    repeat{\n        if (input[pointer] == 99) break\n        \n        # get values (1st value = noun, 2nd value = verb)\n        noun &lt;- input[input[pointer + 1] + 1]\n        verb &lt;- input[input[pointer + 2] + 1]\n        \n        # target location\n        target_pointer &lt;- input[pointer + 3] + 1\n        \n        # replace value\n        if (input[pointer] == 1) \n            input[target_pointer] &lt;- noun + verb\n        \n        else if (input[pointer] == 2)\n            input[target_pointer] &lt;- noun * verb\n        \n        # update pointer\n        pointer &lt;- pointer + 4\n    }\n    \n    return(input[1])\n}\n\n# search for noun and verb\nfor (noun in 0:99) {\n    for (verb in 0:99) {\n        input &lt;- read_lines(file = \"inputs/2019/02.txt\") |&gt; \n            str_split_1(pattern = \",\") |&gt; \n            as.integer()\n        \n        input[1 + 1] &lt;- noun\n        input[2 + 1] &lt;- verb\n        \n        if (output(input) == 19690720) cat(100 * noun + verb)\n        \n    }\n}\n## 8298",
     "crumbs": [
       "2019",
-      "Day 1: The Tyranny of the Rocket Equation"
+      "Day 2: 1202 Program Alarm"
     ]
   },
   {
-    "objectID": "solutions/2018/01.html",
-    "href": "solutions/2018/01.html",
-    "title": "Day 1: Chronal Calibration",
+    "objectID": "solutions/2018/02.html",
+    "href": "solutions/2018/02.html",
+    "title": "Day 2: Inventory Management System",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2018",
-      "Day 1: Chronal Calibration"
+      "Day 2: Inventory Management System"
     ]
   },
   {
-    "objectID": "solutions/2018/01.html#part-one",
-    "href": "solutions/2018/01.html#part-one",
-    "title": "Day 1: Chronal Calibration",
+    "objectID": "solutions/2018/02.html#part-one",
+    "href": "solutions/2018/02.html#part-one",
+    "title": "Day 2: Inventory Management System",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\ninput &lt;- read_lines(file = \"inputs/2018/01.txt\") |&gt; as.integer()\n\ncat(sum(input))\n## 466",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2018/02.txt\")\n\ndoubles &lt;- function(x)\n    any(table(str_split_1(x, pattern = \"\")) == 2)\n\ntriples &lt;- function(x)\n    any(table(str_split_1(x, pattern = \"\")) == 3)\n\ncat(sum(map_lgl(input, doubles)) * sum(map_lgl(input, triples)))\n## 6944",
     "crumbs": [
       "2018",
-      "Day 1: Chronal Calibration"
+      "Day 2: Inventory Management System"
     ]
   },
   {
-    "objectID": "solutions/2018/01.html#part-two",
-    "href": "solutions/2018/01.html#part-two",
-    "title": "Day 1: Chronal Calibration",
+    "objectID": "solutions/2018/02.html#part-two",
+    "href": "solutions/2018/02.html#part-two",
+    "title": "Day 2: Inventory Management System",
     "section": "Part Two",
-    "text": "Part Two\n\n# 136 found after some trials, using optimal value to optimize execution\nfrequencies &lt;- tibble(change = rep(input, times = 136),\n                      result = cumsum(change)) |&gt; \n    rowid_to_column(\"time\")\n\nfrequencies |&gt; \n    group_by(result) |&gt; \n    summarise(count = n(), second_time = nth(time, 2)) |&gt; \n    filter(count &gt; 1) |&gt; \n    arrange(second_time) |&gt; \n    head(1) |&gt; \n    pull(result) |&gt; \n    cat()\n## 750",
+    "text": "Part Two\n\nfind_almost_equal &lt;- function(input)\n    for (i in 1:(length(input) - 1))\n        for (j in (i+1):length(input))\n            if (adist(input[i], input[j]) == 1)\n                return(c(i,j))\n\ntargets &lt;- find_almost_equal(input)\n\ntarget_1 &lt;- str_split_1(input[targets[1]], pattern = \"\")\ntarget_2 &lt;- str_split_1(input[targets[2]], pattern = \"\")\n\nstr_split_1(input[targets[1]], pattern = \"\")[target_1 == target_2] |&gt; \n    paste0(collapse = \"\") |&gt; \n    cat()\n## srijafjzloguvlntqmphenbkd",
     "crumbs": [
       "2018",
-      "Day 1: Chronal Calibration"
+      "Day 2: Inventory Management System"
     ]
   },
   {
-    "objectID": "solutions/2017/01.html",
-    "href": "solutions/2017/01.html",
-    "title": "Day 1: Inverse Captcha",
+    "objectID": "solutions/2017/02.html",
+    "href": "solutions/2017/02.html",
+    "title": "Day 2: Corruption Checksum",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2017",
-      "Day 1: Inverse Captcha"
+      "Day 2: Corruption Checksum"
     ]
   },
   {
-    "objectID": "solutions/2017/01.html#part-one",
-    "href": "solutions/2017/01.html#part-one",
-    "title": "Day 1: Inverse Captcha",
+    "objectID": "solutions/2017/02.html#part-one",
+    "href": "solutions/2017/02.html#part-one",
+    "title": "Day 2: Corruption Checksum",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2017/01.txt\")\n\ninput &lt;- str_split_1(string = input, pattern = \"\") |&gt; as.integer()\n\ndigits &lt;- tibble(digit   = input,\n                 compare = c(input[-1], input[1])) |&gt; \n    mutate(match = if_else(digit == compare, digit, 0L))\n\ndigits |&gt; \n    summarise(total = sum(match)) |&gt; \n    pull(total) |&gt; \n    cat()\n## 1119",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_table(file = \"inputs/2017/02.txt\", col_names = FALSE)\n\nmax_minus_min &lt;- function(x) max(x) - min(x)\n\ninput |&gt; \n    rowwise() |&gt;\n    mutate(line_check = max_minus_min(across(everything()))) |&gt; \n    ungroup() |&gt;\n    summarise(checksum = sum(line_check)) |&gt; \n    pull(checksum) |&gt; \n    cat()\n## 21845",
     "crumbs": [
       "2017",
-      "Day 1: Inverse Captcha"
+      "Day 2: Corruption Checksum"
     ]
   },
   {
-    "objectID": "solutions/2017/01.html#part-two",
-    "href": "solutions/2017/01.html#part-two",
-    "title": "Day 1: Inverse Captcha",
+    "objectID": "solutions/2017/02.html#part-two",
+    "href": "solutions/2017/02.html#part-two",
+    "title": "Day 2: Corruption Checksum",
     "section": "Part Two",
-    "text": "Part Two\n\nmid &lt;- nrow(digits) / 2\n\ndigits &lt;- tibble(digit   = input,\n                 compare = c(input[-(1:mid)], input[1:mid])) |&gt;\n    mutate(match = if_else(digit == compare, digit, 0L))\n\ndigits |&gt;\n    summarise(total = sum(match)) |&gt;\n    pull(total) |&gt;\n    cat()\n## 1420",
+    "text": "Part Two\n\ndivision &lt;- function(x) {\n    for(i in seq_along(x)) {\n        for(j in seq_along(x)) {\n            if (x[i] %% x[j] == 0 & i != j) return(x[i] / x[j])\n        }\n    }\n}\n\n# I couldn't find a purrr (or tidyverse) way of doing this\ninput |&gt; \n    apply(MARGIN = 1, FUN = division) |&gt; \n    sum() |&gt; \n    cat()\n## 191",
     "crumbs": [
       "2017",
-      "Day 1: Inverse Captcha"
+      "Day 2: Corruption Checksum"
     ]
   },
   {
-    "objectID": "solutions/2016/06.html",
-    "href": "solutions/2016/06.html",
-    "title": "Day 6: Signals and Noise",
+    "objectID": "solutions/2016/07.html",
+    "href": "solutions/2016/07.html",
+    "title": "Day 7: Internet Protocol Version 7",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2016/06.txt\", col_names = \"original\")",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2016/07.txt\", col_names = \"original\")",
     "crumbs": [
       "2016",
-      "Day 6: Signals and Noise"
+      "Day 7: Internet Protocol Version 7"
     ]
   },
   {
-    "objectID": "solutions/2016/06.html#part-one",
-    "href": "solutions/2016/06.html#part-one",
-    "title": "Day 6: Signals and Noise",
+    "objectID": "solutions/2016/07.html#part-one",
+    "href": "solutions/2016/07.html#part-one",
+    "title": "Day 7: Internet Protocol Version 7",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nmode &lt;- function(x, na.rm = FALSE) {\n  if (na.rm) x &lt;- x[!is.na(x)]\n\n  ux &lt;- unique(x)\n  return(ux[which.max(tabulate(match(x, ux)))])\n}\n\nsplitted_strings &lt;- input |&gt; \n    mutate(char = str_split(string = original, pattern = \"\")) |&gt; \n    unnest_wider(col = char, names_sep = \"_\")\n\nsplitted_strings |&gt; \n    summarise(across(-original, mode)) |&gt; \n    unite(\"error_corrected\", everything(), sep = \"\") |&gt; \n    pull(error_corrected) |&gt; \n    cat()\n## xhnqpqql",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_abba &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\2\\\\1\") |&gt; \n        coalesce(FALSE)\n}\n\nsplit &lt;- input |&gt; \n    mutate(inside  = str_extract_all(string  = original,\n                                     pattern = \"(?&lt;=\\\\[)([a-z]*)(?=\\\\])\"),\n           outside = str_extract_all(string = original,\n                                     pattern = \"(?&lt;!\\\\])([a-z]*)(?=\\\\[)|(?&lt;=\\\\])([a-z]*)(?=\\\\[)|(?&lt;=\\\\])([a-z]*)(?!\\\\[)\")) |&gt; \n    unnest_wider(col = inside,  names_sep = \"_\") |&gt; \n    unnest_wider(col = outside, names_sep = \"_\")\n\nsupport_tls &lt;- split |&gt; \n    filter(if_all(starts_with(\"inside\"), compose(`!`, has_abba))) |&gt;\n    filter(if_any(starts_with(\"outside\"), has_abba))\n\ncat(nrow(support_tls))\n## 118",
     "crumbs": [
       "2016",
-      "Day 6: Signals and Noise"
+      "Day 7: Internet Protocol Version 7"
     ]
   },
   {
-    "objectID": "solutions/2016/06.html#part-two",
-    "href": "solutions/2016/06.html#part-two",
-    "title": "Day 6: Signals and Noise",
+    "objectID": "solutions/2016/07.html#part-two",
+    "href": "solutions/2016/07.html#part-two",
+    "title": "Day 7: Internet Protocol Version 7",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nleast_common &lt;- function(x, na.rm = FALSE) {\n  if (na.rm) x &lt;- x[!is.na(x)]\n\n  ux &lt;- unique(x)\n  return(ux[which.min(tabulate(match(x, ux)))])\n}\n\nsplitted_strings |&gt; \n    summarise(across(-original, least_common)) |&gt; \n    unite(\"error_corrected\", everything(), sep = \"\") |&gt; \n    pull(error_corrected) |&gt; \n    cat()\n## brhailro",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\naba_tests &lt;- input |&gt;\n    mutate(in_out = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\](.*\\\\])?[a-z]*\\\\2\\\\1\\\\2\"),\n           out_in = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\[(.*\\\\[)?[a-z]*\\\\2\\\\1\\\\2\"))\n\nsupport_ssl &lt;- aba_tests |&gt; \n    filter(if_any(c(in_out, out_in), compose(`!`, is.na)))\n\ncat(nrow(support_ssl))\n## 260",
     "crumbs": [
       "2016",
-      "Day 6: Signals and Noise"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/04.html",
-    "href": "solutions/2016/04.html",
-    "title": "Day 4: Security Through Obscurity",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2016/04.txt\", col_names = \"original\")",
-    "crumbs": [
-      "2016",
-      "Day 4: Security Through Obscurity"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/04.html#part-one",
-    "href": "solutions/2016/04.html#part-one",
-    "title": "Day 4: Security Through Obscurity",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nchesum_eval &lt;- function(x) {\n    letters &lt;- x |&gt;\n        str_split_1(pattern = \"\") |&gt; \n        table() |&gt; \n        sort(decreasing = TRUE) |&gt; \n        names() |&gt; \n        _[1:5] |&gt; \n        paste0(collapse = \"\")\n}\n\nreal_rooms &lt;- input |&gt; \n    mutate(sector_id      = as.numeric(str_extract(string = original, pattern = \"[0-9]+\")),\n           checksum       = str_extract(string = original, pattern = \"(?&lt;=\\\\[)[a-z]*\"),\n           encrypted_name = str_extract(string = original, pattern = \"[a-z\\\\-]*(?=-\\\\d+)\"),    \n           encrypted_name = str_remove_all(string = encrypted_name, pattern = \"\\\\-\"),\n           chesum_eval    = map_chr(.x = encrypted_name, .f = chesum_eval),\n           real_room      = checksum == chesum_eval)\n\nreal_rooms |&gt; \n    filter(real_room == TRUE) |&gt;\n    summarise(total = sum(sector_id)) |&gt; \n    pull(total) |&gt; \n    cat()\n## 185371",
-    "crumbs": [
-      "2016",
-      "Day 4: Security Through Obscurity"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/04.html#part-two",
-    "href": "solutions/2016/04.html#part-two",
-    "title": "Day 4: Security Through Obscurity",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nroom_names &lt;- input |&gt; \n    mutate(sector_id = as.numeric(str_extract(string = original, pattern = \"[0-9]+\")),\n           encrypted = str_remove(string = original, pattern = \"-[0-9]+\\\\[[a-z]+\\\\]\"))\n\ndecrypt &lt;- function(string, sector_id) {\n    decrypted &lt;- character(0)\n    \n    for (element in str_split_1(string = string, pattern = \"\")) {\n        if (element == \"-\")\n            decrypted &lt;- c(decrypted, \" \")\n        else {\n            index &lt;- (which(letters == element) + sector_id) %% 26\n            decrypted &lt;- c(decrypted, letters[index])\n        }\n    }\n    \n    return(paste(decrypted, collapse = \"\"))\n}\n\nroom_names &lt;- room_names |&gt; \n    mutate(decrypted = map2_chr(.x = encrypted, .y = sector_id, .f = decrypt))\n\nroom_names |&gt; \n    filter(decrypted == \"northpole object storage\") |&gt; \n    pull(sector_id) |&gt; \n    cat()\n## 984\n\n\n\n\nroom_names |&gt; \n    rowid_to_column(\"row_number\") |&gt; \n    filter(decrypted == \"northpole object storage\") |&gt; \n    pull(\"row_number\") |&gt; \n    cat()\n## 476",
-    "crumbs": [
-      "2016",
-      "Day 4: Security Through Obscurity"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/02.html",
-    "href": "solutions/2016/02.html",
-    "title": "Day 2: Bathroom Security",
-    "section": "",
-    "text": "Reference",
-    "crumbs": [
-      "2016",
-      "Day 2: Bathroom Security"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/02.html#part-one",
-    "href": "solutions/2016/02.html#part-one",
-    "title": "Day 2: Bathroom Security",
-    "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2016/02.txt\")\n\nmoves &lt;- list(\"U\" = c(-1, 0), \"D\" = c(1, 0), \"L\" = c(0, -1), \"R\" = c(0, 1))\n\nnumpad &lt;- matrix(c(NA,  NA,  NA,  NA, NA,\n                   NA, \"1\", \"2\", \"3\", NA,\n                   NA, \"4\", \"5\", \"6\", NA,\n                   NA, \"7\", \"8\", \"9\", NA,\n                   NA,  NA,  NA,  NA, NA), ncol = 5, byrow = TRUE)\n\ncurrent &lt;- c(2, 2)\n\ncode &lt;- character(0)\n\nfor (digit in input) {\n    for (move in str_split_1(digit, pattern = \"\")){\n        after &lt;- current + moves[[move]]\n        \n        if (!is.na(numpad[after[1], after[2]]))\n            current &lt;- after\n    }\n    \n    code &lt;- c(code, numpad[current[1], current[2]])\n}\n\ncat(paste0(code, collapse = \"\"))\n## 12578",
-    "crumbs": [
-      "2016",
-      "Day 2: Bathroom Security"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/02.html#part-two",
-    "href": "solutions/2016/02.html#part-two",
-    "title": "Day 2: Bathroom Security",
-    "section": "Part Two",
-    "text": "Part Two\n\npad &lt;- matrix(c(NA,  NA,  NA,  NA,  NA,  NA, NA,\n                NA,  NA,  NA, \"1\",  NA,  NA, NA,\n                NA,  NA, \"2\", \"3\", \"4\",  NA, NA,\n                NA, \"5\", \"6\", \"7\", \"8\", \"9\", NA,\n                NA,  NA, \"A\", \"B\", \"C\",  NA, NA,\n                NA,  NA,  NA, \"D\",  NA,  NA, NA,\n                NA,  NA,  NA,  NA,  NA,  NA, NA), ncol = 7, byrow = TRUE)\n\ncurrent &lt;- c(4, 2)\n\ncode &lt;- character(0)\n\nfor (digit in input) {\n    for (move in str_split_1(digit, pattern = \"\")){\n        after &lt;- current + moves[[move]]\n        \n        if (!is.na(pad[after[1], after[2]])) \n            current &lt;- after\n    }\n    \n    code &lt;- c(code, pad[current[1], current[2]])\n}\n\ncat(paste0(code, collapse = \"\"))\n## 516DD",
-    "crumbs": [
-      "2016",
-      "Day 2: Bathroom Security"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/07.html",
-    "href": "solutions/2015/07.html",
-    "title": "Day 7: Some Assembly Required",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)"
-  },
-  {
-    "objectID": "solutions/2015/07.html#bitwise-conversion",
-    "href": "solutions/2015/07.html#bitwise-conversion",
-    "title": "Day 7: Some Assembly Required",
-    "section": "Bitwise Conversion",
-    "text": "Bitwise Conversion\nTo convent a number into binary we can use the function base::intToBits.\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nmap(0:4, intToBits)\n## [[1]]\n##  [1] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[2]]\n##  [1] 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[3]]\n##  [1] 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[4]]\n##  [1] 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[5]]\n##  [1] 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n\n\n\n\nSince we are considering a 16-bit signal (a number from 0 to 65535), we can consider just the first 16 elements of the output vector of the function intToBits.\n\nint_to_bit16_01 &lt;- function(x) {\n    intToBits(x)[1:16]\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nmap(0:4, int_to_bit16_01)\n## [[1]]\n##  [1] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[2]]\n##  [1] 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[3]]\n##  [1] 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[4]]\n##  [1] 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[5]]\n##  [1] 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00\n\n\n\n\nSince we are going to perform bitwise operations, it is convenient to convert the output to logical type.\n\nint_to_bit16 &lt;- function(x) {\n    as.logical(intToBits(x)[1:16])\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nmap(0:4, int_to_bit16)\n## [[1]]\n##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[2]]\n##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[3]]\n##  [1] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[4]]\n##  [1]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[5]]\n##  [1] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n\n\n\n\nFinally the inverse function is defined.\n\nbit16_to_int &lt;- function(x) {\n    sum(2^(0:15) * x)\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nexample &lt;- map(0:4, int_to_bit16)\n\nmap(example, bit16_to_int)\n## [[1]]\n## [1] 0\n## \n## [[2]]\n## [1] 1\n## \n## [[3]]\n## [1] 2\n## \n## [[4]]\n## [1] 3\n## \n## [[5]]\n## [1] 4"
-  },
-  {
-    "objectID": "solutions/2015/07.html#bitwise-operations",
-    "href": "solutions/2015/07.html#bitwise-operations",
-    "title": "Day 7: Some Assembly Required",
-    "section": "Bitwise Operations",
-    "text": "Bitwise Operations\n\n\n\n\n\n\nCustom R Binary Operations\n\n\n\n\n\nIn R a binary operation can be defined using % at the start and the end of its name. For example:\n\n`%custom%` &lt;- function(x, y) 2 * x + y\n\n1 %custom% 2\n## [1] 4\n2 %custom% 1\n## [1] 5\n2 %custom% 3\n## [1] 7\n3 %custom% 2\n## [1] 8\n\n\n\n\n\n(all_zeros &lt;- int_to_bit16(0))\n##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n(one &lt;- int_to_bit16(1))\n##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n(zero_one &lt;- int_to_bit16(43690))\n##  [1] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE\n## [13] FALSE  TRUE FALSE  TRUE\n(one_zero &lt;- int_to_bit16(21845))\n##  [1]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE\n## [13]  TRUE FALSE  TRUE FALSE\n(all_ones &lt;- int_to_bit16(65535))\n##  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE\n## [16] TRUE\n\n\nAND\n\n\n\n`%AND%` &lt;- function(x, y) {\n    bit16_result &lt;- int_to_bit16(x) & int_to_bit16(y)\n    bit16_to_int(bit16_result)\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\nzero_one %AND% one_zero\n## [1] 0"
-  },
-  {
-    "objectID": "solutions/2015/05.html",
-    "href": "solutions/2015/05.html",
-    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/05.txt\", col_names = \"original\")",
-    "crumbs": [
-      "2015",
-      "Day 5: Doesn't He Have Intern-Elves For This?"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/05.html#part-one",
-    "href": "solutions/2015/05.html#part-one",
-    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_3more_vowels &lt;- function(string) {\n    str_count(string = string, pattern = \"[aeiou]\") &gt;= 3\n}\n\nhas_1more_double &lt;- function(string) {\n    str_count(string = string, pattern = \"([a-z])\\\\1\") &gt;= 1\n}\n\nhas_not_ab_cd_pq_xy &lt;- function(string) {\n    !str_detect(string = string, pattern = \"ab|cd|pq|xy\")\n}\n\nis_nice &lt;- function(string) {\n    has_3more_vowels(string) &\n    has_1more_double(string) &\n    has_not_ab_cd_pq_xy(string)\n}\n\nnice &lt;- input |&gt; \n    mutate(three_more_vowels = map_lgl(.x = original, .f = has_3more_vowels),\n           one_more_double   = map_lgl(.x = original, .f = has_1more_double),\n           not_ab_cd_pq_xy   = map_lgl(.x = original, .f = has_not_ab_cd_pq_xy),\n           nice              = map_lgl(.x = original, .f = is_nice))\n\nnice |&gt; \n    summarise(total_nice = sum(nice)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 258",
-    "crumbs": [
-      "2015",
-      "Day 5: Doesn't He Have Intern-Elves For This?"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/05.html#part-two",
-    "href": "solutions/2015/05.html#part-two",
-    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nhas_couple_twice &lt;- function(string) {\n    str_detect(string = string, pattern = \"[a-z]*([a-z]{2})[a-z]*\\\\1[a-z]*\")\n}\n\nhas_az_any_az &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])[a-z]\\\\1\")\n}\n\nis_nice_new &lt;- function(string) {\n    has_couple_twice(string) &\n    has_az_any_az(string)\n}\n\nnice_new &lt;- input |&gt; \n    mutate(couple_twice = map_lgl(.x = original, .f = has_couple_twice),\n           az_any_az    = map_lgl(.x = original, .f = has_az_any_az),\n           nice_new     = map_lgl(.x = original, .f = is_nice_new))\n\nnice_new |&gt; \n    summarise(total_nice = sum(nice_new)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 53",
-    "crumbs": [
-      "2015",
-      "Day 5: Doesn't He Have Intern-Elves For This?"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/03.html",
-    "href": "solutions/2015/03.html",
-    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/03.txt\")",
-    "crumbs": [
-      "2015",
-      "Day 3: Perfectly Spherical Houses in a Vacuum"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/03.html#part-one",
-    "href": "solutions/2015/03.html#part-one",
-    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- tibble(input  = str_split_1(input, pattern = \"\"),\n                move_x = case_match(input, \"^\" ~  0, \"&gt;\" ~  1,\n                                           \"v\" ~  0, \"&lt;\" ~ -1),\n                move_y = case_match(input, \"^\" ~  1, \"&gt;\" ~  0,\n                                           \"v\" ~ -1, \"&lt;\" ~  0),\n                pos_x  = cumsum(move_x),\n                pos_y  = cumsum(move_y)) |&gt; \n    \n    add_row(pos_x = 0, pos_y = 0, .before = 1)\n    \nmoves |&gt; \n    distinct(pos_x, pos_y) |&gt; \n    nrow() |&gt;\n    cat()\n## 2081\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y)) +\n    geom_path() +\n    theme_bw()",
-    "crumbs": [
-      "2015",
-      "Day 3: Perfectly Spherical Houses in a Vacuum"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/03.html#part-two",
-    "href": "solutions/2015/03.html#part-two",
-    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- moves |&gt; \n\n    mutate(who = case_when(row_number() - 1  == 0 ~ \"both\",\n                           row_number() %% 2 == 0 ~ \"santa\",\n                           .default = \"robo\")) |&gt; \n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt; \n\n    mutate(across(.cols = starts_with(\"pos\"), .fns = \\(x) coalesce(x, 0)))\n\nmoves |&gt;\n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +\n    geom_path() +\n    theme_bw()",
-    "crumbs": [
-      "2015",
-      "Day 3: Perfectly Spherical Houses in a Vacuum"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html",
-    "href": "solutions/2015/01.html",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/01.txt\")",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html#part-one",
-    "href": "solutions/2015/01.html#part-one",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nmoves &lt;- tibble(input  = str_split_1(string = input, pattern = \"\"),\n                move   = case_match(input, \"(\" ~  1L, \")\" ~ -1L),\n                height = cumsum(move))\n\nmoves |&gt; \n    tail(1) |&gt; \n    pull(height) |&gt; \n    cat()\n## 232",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html#part-two",
-    "href": "solutions/2015/01.html#part-two",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nmoves &lt;- moves |&gt; \n    rowid_to_column(\"time\")\n\nmoves |&gt; \n    filter(height == -1) |&gt; \n    head(1) |&gt; \n    pull(time) |&gt; \n    cat()\n## 1783",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html#plot",
-    "href": "solutions/2015/01.html#plot",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "Plot",
-    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = time, y = height)) +\n    geom_line() +\n    theme_bw()",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "This website contains my solutions to programming challenges proposed by Advent of Code"
-  },
-  {
-    "objectID": "solutions/2015/02.html",
-    "href": "solutions/2015/02.html",
-    "title": "Day 2: I Was Told There Would Be No Math",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/02.txt\", col_names = \"original\")",
-    "crumbs": [
-      "2015",
-      "Day 2: I Was Told There Would Be No Math"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/02.html#part-one",
-    "href": "solutions/2015/02.html#part-one",
-    "title": "Day 2: I Was Told There Would Be No Math",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |&gt; \n\n    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
-    "crumbs": [
-      "2015",
-      "Day 2: I Was Told There Would Be No Math"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/02.html#part-two",
-    "href": "solutions/2015/02.html#part-two",
-    "title": "Day 2: I Was Told There Would Be No Math",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nribbon_length &lt;- function(l, w, h) {\n    2L * (l+w+h - max(l, w, h)) + l*w*h\n}\n\npaper &lt;- paper |&gt;\n    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))\n\npaper |&gt; \n    summarise(total_ribbon = sum(ribbon)) |&gt; \n    pull(total_ribbon) |&gt; \n    cat()\n## 3842356",
-    "crumbs": [
-      "2015",
-      "Day 2: I Was Told There Would Be No Math"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/04.html",
-    "href": "solutions/2015/04.html",
-    "title": "Day 4: The Ideal Stocking Stuffer",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"bgvyzdsv\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")",
-    "crumbs": [
-      "2015",
-      "Day 4: The Ideal Stocking Stuffer"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/04.html#part-one",
-    "href": "solutions/2015/04.html#part-one",
-    "title": "Day 4: The Ideal Stocking Stuffer",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
-    "crumbs": [
-      "2015",
-      "Day 4: The Ideal Stocking Stuffer"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/04.html#part-two",
-    "href": "solutions/2015/04.html#part-two",
-    "title": "Day 4: The Ideal Stocking Stuffer",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
-    "crumbs": [
-      "2015",
-      "Day 4: The Ideal Stocking Stuffer"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/06.html",
-    "href": "solutions/2015/06.html",
-    "title": "Day 6: Probably a Fire Hazard",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv2(file = \"inputs/2015/06.txt\", col_names = \"original\")",
-    "crumbs": [
-      "2015",
-      "Day 6: Probably a Fire Hazard"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/06.html#part-one",
-    "href": "solutions/2015/06.html#part-one",
-    "title": "Day 6: Probably a Fire Hazard",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\ninstructions &lt;- input |&gt; \n    mutate(instruction = str_extract(string = original, pattern = \"toggle|turn on|turn off\"),\n           position    = str_extract_all(string = original, pattern = \"[0-9]+\")) |&gt; \n    unnest_wider(col = position, names_sep = \"_\") |&gt; \n    mutate(across(.cols = starts_with(\"position\"), .fns = \\(x) as.integer(x) + 1L)) |&gt; \n    mutate(x_range = map2(.x = position_1, .y = position_3, .f = \\(a, b) a:b),\n           y_range = map2(.x = position_2, .y = position_4, .f = \\(a, b) a:b))\n\n# initial grid\ngrid_start &lt;- matrix(FALSE, 1e3, 1e3)\n\naction &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- !grid[x_range, y_range]\n    \n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- TRUE\n    \n    else if (instruction == \"turn off\")\n        grid[x_range, y_range] &lt;- FALSE\n    \n    return(grid)\n}\n\nmake_story &lt;- function(instructions, action, grid_start) {\n    # initialize list\n    grid_story &lt;- vector(mode = \"list\", length = nrow(instructions))\n    for (i in 1:nrow(instructions)) grid_story[[i]] &lt;- grid_start\n    \n    # perform instructions\n    for (i in seq_along(grid_story)) {\n        \n        if (i == 1) {\n            grid_story[[1]] &lt;- action(instruction = instructions[[1, \"instruction\"]][[1]],\n                                      x_range     = instructions[[1, \"x_range\"]][[1]],\n                                      y_range     = instructions[[1, \"y_range\"]][[1]],\n                                      grid        = grid_story[[1]])\n        } else {\n            grid_story[[i]] &lt;- action(instruction = instructions[[i, \"instruction\"]][[1]],\n                                      x_range     = instructions[[i, \"x_range\"]][[1]],\n                                      y_range     = instructions[[i, \"y_range\"]][[1]],\n                                      grid        = grid_story[[i-1]])\n        }\n    }\n    \n    return(grid_story)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid = make_story(instructions, action, grid_start),\n           n_on = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(n_on) |&gt; \n    cat()\n## 543903",
-    "crumbs": [
-      "2015",
-      "Day 6: Probably a Fire Hazard"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/06.html#part-two",
-    "href": "solutions/2015/06.html#part-two",
-    "title": "Day 6: Probably a Fire Hazard",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\n# initial grid\ngrid_start &lt;- matrix(0, 1e3, 1e3)\n\nnew_action &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 2\n\n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 1\n\n    else if (instruction == \"turn off\") \n        grid[x_range, y_range] &lt;- pmax(grid[x_range, y_range] - 1, 0)\n    \n    return(grid)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid       = make_story(instructions, new_action, grid_start),\n           brightness = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(brightness) |&gt; \n    cat()\n## 14687245",
-    "crumbs": [
-      "2015",
-      "Day 6: Probably a Fire Hazard"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/01.html",
-    "href": "solutions/2016/01.html",
-    "title": "Day 1: No Time for a Taxicab",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2016/01.txt\")",
-    "crumbs": [
-      "2016",
-      "Day 1: No Time for a Taxicab"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/01.html#part-one",
-    "href": "solutions/2016/01.html#part-one",
-    "title": "Day 1: No Time for a Taxicab",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionchange_direction() testsFull Table\n\n\n\n# extract direction and length from input (first entry NA)\nmove &lt;- c(NA, str_split_1(string = input, pattern = \", \"))\n\nturn &lt;- str_extract(string = move, pattern = \"L|R\")\n\nlength &lt;- str_extract(string = move, pattern = \"[0-9]+\") |&gt; as.integer()\n\n# pre-allocate vectors for x/y-positions and x/y-direction\nposition_x &lt;- integer(length = length(move))\nposition_y &lt;- integer(length = length(move))\n\ndirection_x &lt;- integer(length = length(move))\ndirection_y &lt;- integer(length = length(move))\n\n# initialize position and direction (everything is pre-populated as 0)\n# position_x[1] &lt;- 0\n# position_y[1] &lt;- 0\n# \n# direction_x[1] &lt;- 0\ndirection_y[1] &lt;- 1L\n\nchange_direction &lt;- function(current_direction, turn) {\n    \n    if (turn == \"R\") new_direction &lt;- rev(current_direction) * c(1L, -1L)\n    if (turn == \"L\") new_direction &lt;- rev(current_direction) * c(-1L, 1L)\n    \n    return(new_direction)\n}\n\n# calculate directions and positions\nfor (i in 2:length(move)) {\n    # get current x/y-direction\n    current_direction &lt;- c(direction_x[i-1], direction_y[i-1])\n    \n    # calculate new direction\n    new_direction &lt;- change_direction(current_direction, turn[i])\n    \n    # update values\n    direction_x[i] &lt;- new_direction[1]\n    direction_y[i] &lt;- new_direction[2]\n    \n    # get current x/y-position\n    current_position &lt;- c(position_x[i-1], position_y[i-1])\n    \n    # calculate new position\n    new_position &lt;- current_position + new_direction * length[i]\n    \n    # update values\n    position_x[i] &lt;- new_position[1]\n    position_y[i] &lt;- new_position[2]    \n}\n\n# collect all vectors in a table\nmoves &lt;- tibble(move, turn, length,\n                direction_x, direction_y,\n                position_x, position_y) |&gt; \n    mutate(distance = abs(position_x) + abs(position_y))\n\n# result\nmoves |&gt; \n    select(distance) |&gt; \n    tail(1) |&gt; \n    pull() |&gt; \n    cat()\n## 288\n\n\n\n\nunit_vectors &lt;- list(up    = c(0,1),\n                     right = c(1,0),\n                     down  = c(0,-1),\n                     left  = c(-1, 0))\n\n# right turn\nmap(.x = unit_vectors, .f = \\(vector) change_direction(vector, \"R\"))\n## $up\n## [1] 1 0\n## \n## $right\n## [1]  0 -1\n## \n## $down\n## [1] -1  0\n## \n## $left\n## [1] 0 1\n\n# left turn\nmap(.x = unit_vectors, .f = \\(vector) change_direction(vector, \"L\"))\n## $up\n## [1] -1  0\n## \n## $right\n## [1] 0 1\n## \n## $down\n## [1] 1 0\n## \n## $left\n## [1]  0 -1",
-    "crumbs": [
-      "2016",
-      "Day 1: No Time for a Taxicab"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/01.html#part-two",
-    "href": "solutions/2016/01.html#part-two",
-    "title": "Day 1: No Time for a Taxicab",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionVisited Twice\n\n\n\n# change_direction() allows no change in direction\nchange_direction &lt;- function(current_direction, turn) {\n    \n    if (turn == \"R\") new_direction &lt;- rev(current_direction) * c(1L, -1L)\n    if (turn == \"L\") new_direction &lt;- rev(current_direction) * c(-1L, 1L)\n    if (turn == \"N\") new_direction &lt;- current_direction\n    \n    return(new_direction)\n}\n\n# initialize new turn vector (first entry is NA as before)\nturn_unit &lt;- c(NA)\n\n# populate the vector: each turn + No turn for length - 1 times\nfor(i in seq_along(length)[-1]) {\n    turn_unit &lt;- c(turn_unit, turn[i], rep(\"N\", times = length[i]-1))\n}\n\n# length vector: NA + unit steps\nlength_unit &lt;- c(NA, rep(1L, times = length(turn_unit) - 1))\n\n\n# REPEAT WHAT'S DONE IN PART ONE\nposition_x &lt;- integer(length = length(turn_unit))\nposition_y &lt;- integer(length = length(turn_unit))\n\ndirection_x &lt;- integer(length = length(turn_unit))\ndirection_y &lt;- integer(length = length(turn_unit))\n\n# initialize position and direction (everything is pre-populated as 0)\n# position_x[1] &lt;- 0\n# position_y[1] &lt;- 0\n# \n# direction_x[1] &lt;- 0\ndirection_y[1] &lt;- 1L\n\n# calculate directions and positions\nfor (i in 2:length(turn_unit)) {\n    # get current x/y-direction\n    current_direction &lt;- c(direction_x[i-1], direction_y[i-1])\n    \n    # calculate new direction\n    new_direction &lt;- change_direction(current_direction, turn_unit[i])\n    \n    # update values\n    direction_x[i] &lt;- new_direction[1]\n    direction_y[i] &lt;- new_direction[2]\n    \n    # get current x/y-position\n    current_position &lt;- c(position_x[i-1], position_y[i-1])\n    \n    # calculate new position\n    new_position &lt;- current_position + new_direction * length_unit[i]\n    \n    # update values\n    position_x[i] &lt;- new_position[1]\n    position_y[i] &lt;- new_position[2]    \n}\n\n# collect all vectors in a table\nmoves_unit &lt;- tibble(turn_unit, length_unit,\n                     direction_x, direction_y,\n                     position_x, position_y) |&gt; \n    mutate(distance = abs(position_x) + abs(position_y))\n\n\n# results\nmoves_unit |&gt; \n    rowid_to_column(\"time\") |&gt; \n    group_by(position_x, position_y, distance) |&gt; \n    summarise(count = n(), second_time = nth(time, 2)) |&gt; \n    filter(count &gt; 1) |&gt; \n    arrange(second_time) |&gt; \n    select(distance) |&gt; \n    head(1) |&gt; \n    pull() |&gt; \n    cat()\n## 111\n\n\n\n\nmoves_unit |&gt; \n    rowid_to_column(\"time\") |&gt; \n    group_by(position_x, position_y, distance) |&gt; \n    summarise(count = n(), second_time = nth(time, 2)) |&gt; \n    filter(count &gt; 1) |&gt; \n    arrange(second_time)",
-    "crumbs": [
-      "2016",
-      "Day 1: No Time for a Taxicab"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/01.html#plot",
-    "href": "solutions/2016/01.html#plot",
-    "title": "Day 1: No Time for a Taxicab",
-    "section": "Plot",
-    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = position_x, y = position_y)) + \n    geom_path() +\n    theme_minimal()",
-    "crumbs": [
-      "2016",
-      "Day 1: No Time for a Taxicab"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/03.html",
-    "href": "solutions/2016/03.html",
-    "title": "Day 3: Squares With Three Sides",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_table(file = \"inputs/2016/03.txt\", col_names = c(\"x\", \"y\", \"z\"))",
-    "crumbs": [
-      "2016",
-      "Day 3: Squares With Three Sides"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/03.html#part-one",
-    "href": "solutions/2016/03.html#part-one",
-    "title": "Day 3: Squares With Three Sides",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nis_triangle &lt;- function(x, y, z) {\n    max(x, y, z) &lt; x + y + z - max(x, y, z)\n}\n\ntriangles &lt;- input |&gt; \n    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle))\n\ntriangles |&gt; \n    summarise(n = sum(is_triangle)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 993",
-    "crumbs": [
-      "2016",
-      "Day 3: Squares With Three Sides"
-    ]
-  },
-  {
-    "objectID": "solutions/2016/03.html#part-two",
-    "href": "solutions/2016/03.html#part-two",
-    "title": "Day 3: Squares With Three Sides",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\ntriangles &lt;- tibble(sides = c(pull(input, x), pull(input, y), pull(input, z))) |&gt; \n\n    mutate(triangle = rep(x = 1:nrow(input),    each = 3),\n           side     = rep(x = c(\"x\", \"y\", \"z\"), times = nrow(input))) |&gt; \n\n    pivot_wider(values_from = sides, names_from = side) |&gt; \n\n    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle), .keep = \"used\")\n\ntriangles |&gt; \n    summarise(n = sum(is_triangle)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 1849",
-    "crumbs": [
-      "2016",
-      "Day 3: Squares With Three Sides"
+      "Day 7: Internet Protocol Version 7"
     ]
   },
   {
@@ -754,201 +362,614 @@
     ]
   },
   {
-    "objectID": "solutions/2016/07.html",
-    "href": "solutions/2016/07.html",
-    "title": "Day 7: Internet Protocol Version 7",
+    "objectID": "solutions/2016/03.html",
+    "href": "solutions/2016/03.html",
+    "title": "Day 3: Squares With Three Sides",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2016/07.txt\", col_names = \"original\")",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_table(file = \"inputs/2016/03.txt\", col_names = c(\"x\", \"y\", \"z\"))",
     "crumbs": [
       "2016",
-      "Day 7: Internet Protocol Version 7"
+      "Day 3: Squares With Three Sides"
     ]
   },
   {
-    "objectID": "solutions/2016/07.html#part-one",
-    "href": "solutions/2016/07.html#part-one",
-    "title": "Day 7: Internet Protocol Version 7",
+    "objectID": "solutions/2016/03.html#part-one",
+    "href": "solutions/2016/03.html#part-one",
+    "title": "Day 3: Squares With Three Sides",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_abba &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\2\\\\1\") |&gt; \n        coalesce(FALSE)\n}\n\nsplit &lt;- input |&gt; \n    mutate(inside  = str_extract_all(string  = original,\n                                     pattern = \"(?&lt;=\\\\[)([a-z]*)(?=\\\\])\"),\n           outside = str_extract_all(string = original,\n                                     pattern = \"(?&lt;!\\\\])([a-z]*)(?=\\\\[)|(?&lt;=\\\\])([a-z]*)(?=\\\\[)|(?&lt;=\\\\])([a-z]*)(?!\\\\[)\")) |&gt; \n    unnest_wider(col = inside,  names_sep = \"_\") |&gt; \n    unnest_wider(col = outside, names_sep = \"_\")\n\nsupport_tls &lt;- split |&gt; \n    filter(if_all(starts_with(\"inside\"), compose(`!`, has_abba))) |&gt;\n    filter(if_any(starts_with(\"outside\"), has_abba))\n\ncat(nrow(support_tls))\n## 118",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nis_triangle &lt;- function(x, y, z) {\n    max(x, y, z) &lt; x + y + z - max(x, y, z)\n}\n\ntriangles &lt;- input |&gt; \n    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle))\n\ntriangles |&gt; \n    summarise(n = sum(is_triangle)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 993",
     "crumbs": [
       "2016",
-      "Day 7: Internet Protocol Version 7"
+      "Day 3: Squares With Three Sides"
     ]
   },
   {
-    "objectID": "solutions/2016/07.html#part-two",
-    "href": "solutions/2016/07.html#part-two",
-    "title": "Day 7: Internet Protocol Version 7",
+    "objectID": "solutions/2016/03.html#part-two",
+    "href": "solutions/2016/03.html#part-two",
+    "title": "Day 3: Squares With Three Sides",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\naba_tests &lt;- input |&gt;\n    mutate(in_out = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\](.*\\\\])?[a-z]*\\\\2\\\\1\\\\2\"),\n           out_in = str_extract(string = original, pattern = \"([a-z])(?!\\\\1)([a-z])\\\\1[a-z]*\\\\[(.*\\\\[)?[a-z]*\\\\2\\\\1\\\\2\"))\n\nsupport_ssl &lt;- aba_tests |&gt; \n    filter(if_any(c(in_out, out_in), compose(`!`, is.na)))\n\ncat(nrow(support_ssl))\n## 260",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\ntriangles &lt;- tibble(sides = c(pull(input, x), pull(input, y), pull(input, z))) |&gt; \n\n    mutate(triangle = rep(x = 1:nrow(input),    each = 3),\n           side     = rep(x = c(\"x\", \"y\", \"z\"), times = nrow(input))) |&gt; \n\n    pivot_wider(values_from = sides, names_from = side) |&gt; \n\n    mutate(is_triangle = pmap_lgl(.l = list(x, y, z), .f = is_triangle), .keep = \"used\")\n\ntriangles |&gt; \n    summarise(n = sum(is_triangle)) |&gt; \n    pull(n) |&gt; \n    cat()\n## 1849",
     "crumbs": [
       "2016",
-      "Day 7: Internet Protocol Version 7"
+      "Day 3: Squares With Three Sides"
     ]
   },
   {
-    "objectID": "solutions/2017/02.html",
-    "href": "solutions/2017/02.html",
-    "title": "Day 2: Corruption Checksum",
+    "objectID": "solutions/2016/01.html",
+    "href": "solutions/2016/01.html",
+    "title": "Day 1: No Time for a Taxicab",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2016/01.txt\")",
+    "crumbs": [
+      "2016",
+      "Day 1: No Time for a Taxicab"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/01.html#part-one",
+    "href": "solutions/2016/01.html#part-one",
+    "title": "Day 1: No Time for a Taxicab",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionchange_direction() testsFull Table\n\n\n\n# extract direction and length from input (first entry NA)\nmove &lt;- c(NA, str_split_1(string = input, pattern = \", \"))\n\nturn &lt;- str_extract(string = move, pattern = \"L|R\")\n\nlength &lt;- str_extract(string = move, pattern = \"[0-9]+\") |&gt; as.integer()\n\n# pre-allocate vectors for x/y-positions and x/y-direction\nposition_x &lt;- integer(length = length(move))\nposition_y &lt;- integer(length = length(move))\n\ndirection_x &lt;- integer(length = length(move))\ndirection_y &lt;- integer(length = length(move))\n\n# initialize position and direction (everything is pre-populated as 0)\n# position_x[1] &lt;- 0\n# position_y[1] &lt;- 0\n# \n# direction_x[1] &lt;- 0\ndirection_y[1] &lt;- 1L\n\nchange_direction &lt;- function(current_direction, turn) {\n    \n    if (turn == \"R\") new_direction &lt;- rev(current_direction) * c(1L, -1L)\n    if (turn == \"L\") new_direction &lt;- rev(current_direction) * c(-1L, 1L)\n    \n    return(new_direction)\n}\n\n# calculate directions and positions\nfor (i in 2:length(move)) {\n    # get current x/y-direction\n    current_direction &lt;- c(direction_x[i-1], direction_y[i-1])\n    \n    # calculate new direction\n    new_direction &lt;- change_direction(current_direction, turn[i])\n    \n    # update values\n    direction_x[i] &lt;- new_direction[1]\n    direction_y[i] &lt;- new_direction[2]\n    \n    # get current x/y-position\n    current_position &lt;- c(position_x[i-1], position_y[i-1])\n    \n    # calculate new position\n    new_position &lt;- current_position + new_direction * length[i]\n    \n    # update values\n    position_x[i] &lt;- new_position[1]\n    position_y[i] &lt;- new_position[2]    \n}\n\n# collect all vectors in a table\nmoves &lt;- tibble(move, turn, length,\n                direction_x, direction_y,\n                position_x, position_y) |&gt; \n    mutate(distance = abs(position_x) + abs(position_y))\n\n# result\nmoves |&gt; \n    select(distance) |&gt; \n    tail(1) |&gt; \n    pull() |&gt; \n    cat()\n## 288\n\n\n\n\nunit_vectors &lt;- list(up    = c(0,1),\n                     right = c(1,0),\n                     down  = c(0,-1),\n                     left  = c(-1, 0))\n\n# right turn\nmap(.x = unit_vectors, .f = \\(vector) change_direction(vector, \"R\"))\n## $up\n## [1] 1 0\n## \n## $right\n## [1]  0 -1\n## \n## $down\n## [1] -1  0\n## \n## $left\n## [1] 0 1\n\n# left turn\nmap(.x = unit_vectors, .f = \\(vector) change_direction(vector, \"L\"))\n## $up\n## [1] -1  0\n## \n## $right\n## [1] 0 1\n## \n## $down\n## [1] 1 0\n## \n## $left\n## [1]  0 -1",
+    "crumbs": [
+      "2016",
+      "Day 1: No Time for a Taxicab"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/01.html#part-two",
+    "href": "solutions/2016/01.html#part-two",
+    "title": "Day 1: No Time for a Taxicab",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionVisited Twice\n\n\n\n# change_direction() allows no change in direction\nchange_direction &lt;- function(current_direction, turn) {\n    \n    if (turn == \"R\") new_direction &lt;- rev(current_direction) * c(1L, -1L)\n    if (turn == \"L\") new_direction &lt;- rev(current_direction) * c(-1L, 1L)\n    if (turn == \"N\") new_direction &lt;- current_direction\n    \n    return(new_direction)\n}\n\n# initialize new turn vector (first entry is NA as before)\nturn_unit &lt;- c(NA)\n\n# populate the vector: each turn + No turn for length - 1 times\nfor(i in seq_along(length)[-1]) {\n    turn_unit &lt;- c(turn_unit, turn[i], rep(\"N\", times = length[i]-1))\n}\n\n# length vector: NA + unit steps\nlength_unit &lt;- c(NA, rep(1L, times = length(turn_unit) - 1))\n\n\n# REPEAT WHAT'S DONE IN PART ONE\nposition_x &lt;- integer(length = length(turn_unit))\nposition_y &lt;- integer(length = length(turn_unit))\n\ndirection_x &lt;- integer(length = length(turn_unit))\ndirection_y &lt;- integer(length = length(turn_unit))\n\n# initialize position and direction (everything is pre-populated as 0)\n# position_x[1] &lt;- 0\n# position_y[1] &lt;- 0\n# \n# direction_x[1] &lt;- 0\ndirection_y[1] &lt;- 1L\n\n# calculate directions and positions\nfor (i in 2:length(turn_unit)) {\n    # get current x/y-direction\n    current_direction &lt;- c(direction_x[i-1], direction_y[i-1])\n    \n    # calculate new direction\n    new_direction &lt;- change_direction(current_direction, turn_unit[i])\n    \n    # update values\n    direction_x[i] &lt;- new_direction[1]\n    direction_y[i] &lt;- new_direction[2]\n    \n    # get current x/y-position\n    current_position &lt;- c(position_x[i-1], position_y[i-1])\n    \n    # calculate new position\n    new_position &lt;- current_position + new_direction * length_unit[i]\n    \n    # update values\n    position_x[i] &lt;- new_position[1]\n    position_y[i] &lt;- new_position[2]    \n}\n\n# collect all vectors in a table\nmoves_unit &lt;- tibble(turn_unit, length_unit,\n                     direction_x, direction_y,\n                     position_x, position_y) |&gt; \n    mutate(distance = abs(position_x) + abs(position_y))\n\n\n# results\nmoves_unit |&gt; \n    rowid_to_column(\"time\") |&gt; \n    group_by(position_x, position_y, distance) |&gt; \n    summarise(count = n(), second_time = nth(time, 2)) |&gt; \n    filter(count &gt; 1) |&gt; \n    arrange(second_time) |&gt; \n    select(distance) |&gt; \n    head(1) |&gt; \n    pull() |&gt; \n    cat()\n## 111\n\n\n\n\nmoves_unit |&gt; \n    rowid_to_column(\"time\") |&gt; \n    group_by(position_x, position_y, distance) |&gt; \n    summarise(count = n(), second_time = nth(time, 2)) |&gt; \n    filter(count &gt; 1) |&gt; \n    arrange(second_time)",
+    "crumbs": [
+      "2016",
+      "Day 1: No Time for a Taxicab"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/01.html#plot",
+    "href": "solutions/2016/01.html#plot",
+    "title": "Day 1: No Time for a Taxicab",
+    "section": "Plot",
+    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = position_x, y = position_y)) + \n    geom_path() +\n    theme_minimal()",
+    "crumbs": [
+      "2016",
+      "Day 1: No Time for a Taxicab"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/06.html",
+    "href": "solutions/2015/06.html",
+    "title": "Day 6: Probably a Fire Hazard",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv2(file = \"inputs/2015/06.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2015",
+      "Day 6: Probably a Fire Hazard"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/06.html#part-one",
+    "href": "solutions/2015/06.html#part-one",
+    "title": "Day 6: Probably a Fire Hazard",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\ninstructions &lt;- input |&gt; \n    mutate(instruction = str_extract(string = original, pattern = \"toggle|turn on|turn off\"),\n           position    = str_extract_all(string = original, pattern = \"[0-9]+\")) |&gt; \n    unnest_wider(col = position, names_sep = \"_\") |&gt; \n    mutate(across(.cols = starts_with(\"position\"), .fns = \\(x) as.integer(x) + 1L)) |&gt; \n    mutate(x_range = map2(.x = position_1, .y = position_3, .f = \\(a, b) a:b),\n           y_range = map2(.x = position_2, .y = position_4, .f = \\(a, b) a:b))\n\n# initial grid\ngrid_start &lt;- matrix(FALSE, 1e3, 1e3)\n\naction &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- !grid[x_range, y_range]\n    \n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- TRUE\n    \n    else if (instruction == \"turn off\")\n        grid[x_range, y_range] &lt;- FALSE\n    \n    return(grid)\n}\n\nmake_story &lt;- function(instructions, action, grid_start) {\n    # initialize list\n    grid_story &lt;- vector(mode = \"list\", length = nrow(instructions))\n    for (i in 1:nrow(instructions)) grid_story[[i]] &lt;- grid_start\n    \n    # perform instructions\n    for (i in seq_along(grid_story)) {\n        \n        if (i == 1) {\n            grid_story[[1]] &lt;- action(instruction = instructions[[1, \"instruction\"]][[1]],\n                                      x_range     = instructions[[1, \"x_range\"]][[1]],\n                                      y_range     = instructions[[1, \"y_range\"]][[1]],\n                                      grid        = grid_story[[1]])\n        } else {\n            grid_story[[i]] &lt;- action(instruction = instructions[[i, \"instruction\"]][[1]],\n                                      x_range     = instructions[[i, \"x_range\"]][[1]],\n                                      y_range     = instructions[[i, \"y_range\"]][[1]],\n                                      grid        = grid_story[[i-1]])\n        }\n    }\n    \n    return(grid_story)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid = make_story(instructions, action, grid_start),\n           n_on = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(n_on) |&gt; \n    cat()\n## 543903",
+    "crumbs": [
+      "2015",
+      "Day 6: Probably a Fire Hazard"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/06.html#part-two",
+    "href": "solutions/2015/06.html#part-two",
+    "title": "Day 6: Probably a Fire Hazard",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\n# initial grid\ngrid_start &lt;- matrix(0, 1e3, 1e3)\n\nnew_action &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 2\n\n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 1\n\n    else if (instruction == \"turn off\") \n        grid[x_range, y_range] &lt;- pmax(grid[x_range, y_range] - 1, 0)\n    \n    return(grid)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid       = make_story(instructions, new_action, grid_start),\n           brightness = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(brightness) |&gt; \n    cat()\n## 14687245",
+    "crumbs": [
+      "2015",
+      "Day 6: Probably a Fire Hazard"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/04.html",
+    "href": "solutions/2015/04.html",
+    "title": "Day 4: The Ideal Stocking Stuffer",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"bgvyzdsv\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")",
+    "crumbs": [
+      "2015",
+      "Day 4: The Ideal Stocking Stuffer"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/04.html#part-one",
+    "href": "solutions/2015/04.html#part-one",
+    "title": "Day 4: The Ideal Stocking Stuffer",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
+    "crumbs": [
+      "2015",
+      "Day 4: The Ideal Stocking Stuffer"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/04.html#part-two",
+    "href": "solutions/2015/04.html#part-two",
+    "title": "Day 4: The Ideal Stocking Stuffer",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
+    "crumbs": [
+      "2015",
+      "Day 4: The Ideal Stocking Stuffer"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/02.html",
+    "href": "solutions/2015/02.html",
+    "title": "Day 2: I Was Told There Would Be No Math",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/02.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2015",
+      "Day 2: I Was Told There Would Be No Math"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/02.html#part-one",
+    "href": "solutions/2015/02.html#part-one",
+    "title": "Day 2: I Was Told There Would Be No Math",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |&gt; \n\n    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
+    "crumbs": [
+      "2015",
+      "Day 2: I Was Told There Would Be No Math"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/02.html#part-two",
+    "href": "solutions/2015/02.html#part-two",
+    "title": "Day 2: I Was Told There Would Be No Math",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nribbon_length &lt;- function(l, w, h) {\n    2L * (l+w+h - max(l, w, h)) + l*w*h\n}\n\npaper &lt;- paper |&gt;\n    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))\n\npaper |&gt; \n    summarise(total_ribbon = sum(ribbon)) |&gt; \n    pull(total_ribbon) |&gt; \n    cat()\n## 3842356",
+    "crumbs": [
+      "2015",
+      "Day 2: I Was Told There Would Be No Math"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "This website contains my solutions to programming challenges proposed by Advent of Code"
+  },
+  {
+    "objectID": "solutions/2015/01.html",
+    "href": "solutions/2015/01.html",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/01.txt\")",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html#part-one",
+    "href": "solutions/2015/01.html#part-one",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nmoves &lt;- tibble(input  = str_split_1(string = input, pattern = \"\"),\n                move   = case_match(input, \"(\" ~  1L, \")\" ~ -1L),\n                height = cumsum(move))\n\nmoves |&gt; \n    tail(1) |&gt; \n    pull(height) |&gt; \n    cat()\n## 232",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html#part-two",
+    "href": "solutions/2015/01.html#part-two",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nmoves &lt;- moves |&gt; \n    rowid_to_column(\"time\")\n\nmoves |&gt; \n    filter(height == -1) |&gt; \n    head(1) |&gt; \n    pull(time) |&gt; \n    cat()\n## 1783",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html#plot",
+    "href": "solutions/2015/01.html#plot",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Plot",
+    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = time, y = height)) +\n    geom_line() +\n    theme_bw()",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/03.html",
+    "href": "solutions/2015/03.html",
+    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/03.txt\")",
+    "crumbs": [
+      "2015",
+      "Day 3: Perfectly Spherical Houses in a Vacuum"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/03.html#part-one",
+    "href": "solutions/2015/03.html#part-one",
+    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- tibble(input  = str_split_1(input, pattern = \"\"),\n                move_x = case_match(input, \"^\" ~  0, \"&gt;\" ~  1,\n                                           \"v\" ~  0, \"&lt;\" ~ -1),\n                move_y = case_match(input, \"^\" ~  1, \"&gt;\" ~  0,\n                                           \"v\" ~ -1, \"&lt;\" ~  0),\n                pos_x  = cumsum(move_x),\n                pos_y  = cumsum(move_y)) |&gt; \n    \n    add_row(pos_x = 0, pos_y = 0, .before = 1)\n    \nmoves |&gt; \n    distinct(pos_x, pos_y) |&gt; \n    nrow() |&gt;\n    cat()\n## 2081\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y)) +\n    geom_path() +\n    theme_bw()",
+    "crumbs": [
+      "2015",
+      "Day 3: Perfectly Spherical Houses in a Vacuum"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/03.html#part-two",
+    "href": "solutions/2015/03.html#part-two",
+    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- moves |&gt; \n\n    mutate(who = case_when(row_number() - 1  == 0 ~ \"both\",\n                           row_number() %% 2 == 0 ~ \"santa\",\n                           .default = \"robo\")) |&gt; \n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt; \n\n    mutate(across(.cols = starts_with(\"pos\"), .fns = \\(x) coalesce(x, 0)))\n\nmoves |&gt;\n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +\n    geom_path() +\n    theme_bw()",
+    "crumbs": [
+      "2015",
+      "Day 3: Perfectly Spherical Houses in a Vacuum"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/05.html",
+    "href": "solutions/2015/05.html",
+    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/05.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2015",
+      "Day 5: Doesn't He Have Intern-Elves For This?"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/05.html#part-one",
+    "href": "solutions/2015/05.html#part-one",
+    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_3more_vowels &lt;- function(string) {\n    str_count(string = string, pattern = \"[aeiou]\") &gt;= 3\n}\n\nhas_1more_double &lt;- function(string) {\n    str_count(string = string, pattern = \"([a-z])\\\\1\") &gt;= 1\n}\n\nhas_not_ab_cd_pq_xy &lt;- function(string) {\n    !str_detect(string = string, pattern = \"ab|cd|pq|xy\")\n}\n\nis_nice &lt;- function(string) {\n    has_3more_vowels(string) &\n    has_1more_double(string) &\n    has_not_ab_cd_pq_xy(string)\n}\n\nnice &lt;- input |&gt; \n    mutate(three_more_vowels = map_lgl(.x = original, .f = has_3more_vowels),\n           one_more_double   = map_lgl(.x = original, .f = has_1more_double),\n           not_ab_cd_pq_xy   = map_lgl(.x = original, .f = has_not_ab_cd_pq_xy),\n           nice              = map_lgl(.x = original, .f = is_nice))\n\nnice |&gt; \n    summarise(total_nice = sum(nice)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 258",
+    "crumbs": [
+      "2015",
+      "Day 5: Doesn't He Have Intern-Elves For This?"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/05.html#part-two",
+    "href": "solutions/2015/05.html#part-two",
+    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nhas_couple_twice &lt;- function(string) {\n    str_detect(string = string, pattern = \"[a-z]*([a-z]{2})[a-z]*\\\\1[a-z]*\")\n}\n\nhas_az_any_az &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])[a-z]\\\\1\")\n}\n\nis_nice_new &lt;- function(string) {\n    has_couple_twice(string) &\n    has_az_any_az(string)\n}\n\nnice_new &lt;- input |&gt; \n    mutate(couple_twice = map_lgl(.x = original, .f = has_couple_twice),\n           az_any_az    = map_lgl(.x = original, .f = has_az_any_az),\n           nice_new     = map_lgl(.x = original, .f = is_nice_new))\n\nnice_new |&gt; \n    summarise(total_nice = sum(nice_new)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 53",
+    "crumbs": [
+      "2015",
+      "Day 5: Doesn't He Have Intern-Elves For This?"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/07.html",
+    "href": "solutions/2015/07.html",
+    "title": "Day 7: Some Assembly Required",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "solutions/2015/07.html#bitwise-conversion",
+    "href": "solutions/2015/07.html#bitwise-conversion",
+    "title": "Day 7: Some Assembly Required",
+    "section": "Bitwise Conversion",
+    "text": "Bitwise Conversion\nTo convent a number into binary we can use the function base::intToBits.\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nmap(0:4, intToBits)\n## [[1]]\n##  [1] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[2]]\n##  [1] 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[3]]\n##  [1] 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[4]]\n##  [1] 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n## \n## [[5]]\n##  [1] 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## [26] 00 00 00 00 00 00 00\n\n\n\n\nSince we are considering a 16-bit signal (a number from 0 to 65535), we can consider just the first 16 elements of the output vector of the function intToBits.\n\nint_to_bit16_01 &lt;- function(x) {\n    intToBits(x)[1:16]\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nmap(0:4, int_to_bit16_01)\n## [[1]]\n##  [1] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[2]]\n##  [1] 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[3]]\n##  [1] 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[4]]\n##  [1] 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n## \n## [[5]]\n##  [1] 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00\n\n\n\n\nSince we are going to perform bitwise operations, it is convenient to convert the output to logical type.\n\nint_to_bit16 &lt;- function(x) {\n    as.logical(intToBits(x)[1:16])\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nmap(0:4, int_to_bit16)\n## [[1]]\n##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[2]]\n##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[3]]\n##  [1] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[4]]\n##  [1]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n## \n## [[5]]\n##  [1] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n\n\n\n\nFinally the inverse function is defined.\n\nbit16_to_int &lt;- function(x) {\n    sum(2^(0:15) * x)\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\n\n\nexample &lt;- map(0:4, int_to_bit16)\n\nmap(example, bit16_to_int)\n## [[1]]\n## [1] 0\n## \n## [[2]]\n## [1] 1\n## \n## [[3]]\n## [1] 2\n## \n## [[4]]\n## [1] 3\n## \n## [[5]]\n## [1] 4"
+  },
+  {
+    "objectID": "solutions/2015/07.html#bitwise-operations",
+    "href": "solutions/2015/07.html#bitwise-operations",
+    "title": "Day 7: Some Assembly Required",
+    "section": "Bitwise Operations",
+    "text": "Bitwise Operations\n\n\n\n\n\n\nCustom R Binary Operations\n\n\n\n\n\nIn R a binary operation can be defined using % at the start and the end of its name. For example:\n\n`%custom%` &lt;- function(x, y) 2 * x + y\n\n1 %custom% 2\n## [1] 4\n2 %custom% 1\n## [1] 5\n2 %custom% 3\n## [1] 7\n3 %custom% 2\n## [1] 8\n\n\n\n\n\n(all_zeros &lt;- int_to_bit16(0))\n##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n(one &lt;- int_to_bit16(1))\n##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n## [13] FALSE FALSE FALSE FALSE\n(zero_one &lt;- int_to_bit16(43690))\n##  [1] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE\n## [13] FALSE  TRUE FALSE  TRUE\n(one_zero &lt;- int_to_bit16(21845))\n##  [1]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE\n## [13]  TRUE FALSE  TRUE FALSE\n(all_ones &lt;- int_to_bit16(65535))\n##  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE\n## [16] TRUE\n\n\nAND\n\n\n\n`%AND%` &lt;- function(x, y) {\n    bit16_result &lt;- int_to_bit16(x) & int_to_bit16(y)\n    bit16_to_int(bit16_result)\n}\n\n\n\n\n\n\n\nExample\n\n\n\n\nzero_one %AND% one_zero\n## [1] 0"
+  },
+  {
+    "objectID": "solutions/2016/02.html",
+    "href": "solutions/2016/02.html",
+    "title": "Day 2: Bathroom Security",
+    "section": "",
+    "text": "Reference",
+    "crumbs": [
+      "2016",
+      "Day 2: Bathroom Security"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/02.html#part-one",
+    "href": "solutions/2016/02.html#part-one",
+    "title": "Day 2: Bathroom Security",
+    "section": "Part One",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2016/02.txt\")\n\nmoves &lt;- list(\"U\" = c(-1, 0), \"D\" = c(1, 0), \"L\" = c(0, -1), \"R\" = c(0, 1))\n\nnumpad &lt;- matrix(c(NA,  NA,  NA,  NA, NA,\n                   NA, \"1\", \"2\", \"3\", NA,\n                   NA, \"4\", \"5\", \"6\", NA,\n                   NA, \"7\", \"8\", \"9\", NA,\n                   NA,  NA,  NA,  NA, NA), ncol = 5, byrow = TRUE)\n\ncurrent &lt;- c(2, 2)\n\ncode &lt;- character(0)\n\nfor (digit in input) {\n    for (move in str_split_1(digit, pattern = \"\")){\n        after &lt;- current + moves[[move]]\n        \n        if (!is.na(numpad[after[1], after[2]]))\n            current &lt;- after\n    }\n    \n    code &lt;- c(code, numpad[current[1], current[2]])\n}\n\ncat(paste0(code, collapse = \"\"))\n## 12578",
+    "crumbs": [
+      "2016",
+      "Day 2: Bathroom Security"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/02.html#part-two",
+    "href": "solutions/2016/02.html#part-two",
+    "title": "Day 2: Bathroom Security",
+    "section": "Part Two",
+    "text": "Part Two\n\npad &lt;- matrix(c(NA,  NA,  NA,  NA,  NA,  NA, NA,\n                NA,  NA,  NA, \"1\",  NA,  NA, NA,\n                NA,  NA, \"2\", \"3\", \"4\",  NA, NA,\n                NA, \"5\", \"6\", \"7\", \"8\", \"9\", NA,\n                NA,  NA, \"A\", \"B\", \"C\",  NA, NA,\n                NA,  NA,  NA, \"D\",  NA,  NA, NA,\n                NA,  NA,  NA,  NA,  NA,  NA, NA), ncol = 7, byrow = TRUE)\n\ncurrent &lt;- c(4, 2)\n\ncode &lt;- character(0)\n\nfor (digit in input) {\n    for (move in str_split_1(digit, pattern = \"\")){\n        after &lt;- current + moves[[move]]\n        \n        if (!is.na(pad[after[1], after[2]])) \n            current &lt;- after\n    }\n    \n    code &lt;- c(code, pad[current[1], current[2]])\n}\n\ncat(paste0(code, collapse = \"\"))\n## 516DD",
+    "crumbs": [
+      "2016",
+      "Day 2: Bathroom Security"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/04.html",
+    "href": "solutions/2016/04.html",
+    "title": "Day 4: Security Through Obscurity",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2016/04.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2016",
+      "Day 4: Security Through Obscurity"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/04.html#part-one",
+    "href": "solutions/2016/04.html#part-one",
+    "title": "Day 4: Security Through Obscurity",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nchesum_eval &lt;- function(x) {\n    letters &lt;- x |&gt;\n        str_split_1(pattern = \"\") |&gt; \n        table() |&gt; \n        sort(decreasing = TRUE) |&gt; \n        names() |&gt; \n        _[1:5] |&gt; \n        paste0(collapse = \"\")\n}\n\nreal_rooms &lt;- input |&gt; \n    mutate(sector_id      = as.numeric(str_extract(string = original, pattern = \"[0-9]+\")),\n           checksum       = str_extract(string = original, pattern = \"(?&lt;=\\\\[)[a-z]*\"),\n           encrypted_name = str_extract(string = original, pattern = \"[a-z\\\\-]*(?=-\\\\d+)\"),    \n           encrypted_name = str_remove_all(string = encrypted_name, pattern = \"\\\\-\"),\n           chesum_eval    = map_chr(.x = encrypted_name, .f = chesum_eval),\n           real_room      = checksum == chesum_eval)\n\nreal_rooms |&gt; \n    filter(real_room == TRUE) |&gt;\n    summarise(total = sum(sector_id)) |&gt; \n    pull(total) |&gt; \n    cat()\n## 185371",
+    "crumbs": [
+      "2016",
+      "Day 4: Security Through Obscurity"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/04.html#part-two",
+    "href": "solutions/2016/04.html#part-two",
+    "title": "Day 4: Security Through Obscurity",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nroom_names &lt;- input |&gt; \n    mutate(sector_id = as.numeric(str_extract(string = original, pattern = \"[0-9]+\")),\n           encrypted = str_remove(string = original, pattern = \"-[0-9]+\\\\[[a-z]+\\\\]\"))\n\ndecrypt &lt;- function(string, sector_id) {\n    decrypted &lt;- character(0)\n    \n    for (element in str_split_1(string = string, pattern = \"\")) {\n        if (element == \"-\")\n            decrypted &lt;- c(decrypted, \" \")\n        else {\n            index &lt;- (which(letters == element) + sector_id) %% 26\n            decrypted &lt;- c(decrypted, letters[index])\n        }\n    }\n    \n    return(paste(decrypted, collapse = \"\"))\n}\n\nroom_names &lt;- room_names |&gt; \n    mutate(decrypted = map2_chr(.x = encrypted, .y = sector_id, .f = decrypt))\n\nroom_names |&gt; \n    filter(decrypted == \"northpole object storage\") |&gt; \n    pull(sector_id) |&gt; \n    cat()\n## 984\n\n\n\n\nroom_names |&gt; \n    rowid_to_column(\"row_number\") |&gt; \n    filter(decrypted == \"northpole object storage\") |&gt; \n    pull(\"row_number\") |&gt; \n    cat()\n## 476",
+    "crumbs": [
+      "2016",
+      "Day 4: Security Through Obscurity"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/06.html",
+    "href": "solutions/2016/06.html",
+    "title": "Day 6: Signals and Noise",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2016/06.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2016",
+      "Day 6: Signals and Noise"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/06.html#part-one",
+    "href": "solutions/2016/06.html#part-one",
+    "title": "Day 6: Signals and Noise",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nmode &lt;- function(x, na.rm = FALSE) {\n  if (na.rm) x &lt;- x[!is.na(x)]\n\n  ux &lt;- unique(x)\n  return(ux[which.max(tabulate(match(x, ux)))])\n}\n\nsplitted_strings &lt;- input |&gt; \n    mutate(char = str_split(string = original, pattern = \"\")) |&gt; \n    unnest_wider(col = char, names_sep = \"_\")\n\nsplitted_strings |&gt; \n    summarise(across(-original, mode)) |&gt; \n    unite(\"error_corrected\", everything(), sep = \"\") |&gt; \n    pull(error_corrected) |&gt; \n    cat()\n## xhnqpqql",
+    "crumbs": [
+      "2016",
+      "Day 6: Signals and Noise"
+    ]
+  },
+  {
+    "objectID": "solutions/2016/06.html#part-two",
+    "href": "solutions/2016/06.html#part-two",
+    "title": "Day 6: Signals and Noise",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nleast_common &lt;- function(x, na.rm = FALSE) {\n  if (na.rm) x &lt;- x[!is.na(x)]\n\n  ux &lt;- unique(x)\n  return(ux[which.min(tabulate(match(x, ux)))])\n}\n\nsplitted_strings |&gt; \n    summarise(across(-original, least_common)) |&gt; \n    unite(\"error_corrected\", everything(), sep = \"\") |&gt; \n    pull(error_corrected) |&gt; \n    cat()\n## brhailro",
+    "crumbs": [
+      "2016",
+      "Day 6: Signals and Noise"
+    ]
+  },
+  {
+    "objectID": "solutions/2017/01.html",
+    "href": "solutions/2017/01.html",
+    "title": "Day 1: Inverse Captcha",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2017",
-      "Day 2: Corruption Checksum"
+      "Day 1: Inverse Captcha"
     ]
   },
   {
-    "objectID": "solutions/2017/02.html#part-one",
-    "href": "solutions/2017/02.html#part-one",
-    "title": "Day 2: Corruption Checksum",
+    "objectID": "solutions/2017/01.html#part-one",
+    "href": "solutions/2017/01.html#part-one",
+    "title": "Day 1: Inverse Captcha",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_table(file = \"inputs/2017/02.txt\", col_names = FALSE)\n\nmax_minus_min &lt;- function(x) max(x) - min(x)\n\ninput |&gt; \n    rowwise() |&gt;\n    mutate(line_check = max_minus_min(across(everything()))) |&gt; \n    ungroup() |&gt;\n    summarise(checksum = sum(line_check)) |&gt; \n    pull(checksum) |&gt; \n    cat()\n## 21845",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2017/01.txt\")\n\ninput &lt;- str_split_1(string = input, pattern = \"\") |&gt; as.integer()\n\ndigits &lt;- tibble(digit   = input,\n                 compare = c(input[-1], input[1])) |&gt; \n    mutate(match = if_else(digit == compare, digit, 0L))\n\ndigits |&gt; \n    summarise(total = sum(match)) |&gt; \n    pull(total) |&gt; \n    cat()\n## 1119",
     "crumbs": [
       "2017",
-      "Day 2: Corruption Checksum"
+      "Day 1: Inverse Captcha"
     ]
   },
   {
-    "objectID": "solutions/2017/02.html#part-two",
-    "href": "solutions/2017/02.html#part-two",
-    "title": "Day 2: Corruption Checksum",
+    "objectID": "solutions/2017/01.html#part-two",
+    "href": "solutions/2017/01.html#part-two",
+    "title": "Day 1: Inverse Captcha",
     "section": "Part Two",
-    "text": "Part Two\n\ndivision &lt;- function(x) {\n    for(i in seq_along(x)) {\n        for(j in seq_along(x)) {\n            if (x[i] %% x[j] == 0 & i != j) return(x[i] / x[j])\n        }\n    }\n}\n\n# I couldn't find a purrr (or tidyverse) way of doing this\ninput |&gt; \n    apply(MARGIN = 1, FUN = division) |&gt; \n    sum() |&gt; \n    cat()\n## 191",
+    "text": "Part Two\n\nmid &lt;- nrow(digits) / 2\n\ndigits &lt;- tibble(digit   = input,\n                 compare = c(input[-(1:mid)], input[1:mid])) |&gt;\n    mutate(match = if_else(digit == compare, digit, 0L))\n\ndigits |&gt;\n    summarise(total = sum(match)) |&gt;\n    pull(total) |&gt;\n    cat()\n## 1420",
     "crumbs": [
       "2017",
-      "Day 2: Corruption Checksum"
+      "Day 1: Inverse Captcha"
     ]
   },
   {
-    "objectID": "solutions/2018/02.html",
-    "href": "solutions/2018/02.html",
-    "title": "Day 2: Inventory Management System",
+    "objectID": "solutions/2018/01.html",
+    "href": "solutions/2018/01.html",
+    "title": "Day 1: Chronal Calibration",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2018",
-      "Day 2: Inventory Management System"
+      "Day 1: Chronal Calibration"
     ]
   },
   {
-    "objectID": "solutions/2018/02.html#part-one",
-    "href": "solutions/2018/02.html#part-one",
-    "title": "Day 2: Inventory Management System",
+    "objectID": "solutions/2018/01.html#part-one",
+    "href": "solutions/2018/01.html#part-one",
+    "title": "Day 1: Chronal Calibration",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2018/02.txt\")\n\ndoubles &lt;- function(x)\n    any(table(str_split_1(x, pattern = \"\")) == 2)\n\ntriples &lt;- function(x)\n    any(table(str_split_1(x, pattern = \"\")) == 3)\n\ncat(sum(map_lgl(input, doubles)) * sum(map_lgl(input, triples)))\n## 6944",
+    "text": "Part One\n\nlibrary(tidyverse)\ninput &lt;- read_lines(file = \"inputs/2018/01.txt\") |&gt; as.integer()\n\ncat(sum(input))\n## 466",
     "crumbs": [
       "2018",
-      "Day 2: Inventory Management System"
+      "Day 1: Chronal Calibration"
     ]
   },
   {
-    "objectID": "solutions/2018/02.html#part-two",
-    "href": "solutions/2018/02.html#part-two",
-    "title": "Day 2: Inventory Management System",
+    "objectID": "solutions/2018/01.html#part-two",
+    "href": "solutions/2018/01.html#part-two",
+    "title": "Day 1: Chronal Calibration",
     "section": "Part Two",
-    "text": "Part Two\n\nfind_almost_equal &lt;- function(input)\n    for (i in 1:(length(input) - 1))\n        for (j in (i+1):length(input))\n            if (adist(input[i], input[j]) == 1)\n                return(c(i,j))\n\ntargets &lt;- find_almost_equal(input)\n\ntarget_1 &lt;- str_split_1(input[targets[1]], pattern = \"\")\ntarget_2 &lt;- str_split_1(input[targets[2]], pattern = \"\")\n\nstr_split_1(input[targets[1]], pattern = \"\")[target_1 == target_2] |&gt; \n    paste0(collapse = \"\") |&gt; \n    cat()\n## srijafjzloguvlntqmphenbkd",
+    "text": "Part Two\n\n# 136 found after some trials, using optimal value to optimize execution\nfrequencies &lt;- tibble(change = rep(input, times = 136),\n                      result = cumsum(change)) |&gt; \n    rowid_to_column(\"time\")\n\nfrequencies |&gt; \n    group_by(result) |&gt; \n    summarise(count = n(), second_time = nth(time, 2)) |&gt; \n    filter(count &gt; 1) |&gt; \n    arrange(second_time) |&gt; \n    head(1) |&gt; \n    pull(result) |&gt; \n    cat()\n## 750",
     "crumbs": [
       "2018",
-      "Day 2: Inventory Management System"
+      "Day 1: Chronal Calibration"
     ]
   },
   {
-    "objectID": "solutions/2019/02.html",
-    "href": "solutions/2019/02.html",
-    "title": "Day 2: 1202 Program Alarm",
+    "objectID": "solutions/2019/01.html",
+    "href": "solutions/2019/01.html",
+    "title": "Day 1: The Tyranny of the Rocket Equation",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2019",
-      "Day 2: 1202 Program Alarm"
+      "Day 1: The Tyranny of the Rocket Equation"
     ]
   },
   {
-    "objectID": "solutions/2019/02.html#part-one",
-    "href": "solutions/2019/02.html#part-one",
-    "title": "Day 2: 1202 Program Alarm",
+    "objectID": "solutions/2019/01.html#part-one",
+    "href": "solutions/2019/01.html#part-one",
+    "title": "Day 1: The Tyranny of the Rocket Equation",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2019/02.txt\") |&gt; \n    str_split_1(pattern = \",\") |&gt; \n    as.integer()\n\ninput[1 + 1] &lt;- 12\ninput[2 + 1] &lt;- 2\n\n# starting position\npointer &lt;- 0 + 1\n\nrepeat{\n    if (input[pointer] == 99) break\n    \n    # get values (1st value = noun, 2nd value = verb)\n    noun &lt;- input[input[pointer + 1] + 1]\n    verb &lt;- input[input[pointer + 2] + 1]\n    \n    # target location\n    target_pointer &lt;- input[pointer + 3] + 1\n    \n    # replace value\n    if (input[pointer] == 1) \n        input[target_pointer] &lt;- noun + verb\n    \n    else if (input[pointer] == 2)\n        input[target_pointer] &lt;- noun * verb\n    \n    # update pointer\n    pointer &lt;- pointer + 4\n}\n\ncat(input[1])\n## 3562624",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nlibrary(tidyverse)\n\ncalculate_fuel &lt;- function(mass) floor(mass / 3) - 2\n\ninput &lt;- read_csv(file = \"inputs/2019/01.txt\", col_names = \"mass\") |&gt; \n    mutate(fuel = map_dbl(mass, calculate_fuel))\n\ninput |&gt; \n    summarise(total_fuel = sum(fuel)) |&gt; \n    pull(total_fuel) |&gt; \n    cat()\n## 3457681\n\n\n\n\n# look at the full table\ninput |&gt; print(n = nrow(input))\n## # A tibble: 100 × 2\n##       mass  fuel\n##      &lt;dbl&gt; &lt;dbl&gt;\n##   1 118868 39620\n##   2  88841 29611\n##   3 133680 44558\n##   4 148066 49353\n##   5  70887 23627\n##   6  93213 31069\n##   7 124243 41412\n##   8  92767 30920\n##   9  71322 23772\n##  10  86793 28929\n##  11  53650 17881\n##  12 102703 34232\n##  13 146958 48984\n##  14  53031 17675\n##  15 148282 49425\n##  16 124989 41661\n##  17  74375 24789\n##  18 122044 40679\n##  19 122693 40895\n##  20  74204 24732\n##  21  74869 24954\n##  22  81803 27265\n##  23 124436 41476\n##  24  68495 22829\n##  25  74865 24953\n##  26  70765 23586\n##  27  81537 27177\n##  28  61376 20456\n##  29 145342 48445\n##  30 137159 45717\n##  31 115230 38408\n##  32 119293 39762\n##  33 147126 49040\n##  34 130191 43395\n##  35 131330 43774\n##  36 122891 40961\n##  37 135407 45133\n##  38 116334 38776\n##  39 130325 43439\n##  40 138521 46171\n##  41  71955 23983\n##  42  53806 17933\n##  43 122260 40751\n##  44 102573 34189\n##  45  70032 23342\n##  46  75981 25325\n##  47 111555 37183\n##  48 135654 45216\n##  49  50805 16933\n##  50 122186 40726\n##  51 138172 46055\n##  52  96422 32138\n##  53 124781 41591\n##  54  55894 18629\n##  55  54337 18110\n##  56 149926 49973\n##  57  63809 21267\n##  58 146163 48719\n##  59  55131 18375\n##  60  55796 18596\n##  61  92771 30921\n##  62  80288 26760\n##  63 111619 37204\n##  64 134602 44865\n##  65  82245 27413\n##  66  72505 24166\n##  67 117209 39067\n##  68  92383 30792\n##  69 149101 49698\n##  70 135399 45131\n##  71 112166 37386\n##  72 134000 44664\n##  73  88771 29588\n##  74  63963 21319\n##  75 103731 34575\n##  76  74915 24969\n##  77 146347 48780\n##  78 125390 41794\n##  79 126249 42081\n##  80 131534 43842\n##  81 142038 47344\n##  82  55327 18440\n##  83  58784 19592\n##  84  85003 28332\n##  85  65909 21967\n##  86  89879 29957\n##  87 128715 42903\n##  88 138559 46184\n##  89 146209 48734\n##  90 145040 48344\n##  91 116032 38675\n##  92 130046 43346\n##  93 131664 43886\n##  94 125899 41964\n##  95 141918 47304\n##  96  88426 29473\n##  97  50488 16827\n##  98  67943 22645\n##  99  79677 26557\n## 100  94858 31617",
     "crumbs": [
       "2019",
-      "Day 2: 1202 Program Alarm"
+      "Day 1: The Tyranny of the Rocket Equation"
     ]
   },
   {
-    "objectID": "solutions/2019/02.html#part-two",
-    "href": "solutions/2019/02.html#part-two",
-    "title": "Day 2: 1202 Program Alarm",
+    "objectID": "solutions/2019/01.html#part-two",
+    "href": "solutions/2019/01.html#part-two",
+    "title": "Day 1: The Tyranny of the Rocket Equation",
     "section": "Part Two",
-    "text": "Part Two\n\n# create a function\noutput &lt;- function(input){\n    # starting position\n    pointer &lt;- 0 + 1\n    \n    repeat{\n        if (input[pointer] == 99) break\n        \n        # get values (1st value = noun, 2nd value = verb)\n        noun &lt;- input[input[pointer + 1] + 1]\n        verb &lt;- input[input[pointer + 2] + 1]\n        \n        # target location\n        target_pointer &lt;- input[pointer + 3] + 1\n        \n        # replace value\n        if (input[pointer] == 1) \n            input[target_pointer] &lt;- noun + verb\n        \n        else if (input[pointer] == 2)\n            input[target_pointer] &lt;- noun * verb\n        \n        # update pointer\n        pointer &lt;- pointer + 4\n    }\n    \n    return(input[1])\n}\n\n# search for noun and verb\nfor (noun in 0:99) {\n    for (verb in 0:99) {\n        input &lt;- read_lines(file = \"inputs/2019/02.txt\") |&gt; \n            str_split_1(pattern = \",\") |&gt; \n            as.integer()\n        \n        input[1 + 1] &lt;- noun\n        input[2 + 1] &lt;- verb\n        \n        if (output(input) == 19690720) cat(100 * noun + verb)\n        \n    }\n}\n## 8298",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\ncalculate_fuel_adj &lt;- function(mass) {\n    \n    total &lt;- calculate_fuel(mass)\n    \n    repeat{\n        new &lt;- calculate_fuel(total[length(total)])\n        \n        if (new &gt; 0) total &lt;- c(total, new) else break\n    }\n    \n    return(sum(total))\n}\n\ninput &lt;- input |&gt; \n    mutate(fuel_adj = map_dbl(mass, calculate_fuel_adj))\n\ninput |&gt; \n    summarise(total_fuel_adj = sum(fuel_adj)) |&gt; \n    pull(total_fuel_adj) |&gt; \n    cat()\n## 5183653\n\n\n\n\n# look at the full table\ninput |&gt; print(n = nrow(input))\n## # A tibble: 100 × 3\n##       mass  fuel fuel_adj\n##      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n##   1 118868 39620    59402\n##   2  88841 29611    44387\n##   3 133680 44558    66808\n##   4 148066 49353    74001\n##   5  70887 23627    35412\n##   6  93213 31069    46574\n##   7 124243 41412    62088\n##   8  92767 30920    46351\n##   9  71322 23772    35629\n##  10  86793 28929    43366\n##  11  53650 17881    26795\n##  12 102703 34232    51317\n##  13 146958 48984    73447\n##  14  53031 17675    26486\n##  15 148282 49425    74108\n##  16 124989 41661    62464\n##  17  74375 24789    37157\n##  18 122044 40679    60989\n##  19 122693 40895    61313\n##  20  74204 24732    37070\n##  21  74869 24954    37404\n##  22  81803 27265    40869\n##  23 124436 41476    62184\n##  24  68495 22829    34214\n##  25  74865 24953    37401\n##  26  70765 23586    35352\n##  27  81537 27177    40738\n##  28  61376 20456    30657\n##  29 145342 48445    72639\n##  30 137159 45717    68546\n##  31 115230 38408    57582\n##  32 119293 39762    59614\n##  33 147126 49040    73530\n##  34 130191 43395    65063\n##  35 131330 43774    65633\n##  36 122891 40961    61412\n##  37 135407 45133    67669\n##  38 116334 38776    58134\n##  39 130325 43439    65127\n##  40 138521 46171    69229\n##  41  71955 23983    35946\n##  42  53806 17933    26872\n##  43 122260 40751    61097\n##  44 102573 34189    51255\n##  45  70032 23342    34985\n##  46  75981 25325    37959\n##  47 111555 37183    55747\n##  48 135654 45216    67795\n##  49  50805 16933    25373\n##  50 122186 40726    61059\n##  51 138172 46055    69053\n##  52  96422 32138    48178\n##  53 124781 41591    62358\n##  54  55894 18629    27917\n##  55  54337 18110    27137\n##  56 149926 49973    74927\n##  57  63809 21267    31873\n##  58 146163 48719    73048\n##  59  55131 18375    27536\n##  60  55796 18596    27866\n##  61  92771 30921    46354\n##  62  80288 26760    40113\n##  63 111619 37204    55779\n##  64 134602 44865    67267\n##  65  82245 27413    41091\n##  66  72505 24166    36222\n##  67 117209 39067    58571\n##  68  92383 30792    46160\n##  69 149101 49698    74517\n##  70 135399 45131    67665\n##  71 112166 37386    56050\n##  72 134000 44664    66967\n##  73  88771 29588    44352\n##  74  63963 21319    31951\n##  75 103731 34575    51834\n##  76  74915 24969    37425\n##  77 146347 48780    73140\n##  78 125390 41794    62664\n##  79 126249 42081    63093\n##  80 131534 43842    65734\n##  81 142038 47344    70985\n##  82  55327 18440    27633\n##  83  58784 19592    29359\n##  84  85003 28332    42469\n##  85  65909 21967    32924\n##  86  89879 29957    44906\n##  87 128715 42903    64325\n##  88 138559 46184    69247\n##  89 146209 48734    73071\n##  90 145040 48344    72485\n##  91 116032 38675    57983\n##  92 130046 43346    64989\n##  93 131664 43886    65799\n##  94 125899 41964    62918\n##  95 141918 47304    70927\n##  96  88426 29473    44181\n##  97  50488 16827    25215\n##  98  67943 22645    33940\n##  99  79677 26557    39808\n## 100  94858 31617    47398",
     "crumbs": [
       "2019",
-      "Day 2: 1202 Program Alarm"
+      "Day 1: The Tyranny of the Rocket Equation"
     ]
   },
   {
-    "objectID": "solutions/2020/02.html",
-    "href": "solutions/2020/02.html",
-    "title": "Day 2: Password Philosophy",
+    "objectID": "solutions/2020/01.html",
+    "href": "solutions/2020/01.html",
+    "title": "Day 1: Report Repair",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2020",
-      "Day 2: Password Philosophy"
+      "Day 1: Report Repair"
     ]
   },
   {
-    "objectID": "solutions/2020/02.html#part-one",
-    "href": "solutions/2020/02.html#part-one",
-    "title": "Day 2: Password Philosophy",
+    "objectID": "solutions/2020/01.html#part-one",
+    "href": "solutions/2020/01.html#part-one",
+    "title": "Day 1: Report Repair",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2020/02.txt\")\n\npasswords &lt;- tibble(original = input) |&gt; \n    \n    separate_wider_delim(cols = original,\n                         names = c(\"range\", \"letter\", \"password\"),\n                         delim = \" \") |&gt;\n    \n    mutate(letter = str_replace(string = letter,\n                                pattern = \":\",\n                                replacement = \"\")) |&gt;\n    \n    separate_wider_delim(cols = range, names = c(\"min\", \"max\"), delim = \"-\") |&gt; \n    \n    mutate(across(c(min, max), as.integer))\n\nvalidation_1 &lt;- passwords |&gt; \n    mutate(matches = str_count(password, pattern = letter),\n           valid   = between(matches, min, max))\n\nvalidation_1\n## # A tibble: 1,000 × 6\n##      min   max letter password             matches valid\n##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                  &lt;int&gt; &lt;lgl&gt;\n##  1    15    16 l      klfbblslvjclmlnqklvg       6 FALSE\n##  2     6    13 h      pghjchdxhnjhjd             4 FALSE\n##  3     4    13 n      nnznntzznqnzbtzj           6 TRUE \n##  4    10    16 r      nrrrrkrjtxwrrrwx           8 FALSE\n##  5     1     6 t      rttftttttttttmdttttt      16 FALSE\n##  6     4    12 l      zhllfxlmvqtnhx             3 FALSE\n##  7     6     8 d      wxpwgdbjtffddkb            3 FALSE\n##  8     7     9 q      rqcqxjqhsm                 3 FALSE\n##  9     6     8 x      xxxfxdxxx                  7 TRUE \n## 10     5     9 d      dwnwnbsddfmc               3 FALSE\n## # ℹ 990 more rows\n\nvalidation_1 |&gt; \n    count(valid) |&gt; \n    filter(valid == TRUE) |&gt; \n    pull(n) |&gt; \n    cat()\n## 424",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2020/01.txt\") |&gt; as.integer()\n\nfor (i in 1:(length(input)-1)) {\n    for (j in (i+1):length(input)) {\n        if (input[i] + input[j] == 2020) cat(input[i] * input[j])\n    }\n}\n## 956091",
     "crumbs": [
       "2020",
-      "Day 2: Password Philosophy"
+      "Day 1: Report Repair"
     ]
   },
   {
-    "objectID": "solutions/2020/02.html#part-two",
-    "href": "solutions/2020/02.html#part-two",
-    "title": "Day 2: Password Philosophy",
+    "objectID": "solutions/2020/01.html#part-two",
+    "href": "solutions/2020/01.html#part-two",
+    "title": "Day 1: Report Repair",
     "section": "Part Two",
-    "text": "Part Two\n\nvalidation_2 &lt;- passwords |&gt; \n    mutate(first   = str_sub(password, start = min, end = min),\n           second  = str_sub(password, start = max, end = max),\n           matches = (first == letter) + (second == letter))\n\nvalidation_2\n## # A tibble: 1,000 × 7\n##      min   max letter password             first second matches\n##    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                &lt;chr&gt; &lt;chr&gt;    &lt;int&gt;\n##  1    15    16 l      klfbblslvjclmlnqklvg n     q            0\n##  2     6    13 h      pghjchdxhnjhjd       h     j            1\n##  3     4    13 n      nnznntzznqnzbtzj     n     b            1\n##  4    10    16 r      nrrrrkrjtxwrrrwx     x     x            0\n##  5     1     6 t      rttftttttttttmdttttt r     t            1\n##  6     4    12 l      zhllfxlmvqtnhx       l     n            1\n##  7     6     8 d      wxpwgdbjtffddkb      d     j            1\n##  8     7     9 q      rqcqxjqhsm           q     s            1\n##  9     6     8 x      xxxfxdxxx            d     x            1\n## 10     5     9 d      dwnwnbsddfmc         n     d            1\n## # ℹ 990 more rows\n\nvalidation_2 |&gt; \n    filter(matches == 1) |&gt; \n    nrow() |&gt; \n    cat()\n## 747",
+    "text": "Part Two\n\nfor (i in 1:(length(input)-2)) {\n    for (j in (i+1):length(input)-1) {\n        for (k in (j+1):length(input)) {\n        if (input[i] + input[j] + input[k] == 2020)\n            cat(input[i] * input[j] * input[k])\n        }\n    }\n}\n## 79734368",
     "crumbs": [
       "2020",
-      "Day 2: Password Philosophy"
+      "Day 1: Report Repair"
     ]
   },
   {
-    "objectID": "solutions/2021/02.html",
-    "href": "solutions/2021/02.html",
-    "title": "Day 2: Dive!",
+    "objectID": "solutions/2021/01.html",
+    "href": "solutions/2021/01.html",
+    "title": "Day 1: Sonar Sweep",
     "section": "",
     "text": "Reference",
     "crumbs": [
       "2021",
-      "Day 2: Dive!"
+      "Day 1: Sonar Sweep"
     ]
   },
   {
-    "objectID": "solutions/2021/02.html#part-one",
-    "href": "solutions/2021/02.html#part-one",
-    "title": "Day 2: Dive!",
+    "objectID": "solutions/2021/01.html#part-one",
+    "href": "solutions/2021/01.html#part-one",
+    "title": "Day 1: Sonar Sweep",
     "section": "Part One",
-    "text": "Part One\n\nlibrary(tidyverse)\n\ncommands &lt;- read_delim(file      = \"inputs/2021/02.txt\",\n                       col_names = c(\"direction\", \"length\"))\n\ncommands &lt;- commands |&gt; \n    mutate(x = if_else(direction == \"forward\", 1, 0),\n           y = case_match(direction,\n                          \"down\"    ~ 1,\n                          \"forward\" ~ 0,\n                          \"up\"      ~ -1)) |&gt; \n    select(-direction) |&gt; \n    mutate(across(everything(), as.integer)) |&gt;\n    mutate(x = x * length,\n           y = y * length)\n\ncommands |&gt;\n    summarise(x = sum(x),\n              y = sum(y)) |&gt;\n    mutate(product = x * y) |&gt;\n    pull(product) |&gt;\n    cat()\n## 1762050",
+    "text": "Part One\n\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2021/01.txt\") |&gt; as.integer()\n\ncat(sum(diff(input) &gt; 0))\n## 1184",
     "crumbs": [
       "2021",
-      "Day 2: Dive!"
+      "Day 1: Sonar Sweep"
     ]
   },
   {
-    "objectID": "solutions/2021/02.html#part-two",
-    "href": "solutions/2021/02.html#part-two",
-    "title": "Day 2: Dive!",
+    "objectID": "solutions/2021/01.html#part-two",
+    "href": "solutions/2021/01.html#part-two",
+    "title": "Day 1: Sonar Sweep",
     "section": "Part Two",
-    "text": "Part Two\n\ncommands &lt;- read_delim(file      = \"inputs/2021/02.txt\",\n                       col_names = c(\"direction\", \"length\")) |&gt; \n    mutate(aim = NA_real_, x = NA_real_, y = NA_real_) |&gt; \n    add_row(direction = NA, length = NA, aim = 0, x = 0, y = 0, .before = 1)\n\nfor (i in 2:nrow(commands)){\n    if (commands[i, \"direction\"] == \"down\") {\n        commands[i, \"aim\"] = commands[i-1, \"aim\"] + commands[i, \"length\"]\n        commands[i, \"x\"]   = commands[i-1, \"x\"]\n        commands[i, \"y\"]   = commands[i-1, \"y\"]\n    }\n    \n    else if (commands[i, \"direction\"] == \"up\") {\n        commands[i, \"aim\"] = commands[i-1, \"aim\"] - commands[i, \"length\"]\n        commands[i, \"x\"]   = commands[i-1, \"x\"]\n        commands[i, \"y\"]   = commands[i-1, \"y\"]\n    }\n    \n    else if (commands[i, \"direction\"] == \"forward\") {\n        commands[i, \"aim\"] = commands[i-1, \"aim\"]\n        commands[i, \"x\"]   = commands[i-1, \"x\"] + commands[i, \"length\"]\n        commands[i, \"y\"]   = commands[i-1, \"y\"] + commands[i, \"aim\"] * commands[i, \"length\"]\n    }\n}\n\ncommands |&gt;\n    slice(nrow(commands)) |&gt; \n    mutate(product = x * y) |&gt; \n    pull(product) |&gt; \n    cat()\n## 1855892637",
+    "text": "Part Two\n\nlibrary(slider)\n\nnew_input &lt;- slide_sum(input, after = 2, complete = TRUE)\ncat(sum(diff(new_input) &gt; 0, na.rm = TRUE))\n## 1158",
     "crumbs": [
       "2021",
-      "Day 2: Dive!"
+      "Day 1: Sonar Sweep"
+    ]
+  },
+  {
+    "objectID": "solutions/2021/03.html",
+    "href": "solutions/2021/03.html",
+    "title": "Day 3: Binary Diagnostic",
+    "section": "",
+    "text": "Reference",
+    "crumbs": [
+      "2021",
+      "Day 3: Binary Diagnostic"
+    ]
+  },
+  {
+    "objectID": "solutions/2021/03.html#part-one",
+    "href": "solutions/2021/03.html#part-one",
+    "title": "Day 3: Binary Diagnostic",
+    "section": "Part One",
+    "text": "Part One\n\nlibrary(tidyverse)\n\nmost_common &lt;- function(x) {\n    ux &lt;- unique(x)\n    ux[which.max(tabulate(match(x, ux)))]\n}\n\nleast_common &lt;- function(x) {\n    ux &lt;- unique(x)\n    ux[which.min(tabulate(match(x, ux)))]\n}\n\ninput &lt;- read_lines(file = \"inputs/2021/03.txt\")\n\nwidths &lt;- rep(1, 12) # each line has 12 digits\nnames &lt;- map2_chr(rep(\"d\", 12), 1:12, paste0)\nnames(widths) &lt;- names\n\ndigits &lt;- tibble(original = input) |&gt; \n    separate_wider_position(cols = original, widths = widths)\n\ngamma_rate &lt;- digits |&gt;\n    map_chr(most_common) |&gt; \n    paste0(collapse = \"\") |&gt; \n    strtoi(base = 2)\n\nepsilon_rate &lt;- digits |&gt;\n    map_chr(least_common) |&gt; \n    paste0(collapse = \"\")|&gt; \n    strtoi(base = 2)\n\ncat(gamma_rate * epsilon_rate)\n## 3009600",
+    "crumbs": [
+      "2021",
+      "Day 3: Binary Diagnostic"
+    ]
+  },
+  {
+    "objectID": "solutions/2021/03.html#part-two",
+    "href": "solutions/2021/03.html#part-two",
+    "title": "Day 3: Binary Diagnostic",
+    "section": "Part Two",
+    "text": "Part Two\n\nmost_common &lt;- function(x) {\n    ux &lt;- sort(unique(x))\n    \n    table &lt;- tabulate(match(x, ux))\n    \n    # if 0 and 1 are equally common, keep values with a 1\n    # in the position being considered\n    if (table[1] == table[2]) return(ux[2])\n    \n    else return(ux[which.max(table)])\n}\n\nleast_common &lt;- function(x) {\n    ux &lt;- sort(unique(x))\n    \n    table &lt;- tabulate(match(x, ux))\n    \n    # if 0 and 1 are equally common, keep values with a 0\n    # in the position being considered\n    if (table[1] == table[2]) return(ux[1])\n    \n    else return(ux[which.min(table)])\n}\n\noxygen_generator_rating &lt;- digits\n\nfor (i in names) {\n    value &lt;- oxygen_generator_rating |&gt;\n        select(all_of(i)) |&gt;\n        map_chr(most_common)\n    \n    oxygen_generator_rating &lt;- oxygen_generator_rating |&gt;\n        filter(.data[[i]] == value)\n    \n    # if only one number left, stop\n    if (nrow(oxygen_generator_rating) == 1) break\n}\n\noxygen_generator_rating &lt;- oxygen_generator_rating |&gt;\n    paste0(collapse = \"\")|&gt;\n    strtoi(base = 2)\n\nCO2_scrubber_rating &lt;- digits\n\nfor (i in names) {\n    value &lt;- CO2_scrubber_rating |&gt;\n        select(all_of(i)) |&gt;\n        map_chr(least_common)\n    \n    CO2_scrubber_rating &lt;- CO2_scrubber_rating |&gt;\n        filter(.data[[i]] == value)\n    \n    # if only one number left, stop\n    if (nrow(CO2_scrubber_rating) == 1) break\n}\n\nCO2_scrubber_rating &lt;- CO2_scrubber_rating |&gt;\n    paste0(collapse = \"\")|&gt;\n    strtoi(base = 2)\n\ncat(oxygen_generator_rating * CO2_scrubber_rating)\n## 6940518",
+    "crumbs": [
+      "2021",
+      "Day 3: Binary Diagnostic"
     ]
   },
   {
