@@ -103,21 +103,33 @@
     "href": "solutions/2021/04.html",
     "title": "Day 4: Giant Squid",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ndrawn_numbers &lt;- read_lines(file = \"inputs/2021/04.txt\", n_max = 1) |&gt; \n    str_split_1(pattern = \",\")\n\nboards &lt;- seq(from = 2, by = 6, length = 100) |&gt; \n    map(\\(skip) read_table(file = \"inputs/2021/04.txt\",\n                           skip = skip,\n                           n_max = 5,\n                           col_types = \"ccccc\",\n                           col_names = FALSE) |&gt; \n            as.matrix() |&gt; \n            unname())"
+    "text": "Reference\nlibrary(tidyverse)\n\ndrawn_numbers &lt;- read_lines(file = \"inputs/2021/04.txt\", n_max = 1) |&gt; \n    str_split_1(pattern = \",\")\n\nboards &lt;- seq(from = 2, by = 6, length = 100) |&gt; \n    map(\\(skip) read_table(file = \"inputs/2021/04.txt\",\n                           skip = skip,\n                           n_max = 5,\n                           col_types = \"ccccc\",\n                           col_names = FALSE) |&gt; \n            as.matrix() |&gt; \n            unname())",
+    "crumbs": [
+      "2021",
+      "Day 4: Giant Squid"
+    ]
   },
   {
     "objectID": "solutions/2021/04.html#part-one",
     "href": "solutions/2021/04.html#part-one",
     "title": "Day 4: Giant Squid",
     "section": "Part One",
-    "text": "Part One\n\ngame_1 &lt;- boards\n\nboard_mark &lt;- function(board, drawn_number) {\n    board |&gt; \n        str_replace(pattern = paste0(\"^\", drawn_number, \"$\"),\n                    replacement = \"X\") |&gt; \n        matrix(ncol = 5)\n}\n\nfull_rc &lt;- function(board) {\n    \n    indeces &lt;- 1:5\n    \n    target &lt;- rep(\"X\", times = 5)\n    \n    # rows\n    rows &lt;- indeces |&gt;\n        map_lgl(\\(r) all(board[r,] == target)) |&gt;\n        any()\n    \n    # rows\n    cols &lt;- indeces |&gt;\n        map_lgl(\\(c) all(board[,c] == target)) |&gt;\n        any()\n    \n    return(rows | cols)\n}\n\nfor (drawn_number in drawn_numbers) {\n    game_1 &lt;- game_1 |&gt; \n        map(\\(board) board_mark(board, drawn_number))\n    \n    check &lt;- map_lgl(game_1, full_rc)\n    \n    if (any(check)) {\n        index &lt;- which(check == TRUE)\n        break\n    }\n}\n\ngame_1[[index]] |&gt; \n    str_remove_all(\"X\") |&gt; \n    as.integer() |&gt; \n    sum(na.rm = TRUE) * as.integer(drawn_number)\n## [1] 16716"
+    "text": "Part One\n\ngame_1 &lt;- boards\n\nboard_mark &lt;- function(board, drawn_number) {\n    board |&gt; \n        str_replace(pattern = paste0(\"^\", drawn_number, \"$\"),\n                    replacement = \"X\") |&gt; \n        matrix(ncol = 5)\n}\n\nfull_rc &lt;- function(board) {\n    \n    indeces &lt;- 1:5\n    \n    target &lt;- rep(\"X\", times = 5)\n    \n    # rows\n    rows &lt;- indeces |&gt;\n        map_lgl(\\(r) all(board[r,] == target)) |&gt;\n        any()\n    \n    # rows\n    cols &lt;- indeces |&gt;\n        map_lgl(\\(c) all(board[,c] == target)) |&gt;\n        any()\n    \n    return(rows | cols)\n}\n\nfor (drawn_number in drawn_numbers) {\n    game_1 &lt;- game_1 |&gt; \n        map(\\(board) board_mark(board, drawn_number))\n    \n    check &lt;- map_lgl(game_1, full_rc)\n    \n    if (any(check)) {\n        index &lt;- which(check == TRUE)\n        break\n    }\n}\n\ngame_1[[index]] |&gt; \n    str_remove_all(\"X\") |&gt; \n    as.integer() |&gt; \n    sum(na.rm = TRUE) * as.integer(drawn_number)\n## [1] 16716",
+    "crumbs": [
+      "2021",
+      "Day 4: Giant Squid"
+    ]
   },
   {
     "objectID": "solutions/2021/04.html#part-two",
     "href": "solutions/2021/04.html#part-two",
     "title": "Day 4: Giant Squid",
     "section": "Part Two",
-    "text": "Part Two\n\ngame_2 &lt;- boards\n\nboards_indeces &lt;- 1:100\n\nfor (drawn_number in drawn_numbers) {\n    game_2 &lt;- game_2 |&gt; \n        map(\\(board) board_mark(board, drawn_number))\n    \n    check &lt;- map_lgl(game_2, full_rc)\n    \n    if (any(check)) {\n        index &lt;- which(check == TRUE)\n        boards_indeces &lt;- setdiff(boards_indeces, index)\n    }\n    \n    if (length(boards_indeces) == 1) {\n        last_winner &lt;- boards_indeces\n    }\n    \n    if (length(boards_indeces) == 0) {\n        break\n    }\n}\n\ngame_2[[last_winner]] |&gt; \n    str_remove_all(\"X\") |&gt; \n    as.integer() |&gt; \n    sum(na.rm = TRUE) * as.integer(drawn_number)\n## [1] 4880"
+    "text": "Part Two\n\ngame_2 &lt;- boards\n\nboards_indeces &lt;- 1:100\n\nfor (drawn_number in drawn_numbers) {\n    game_2 &lt;- game_2 |&gt; \n        map(\\(board) board_mark(board, drawn_number))\n    \n    check &lt;- map_lgl(game_2, full_rc)\n    \n    if (any(check)) {\n        index &lt;- which(check == TRUE)\n        boards_indeces &lt;- setdiff(boards_indeces, index)\n    }\n    \n    if (length(boards_indeces) == 1) {\n        last_winner &lt;- boards_indeces\n    }\n    \n    if (length(boards_indeces) == 0) {\n        break\n    }\n}\n\ngame_2[[last_winner]] |&gt; \n    str_remove_all(\"X\") |&gt; \n    as.integer() |&gt; \n    sum(na.rm = TRUE) * as.integer(drawn_number)\n## [1] 4880",
+    "crumbs": [
+      "2021",
+      "Day 4: Giant Squid"
+    ]
   },
   {
     "objectID": "solutions/2021/02.html",
