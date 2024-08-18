@@ -4,6 +4,14 @@ title: "Day 1: No Time for a Taxicab"
 
 [Reference](https://adventofcode.com/2016/day/1)
 
+```{r}
+#| label: 2016 - day 1 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2016/01.txt")
+```
+
 ## Part One
 
 ::: {.panel-tabset}
@@ -12,10 +20,6 @@ title: "Day 1: No Time for a Taxicab"
 
 ```{r}
 #| label: 2016 - day 1 - part 1
-library(tidyverse)
-
-# read input
-input <- read_lines(file = "inputs/2016/01.txt")
 
 # extract direction and length from input (first entry NA)
 move <- c(NA, str_split_1(string = input, pattern = ", "))
@@ -87,27 +91,26 @@ moves |>
 
 ```{r}
 #| label: 2016 - day 1 - change_direction() tests
-# tests for change_direction()
+
+unit_vectors <- list(up    = c(0,1),
+                     right = c(1,0),
+                     down  = c(0,-1),
+                     left  = c(-1, 0))
 
 # right turn
-change_direction(c(0,1), "R")
-change_direction(c(1,0), "R")
-change_direction(c(0,-1), "R")
-change_direction(c(-1, 0), "R")
+map(.x = unit_vectors, .f = \(vector) change_direction(vector, "R"))
 
 # left turn
-change_direction(c(0,1), "L")
-change_direction(c(1,0), "L")
-change_direction(c(0,-1), "L")
-change_direction(c(-1, 0), "L")
+map(.x = unit_vectors, .f = \(vector) change_direction(vector, "L"))
 ```
 
 ## Full Table
 
 ```{r}
-#| label: 2016 - day 1 - full table
-# look at the full table
-moves|> print(n = 178)
+#| label: 2016 - day 1 - part 1 full table
+#| echo: false
+
+rmarkdown::paged_table(moves)
 ```
 
 :::
@@ -202,14 +205,28 @@ moves_unit |>
 ## Visited Twice
 
 ```{r}
-#| label: 2016 - day 1 - visited twice
+#| label: 2016 - day 1 - visited twice code
+#| eval: false
+
+moves_unit |> 
+    rowid_to_column("time") |> 
+    group_by(position_x, position_y, distance) |> 
+    summarise(count = n(), second_time = nth(time, 2)) |> 
+    filter(count > 1) |> 
+    arrange(second_time)
+```
+
+```{r}
+#| label: 2016 - day 1 - part 2 visited twice table
+#| echo: false
+
 moves_unit |> 
     rowid_to_column("time") |> 
     group_by(position_x, position_y, distance) |> 
     summarise(count = n(), second_time = nth(time, 2)) |> 
     filter(count > 1) |> 
     arrange(second_time) |> 
-    print(n = 49)
+    rmarkdown::paged_table()
 ```
 
 :::
