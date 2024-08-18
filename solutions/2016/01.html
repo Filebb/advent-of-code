@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Advent of Code - Day 1: No Time for a Taxicab</title>
+<title>Day 1: No Time for a Taxicab – Advent of Code</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -100,6 +100,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&amp;display=swap" rel="stylesheet">
@@ -120,13 +124,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-events" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-events" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Events</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-events">    
@@ -170,18 +174,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
     <a href="https://github.com/Filebb/advent-of-code" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../solutions/2016/01.html">2016</a></li><li class="breadcrumb-item"><a href="../../solutions/2016/01.html">Day 1: No Time for a Taxicab</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -194,9 +198,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true">
  <span class="menu-text">2016</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -274,6 +278,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><a href="https://adventofcode.com/2016/day/1">Reference</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="at">file =</span> <span class="st">"inputs/2016/01.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="part-one" class="level2">
 <h2 class="anchored" data-anchor-id="part-one">Part One</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -281,288 +290,118 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read input</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="at">file =</span> <span class="st">"inputs/2016/01.txt"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># extract direction and length from input (first entry NA)</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>move <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fu">str_split_1</span>(<span class="at">string =</span> input, <span class="at">pattern =</span> <span class="st">", "</span>))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>turn <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="at">string =</span> move, <span class="at">pattern =</span> <span class="st">"L|R"</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>length <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="at">string =</span> move, <span class="at">pattern =</span> <span class="st">"[0-9]+"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># pre-allocate vectors for x/y-positions and x/y-direction</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>position_x <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>position_y <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>direction_x <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>direction_y <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize position and direction (everything is pre-populated as 0)</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># position_x[1] &lt;- 0</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># position_y[1] &lt;- 0</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># direction_x[1] &lt;- 0</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>direction_y[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span>L</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>change_direction <span class="ot">&lt;-</span> <span class="cf">function</span>(current_direction, turn) {</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (turn <span class="sc">==</span> <span class="st">"R"</span>) new_direction <span class="ot">&lt;-</span> <span class="fu">rev</span>(current_direction) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="sc">-</span><span class="dv">1</span>L)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (turn <span class="sc">==</span> <span class="st">"L"</span>) new_direction <span class="ot">&lt;-</span> <span class="fu">rev</span>(current_direction) <span class="sc">*</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>L, <span class="dv">1</span>L)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(new_direction)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate directions and positions</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(move)) {</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get current x/y-direction</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    current_direction <span class="ot">&lt;-</span> <span class="fu">c</span>(direction_x[i<span class="dv">-1</span>], direction_y[i<span class="dv">-1</span>])</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate new direction</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    new_direction <span class="ot">&lt;-</span> <span class="fu">change_direction</span>(current_direction, turn[i])</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update values</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    direction_x[i] <span class="ot">&lt;-</span> new_direction[<span class="dv">1</span>]</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    direction_y[i] <span class="ot">&lt;-</span> new_direction[<span class="dv">2</span>]</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get current x/y-position</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    current_position <span class="ot">&lt;-</span> <span class="fu">c</span>(position_x[i<span class="dv">-1</span>], position_y[i<span class="dv">-1</span>])</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate new position</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    new_position <span class="ot">&lt;-</span> current_position <span class="sc">+</span> new_direction <span class="sc">*</span> length[i]</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update values</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    position_x[i] <span class="ot">&lt;-</span> new_position[<span class="dv">1</span>]</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    position_y[i] <span class="ot">&lt;-</span> new_position[<span class="dv">2</span>]    </span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co"># collect all vectors in a table</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>moves <span class="ot">&lt;-</span> <span class="fu">tibble</span>(move, turn, length,</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>                direction_x, direction_y,</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>                position_x, position_y) <span class="sc">|&gt;</span> </span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">distance =</span> <span class="fu">abs</span>(position_x) <span class="sc">+</span> <span class="fu">abs</span>(position_y))</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co"># result</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>moves <span class="sc">|&gt;</span> </span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(distance) <span class="sc">|&gt;</span> </span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tail</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="do">## 288</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract direction and length from input (first entry NA)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>move <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="fu">str_split_1</span>(<span class="at">string =</span> input, <span class="at">pattern =</span> <span class="st">", "</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>turn <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="at">string =</span> move, <span class="at">pattern =</span> <span class="st">"L|R"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>length <span class="ot">&lt;-</span> <span class="fu">str_extract</span>(<span class="at">string =</span> move, <span class="at">pattern =</span> <span class="st">"[0-9]+"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># pre-allocate vectors for x/y-positions and x/y-direction</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>position_x <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>position_y <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>direction_x <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>direction_y <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="at">length =</span> <span class="fu">length</span>(move))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize position and direction (everything is pre-populated as 0)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># position_x[1] &lt;- 0</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># position_y[1] &lt;- 0</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># direction_x[1] &lt;- 0</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>direction_y[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span>L</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>change_direction <span class="ot">&lt;-</span> <span class="cf">function</span>(current_direction, turn) {</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (turn <span class="sc">==</span> <span class="st">"R"</span>) new_direction <span class="ot">&lt;-</span> <span class="fu">rev</span>(current_direction) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="sc">-</span><span class="dv">1</span>L)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (turn <span class="sc">==</span> <span class="st">"L"</span>) new_direction <span class="ot">&lt;-</span> <span class="fu">rev</span>(current_direction) <span class="sc">*</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>L, <span class="dv">1</span>L)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(new_direction)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate directions and positions</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(move)) {</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get current x/y-direction</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    current_direction <span class="ot">&lt;-</span> <span class="fu">c</span>(direction_x[i<span class="dv">-1</span>], direction_y[i<span class="dv">-1</span>])</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate new direction</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    new_direction <span class="ot">&lt;-</span> <span class="fu">change_direction</span>(current_direction, turn[i])</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update values</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    direction_x[i] <span class="ot">&lt;-</span> new_direction[<span class="dv">1</span>]</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    direction_y[i] <span class="ot">&lt;-</span> new_direction[<span class="dv">2</span>]</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get current x/y-position</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    current_position <span class="ot">&lt;-</span> <span class="fu">c</span>(position_x[i<span class="dv">-1</span>], position_y[i<span class="dv">-1</span>])</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate new position</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    new_position <span class="ot">&lt;-</span> current_position <span class="sc">+</span> new_direction <span class="sc">*</span> length[i]</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update values</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    position_x[i] <span class="ot">&lt;-</span> new_position[<span class="dv">1</span>]</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    position_y[i] <span class="ot">&lt;-</span> new_position[<span class="dv">2</span>]    </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co"># collect all vectors in a table</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>moves <span class="ot">&lt;-</span> <span class="fu">tibble</span>(move, turn, length,</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                direction_x, direction_y,</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>                position_x, position_y) <span class="sc">|&gt;</span> </span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">distance =</span> <span class="fu">abs</span>(position_x) <span class="sc">+</span> <span class="fu">abs</span>(position_y))</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="co"># result</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>moves <span class="sc">|&gt;</span> </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(distance) <span class="sc">|&gt;</span> </span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tail</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="do">## 288</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tests for change_direction()</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># right turn</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="st">"R"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 0</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="st">"R"</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  0 -1</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="st">"R"</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -1  0</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>), <span class="st">"R"</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># left turn</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="st">"L"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -1  0</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="st">"L"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">1</span>), <span class="st">"L"</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 0</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">change_direction</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>), <span class="st">"L"</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  0 -1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>unit_vectors <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">up    =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">right =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">down  =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">left  =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># right turn</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> unit_vectors, <span class="at">.f =</span> \(vector) <span class="fu">change_direction</span>(vector, <span class="st">"R"</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## $up</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 0</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## $right</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  0 -1</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">## $down</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -1  0</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="do">## $left</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># left turn</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> unit_vectors, <span class="at">.f =</span> \(vector) <span class="fu">change_direction</span>(vector, <span class="st">"L"</span>))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="do">## $up</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -1  0</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="do">## $right</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="do">## $down</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1 0</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="do">## $left</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="do">## [1]  0 -1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the full table</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>moves<span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">178</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 178 × 8</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">##     move  turn  length direction_x direction_y position_x position_y distance</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##     &lt;chr&gt; &lt;chr&gt;  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;      &lt;int&gt;      &lt;int&gt;    &lt;int&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   1 &lt;NA&gt;  &lt;NA&gt;      NA           0           1          0          0        0</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   2 R4    R          4           1           0          4          0        4</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   3 R3    R          3           0          -1          4         -3        7</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   4 L3    L          3           1           0          7         -3       10</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   5 L2    L          2           0           1          7         -1        8</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   6 L1    L          1          -1           0          6         -1        7</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   7 R1    R          1           0           1          6          0        6</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   8 L1    L          1          -1           0          5          0        5</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   9 R2    R          2           0           1          5          2        7</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  10 R3    R          3           1           0          8          2       10</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  11 L5    L          5           0           1          8          7       15</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  12 L5    L          5          -1           0          3          7       10</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  13 R4    R          4           0           1          3         11       14</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  14 L4    L          4          -1           0         -1         11       12</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  15 R2    R          2           0           1         -1         13       14</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  16 R4    R          4           1           0          3         13       16</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  17 L3    L          3           0           1          3         16       19</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  18 R3    R          3           1           0          6         16       22</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  19 L3    L          3           0           1          6         19       25</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="do">##  20 R3    R          3           1           0          9         19       28</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="do">##  21 R4    R          4           0          -1          9         15       24</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  22 R2    R          2          -1           0          7         15       22</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="do">##  23 L1    L          1           0          -1          7         14       21</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="do">##  24 R2    R          2          -1           0          5         14       19</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="do">##  25 L3    L          3           0          -1          5         11       16</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="do">##  26 L2    L          2           1           0          7         11       18</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="do">##  27 L1    L          1           0           1          7         12       19</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="do">##  28 R3    R          3           1           0         10         12       22</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="do">##  29 R5    R          5           0          -1         10          7       17</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="do">##  30 L1    L          1           1           0         11          7       18</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="do">##  31 L4    L          4           0           1         11         11       22</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="do">##  32 R2    R          2           1           0         13         11       24</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="do">##  33 L4    L          4           0           1         13         15       28</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="do">##  34 R3    R          3           1           0         16         15       31</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="do">##  35 R1    R          1           0          -1         16         14       30</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="do">##  36 R2    R          2          -1           0         14         14       28</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="do">##  37 L5    L          5           0          -1         14          9       23</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="do">##  38 R2    R          2          -1           0         12          9       21</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="do">##  39 L189  L        189           0          -1         12       -180      192</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="do">##  40 R5    R          5          -1           0          7       -180      187</span></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="do">##  41 L5    L          5           0          -1          7       -185      192</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="do">##  42 R52   R         52          -1           0        -45       -185      230</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="do">##  43 R3    R          3           0           1        -45       -182      227</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="do">##  44 L1    L          1          -1           0        -46       -182      228</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="do">##  45 R4    R          4           0           1        -46       -178      224</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="do">##  46 R5    R          5           1           0        -41       -178      219</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="do">##  47 R1    R          1           0          -1        -41       -179      220</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="do">##  48 R4    R          4          -1           0        -45       -179      224</span></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="do">##  49 L1    L          1           0          -1        -45       -180      225</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="do">##  50 L3    L          3           1           0        -42       -180      222</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="do">##  51 R2    R          2           0          -1        -42       -182      224</span></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="do">##  52 L2    L          2           1           0        -40       -182      222</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="do">##  53 L3    L          3           0           1        -40       -179      219</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="do">##  54 R4    R          4           1           0        -36       -179      215</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="do">##  55 R3    R          3           0          -1        -36       -182      218</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="do">##  56 L2    L          2           1           0        -34       -182      216</span></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="do">##  57 L5    L          5           0           1        -34       -177      211</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  58 R4    R          4           1           0        -30       -177      207</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="do">##  59 R5    R          5           0          -1        -30       -182      212</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="do">##  60 L2    L          2           1           0        -28       -182      210</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="do">##  61 R2    R          2           0          -1        -28       -184      212</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="do">##  62 L1    L          1           1           0        -27       -184      211</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="do">##  63 L3    L          3           0           1        -27       -181      208</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="do">##  64 R3    R          3           1           0        -24       -181      205</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="do">##  65 L4    L          4           0           1        -24       -177      201</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="do">##  66 R4    R          4           1           0        -20       -177      197</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="do">##  67 R5    R          5           0          -1        -20       -182      202</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="do">##  68 L1    L          1           1           0        -19       -182      201</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="do">##  69 L1    L          1           0           1        -19       -181      200</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="do">##  70 R3    R          3           1           0        -16       -181      197</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="do">##  71 L5    L          5           0           1        -16       -176      192</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="do">##  72 L2    L          2          -1           0        -18       -176      194</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="do">##  73 R76   R         76           0           1        -18       -100      118</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="do">##  74 R2    R          2           1           0        -16       -100      116</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="do">##  75 R2    R          2           0          -1        -16       -102      118</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="do">##  76 L1    L          1           1           0        -15       -102      117</span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="do">##  77 L3    L          3           0           1        -15        -99      114</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="do">##  78 R189  R        189           1           0        174        -99      273</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="do">##  79 L3    L          3           0           1        174        -96      270</span></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="do">##  80 L4    L          4          -1           0        170        -96      266</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="do">##  81 L1    L          1           0          -1        170        -97      267</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="do">##  82 L3    L          3           1           0        173        -97      270</span></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="do">##  83 R5    R          5           0          -1        173       -102      275</span></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="do">##  84 R4    R          4          -1           0        169       -102      271</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a><span class="do">##  85 L1    L          1           0          -1        169       -103      272</span></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="do">##  86 R1    R          1          -1           0        168       -103      271</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="do">##  87 L1    L          1           0          -1        168       -104      272</span></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="do">##  88 L1    L          1           1           0        169       -104      273</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="do">##  89 R2    R          2           0          -1        169       -106      275</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="do">##  90 L4    L          4           1           0        173       -106      279</span></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="do">##  91 R2    R          2           0          -1        173       -108      281</span></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="do">##  92 L5    L          5           1           0        178       -108      286</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="do">##  93 L5    L          5           0           1        178       -103      281</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="do">##  94 L5    L          5          -1           0        173       -103      276</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="do">##  95 R2    R          2           0           1        173       -101      274</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="do">##  96 L4    L          4          -1           0        169       -101      270</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="do">##  97 L5    L          5           0          -1        169       -106      275</span></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="do">##  98 R4    R          4          -1           0        165       -106      271</span></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="do">##  99 R4    R          4           0           1        165       -102      267</span></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="do">## 100 R5    R          5           1           0        170       -102      272</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="do">## 101 L5    L          5           0           1        170        -97      267</span></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="do">## 102 R3    R          3           1           0        173        -97      270</span></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="do">## 103 L1    L          1           0           1        173        -96      269</span></span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="do">## 104 L3    L          3          -1           0        170        -96      266</span></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="do">## 105 L1    L          1           0          -1        170        -97      267</span></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="do">## 106 L1    L          1           1           0        171        -97      268</span></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="do">## 107 L3    L          3           0           1        171        -94      265</span></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="do">## 108 L4    L          4          -1           0        167        -94      261</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="do">## 109 R5    R          5           0           1        167        -89      256</span></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="do">## 110 L3    L          3          -1           0        164        -89      253</span></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="do">## 111 R5    R          5           0           1        164        -84      248</span></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="do">## 112 R3    R          3           1           0        167        -84      251</span></span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="do">## 113 R3    R          3           0          -1        167        -87      254</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="do">## 114 L5    L          5           1           0        172        -87      259</span></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="do">## 115 L5    L          5           0           1        172        -82      254</span></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="do">## 116 R3    R          3           1           0        175        -82      257</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="do">## 117 R4    R          4           0          -1        175        -86      261</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="do">## 118 L3    L          3           1           0        178        -86      264</span></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="do">## 119 R3    R          3           0          -1        178        -89      267</span></span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="do">## 120 R1    R          1          -1           0        177        -89      266</span></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="do">## 121 R3    R          3           0           1        177        -86      263</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="do">## 122 R2    R          2           1           0        179        -86      265</span></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="do">## 123 R2    R          2           0          -1        179        -88      267</span></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a><span class="do">## 124 L1    L          1           1           0        180        -88      268</span></span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a><span class="do">## 125 R1    R          1           0          -1        180        -89      269</span></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a><span class="do">## 126 L3    L          3           1           0        183        -89      272</span></span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a><span class="do">## 127 L3    L          3           0           1        183        -86      269</span></span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a><span class="do">## 128 L3    L          3          -1           0        180        -86      266</span></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a><span class="do">## 129 L1    L          1           0          -1        180        -87      267</span></span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a><span class="do">## 130 R2    R          2          -1           0        178        -87      265</span></span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a><span class="do">## 131 L1    L          1           0          -1        178        -88      266</span></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="do">## 132 R4    R          4          -1           0        174        -88      262</span></span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a><span class="do">## 133 R4    R          4           0           1        174        -84      258</span></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="do">## 134 L1    L          1          -1           0        173        -84      257</span></span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a><span class="do">## 135 L1    L          1           0          -1        173        -85      258</span></span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a><span class="do">## 136 R3    R          3          -1           0        170        -85      255</span></span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a><span class="do">## 137 R3    R          3           0           1        170        -82      252</span></span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="do">## 138 R4    R          4           1           0        174        -82      256</span></span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="do">## 139 R1    R          1           0          -1        174        -83      257</span></span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="do">## 140 L5    L          5           1           0        179        -83      262</span></span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="do">## 141 L2    L          2           0           1        179        -81      260</span></span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="do">## 142 R2    R          2           1           0        181        -81      262</span></span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="do">## 143 R3    R          3           0          -1        181        -84      265</span></span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="do">## 144 R2    R          2          -1           0        179        -84      263</span></span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="do">## 145 L3    L          3           0          -1        179        -87      266</span></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="do">## 146 R4    R          4          -1           0        175        -87      262</span></span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a><span class="do">## 147 L5    L          5           0          -1        175        -92      267</span></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="do">## 148 R1    R          1          -1           0        174        -92      266</span></span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="do">## 149 R4    R          4           0           1        174        -88      262</span></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="do">## 150 R5    R          5           1           0        179        -88      267</span></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a><span class="do">## 151 R4    R          4           0          -1        179        -92      271</span></span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a><span class="do">## 152 L4    L          4           1           0        183        -92      275</span></span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a><span class="do">## 153 R1    R          1           0          -1        183        -93      276</span></span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a><span class="do">## 154 L3    L          3           1           0        186        -93      279</span></span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a><span class="do">## 155 R1    R          1           0          -1        186        -94      280</span></span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a><span class="do">## 156 R3    R          3          -1           0        183        -94      277</span></span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a><span class="do">## 157 L2    L          2           0          -1        183        -96      279</span></span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="do">## 158 L3    L          3           1           0        186        -96      282</span></span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a><span class="do">## 159 R1    R          1           0          -1        186        -97      283</span></span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a><span class="do">## 160 L2    L          2           1           0        188        -97      285</span></span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a><span class="do">## 161 R3    R          3           0          -1        188       -100      288</span></span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a><span class="do">## 162 L3    L          3           1           0        191       -100      291</span></span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a><span class="do">## 163 L1    L          1           0           1        191        -99      290</span></span>
-<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a><span class="do">## 164 L3    L          3          -1           0        188        -99      287</span></span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a><span class="do">## 165 R4    R          4           0           1        188        -95      283</span></span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="do">## 166 L4    L          4          -1           0        184        -95      279</span></span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="do">## 167 L5    L          5           0          -1        184       -100      284</span></span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a><span class="do">## 168 R3    R          3          -1           0        181       -100      281</span></span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="do">## 169 R5    R          5           0           1        181        -95      276</span></span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a><span class="do">## 170 R4    R          4           1           0        185        -95      280</span></span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a><span class="do">## 171 R1    R          1           0          -1        185        -96      281</span></span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a><span class="do">## 172 L2    L          2           1           0        187        -96      283</span></span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a><span class="do">## 173 R3    R          3           0          -1        187        -99      286</span></span>
-<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a><span class="do">## 174 R5    R          5          -1           0        182        -99      281</span></span>
-<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a><span class="do">## 175 L5    L          5           0          -1        182       -104      286</span></span>
-<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a><span class="do">## 176 L4    L          4           1           0        186       -104      290</span></span>
-<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a><span class="do">## 177 L1    L          1           0           1        186       -103      289</span></span>
-<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a><span class="do">## 178 L1    L          1          -1           0        185       -103      288</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["move"],"name":[1],"type":["chr"],"align":["left"]},{"label":["turn"],"name":[2],"type":["chr"],"align":["left"]},{"label":["length"],"name":[3],"type":["int"],"align":["right"]},{"label":["direction_x"],"name":[4],"type":["int"],"align":["right"]},{"label":["direction_y"],"name":[5],"type":["int"],"align":["right"]},{"label":["position_x"],"name":[6],"type":["int"],"align":["right"]},{"label":["position_y"],"name":[7],"type":["int"],"align":["right"]},{"label":["distance"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"NA","2":"NA","3":"NA","4":"0","5":"1","6":"0","7":"0","8":"0"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"4","7":"0","8":"4"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"4","7":"-3","8":"7"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"7","7":"-3","8":"10"},{"1":"L2","2":"L","3":"2","4":"0","5":"1","6":"7","7":"-1","8":"8"},{"1":"L1","2":"L","3":"1","4":"-1","5":"0","6":"6","7":"-1","8":"7"},{"1":"R1","2":"R","3":"1","4":"0","5":"1","6":"6","7":"0","8":"6"},{"1":"L1","2":"L","3":"1","4":"-1","5":"0","6":"5","7":"0","8":"5"},{"1":"R2","2":"R","3":"2","4":"0","5":"1","6":"5","7":"2","8":"7"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"8","7":"2","8":"10"},{"1":"L5","2":"L","3":"5","4":"0","5":"1","6":"8","7":"7","8":"15"},{"1":"L5","2":"L","3":"5","4":"-1","5":"0","6":"3","7":"7","8":"10"},{"1":"R4","2":"R","3":"4","4":"0","5":"1","6":"3","7":"11","8":"14"},{"1":"L4","2":"L","3":"4","4":"-1","5":"0","6":"-1","7":"11","8":"12"},{"1":"R2","2":"R","3":"2","4":"0","5":"1","6":"-1","7":"13","8":"14"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"3","7":"13","8":"16"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"3","7":"16","8":"19"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"6","7":"16","8":"22"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"6","7":"19","8":"25"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"9","7":"19","8":"28"},{"1":"R4","2":"R","3":"4","4":"0","5":"-1","6":"9","7":"15","8":"24"},{"1":"R2","2":"R","3":"2","4":"-1","5":"0","6":"7","7":"15","8":"22"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"7","7":"14","8":"21"},{"1":"R2","2":"R","3":"2","4":"-1","5":"0","6":"5","7":"14","8":"19"},{"1":"L3","2":"L","3":"3","4":"0","5":"-1","6":"5","7":"11","8":"16"},{"1":"L2","2":"L","3":"2","4":"1","5":"0","6":"7","7":"11","8":"18"},{"1":"L1","2":"L","3":"1","4":"0","5":"1","6":"7","7":"12","8":"19"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"10","7":"12","8":"22"},{"1":"R5","2":"R","3":"5","4":"0","5":"-1","6":"10","7":"7","8":"17"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"11","7":"7","8":"18"},{"1":"L4","2":"L","3":"4","4":"0","5":"1","6":"11","7":"11","8":"22"},{"1":"R2","2":"R","3":"2","4":"1","5":"0","6":"13","7":"11","8":"24"},{"1":"L4","2":"L","3":"4","4":"0","5":"1","6":"13","7":"15","8":"28"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"16","7":"15","8":"31"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"16","7":"14","8":"30"},{"1":"R2","2":"R","3":"2","4":"-1","5":"0","6":"14","7":"14","8":"28"},{"1":"L5","2":"L","3":"5","4":"0","5":"-1","6":"14","7":"9","8":"23"},{"1":"R2","2":"R","3":"2","4":"-1","5":"0","6":"12","7":"9","8":"21"},{"1":"L189","2":"L","3":"189","4":"0","5":"-1","6":"12","7":"-180","8":"192"},{"1":"R5","2":"R","3":"5","4":"-1","5":"0","6":"7","7":"-180","8":"187"},{"1":"L5","2":"L","3":"5","4":"0","5":"-1","6":"7","7":"-185","8":"192"},{"1":"R52","2":"R","3":"52","4":"-1","5":"0","6":"-45","7":"-185","8":"230"},{"1":"R3","2":"R","3":"3","4":"0","5":"1","6":"-45","7":"-182","8":"227"},{"1":"L1","2":"L","3":"1","4":"-1","5":"0","6":"-46","7":"-182","8":"228"},{"1":"R4","2":"R","3":"4","4":"0","5":"1","6":"-46","7":"-178","8":"224"},{"1":"R5","2":"R","3":"5","4":"1","5":"0","6":"-41","7":"-178","8":"219"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"-41","7":"-179","8":"220"},{"1":"R4","2":"R","3":"4","4":"-1","5":"0","6":"-45","7":"-179","8":"224"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"-45","7":"-180","8":"225"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"-42","7":"-180","8":"222"},{"1":"R2","2":"R","3":"2","4":"0","5":"-1","6":"-42","7":"-182","8":"224"},{"1":"L2","2":"L","3":"2","4":"1","5":"0","6":"-40","7":"-182","8":"222"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"-40","7":"-179","8":"219"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"-36","7":"-179","8":"215"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"-36","7":"-182","8":"218"},{"1":"L2","2":"L","3":"2","4":"1","5":"0","6":"-34","7":"-182","8":"216"},{"1":"L5","2":"L","3":"5","4":"0","5":"1","6":"-34","7":"-177","8":"211"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"-30","7":"-177","8":"207"},{"1":"R5","2":"R","3":"5","4":"0","5":"-1","6":"-30","7":"-182","8":"212"},{"1":"L2","2":"L","3":"2","4":"1","5":"0","6":"-28","7":"-182","8":"210"},{"1":"R2","2":"R","3":"2","4":"0","5":"-1","6":"-28","7":"-184","8":"212"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"-27","7":"-184","8":"211"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"-27","7":"-181","8":"208"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"-24","7":"-181","8":"205"},{"1":"L4","2":"L","3":"4","4":"0","5":"1","6":"-24","7":"-177","8":"201"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"-20","7":"-177","8":"197"},{"1":"R5","2":"R","3":"5","4":"0","5":"-1","6":"-20","7":"-182","8":"202"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"-19","7":"-182","8":"201"},{"1":"L1","2":"L","3":"1","4":"0","5":"1","6":"-19","7":"-181","8":"200"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"-16","7":"-181","8":"197"},{"1":"L5","2":"L","3":"5","4":"0","5":"1","6":"-16","7":"-176","8":"192"},{"1":"L2","2":"L","3":"2","4":"-1","5":"0","6":"-18","7":"-176","8":"194"},{"1":"R76","2":"R","3":"76","4":"0","5":"1","6":"-18","7":"-100","8":"118"},{"1":"R2","2":"R","3":"2","4":"1","5":"0","6":"-16","7":"-100","8":"116"},{"1":"R2","2":"R","3":"2","4":"0","5":"-1","6":"-16","7":"-102","8":"118"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"-15","7":"-102","8":"117"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"-15","7":"-99","8":"114"},{"1":"R189","2":"R","3":"189","4":"1","5":"0","6":"174","7":"-99","8":"273"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"174","7":"-96","8":"270"},{"1":"L4","2":"L","3":"4","4":"-1","5":"0","6":"170","7":"-96","8":"266"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"170","7":"-97","8":"267"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"173","7":"-97","8":"270"},{"1":"R5","2":"R","3":"5","4":"0","5":"-1","6":"173","7":"-102","8":"275"},{"1":"R4","2":"R","3":"4","4":"-1","5":"0","6":"169","7":"-102","8":"271"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"169","7":"-103","8":"272"},{"1":"R1","2":"R","3":"1","4":"-1","5":"0","6":"168","7":"-103","8":"271"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"168","7":"-104","8":"272"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"169","7":"-104","8":"273"},{"1":"R2","2":"R","3":"2","4":"0","5":"-1","6":"169","7":"-106","8":"275"},{"1":"L4","2":"L","3":"4","4":"1","5":"0","6":"173","7":"-106","8":"279"},{"1":"R2","2":"R","3":"2","4":"0","5":"-1","6":"173","7":"-108","8":"281"},{"1":"L5","2":"L","3":"5","4":"1","5":"0","6":"178","7":"-108","8":"286"},{"1":"L5","2":"L","3":"5","4":"0","5":"1","6":"178","7":"-103","8":"281"},{"1":"L5","2":"L","3":"5","4":"-1","5":"0","6":"173","7":"-103","8":"276"},{"1":"R2","2":"R","3":"2","4":"0","5":"1","6":"173","7":"-101","8":"274"},{"1":"L4","2":"L","3":"4","4":"-1","5":"0","6":"169","7":"-101","8":"270"},{"1":"L5","2":"L","3":"5","4":"0","5":"-1","6":"169","7":"-106","8":"275"},{"1":"R4","2":"R","3":"4","4":"-1","5":"0","6":"165","7":"-106","8":"271"},{"1":"R4","2":"R","3":"4","4":"0","5":"1","6":"165","7":"-102","8":"267"},{"1":"R5","2":"R","3":"5","4":"1","5":"0","6":"170","7":"-102","8":"272"},{"1":"L5","2":"L","3":"5","4":"0","5":"1","6":"170","7":"-97","8":"267"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"173","7":"-97","8":"270"},{"1":"L1","2":"L","3":"1","4":"0","5":"1","6":"173","7":"-96","8":"269"},{"1":"L3","2":"L","3":"3","4":"-1","5":"0","6":"170","7":"-96","8":"266"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"170","7":"-97","8":"267"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"171","7":"-97","8":"268"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"171","7":"-94","8":"265"},{"1":"L4","2":"L","3":"4","4":"-1","5":"0","6":"167","7":"-94","8":"261"},{"1":"R5","2":"R","3":"5","4":"0","5":"1","6":"167","7":"-89","8":"256"},{"1":"L3","2":"L","3":"3","4":"-1","5":"0","6":"164","7":"-89","8":"253"},{"1":"R5","2":"R","3":"5","4":"0","5":"1","6":"164","7":"-84","8":"248"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"167","7":"-84","8":"251"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"167","7":"-87","8":"254"},{"1":"L5","2":"L","3":"5","4":"1","5":"0","6":"172","7":"-87","8":"259"},{"1":"L5","2":"L","3":"5","4":"0","5":"1","6":"172","7":"-82","8":"254"},{"1":"R3","2":"R","3":"3","4":"1","5":"0","6":"175","7":"-82","8":"257"},{"1":"R4","2":"R","3":"4","4":"0","5":"-1","6":"175","7":"-86","8":"261"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"178","7":"-86","8":"264"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"178","7":"-89","8":"267"},{"1":"R1","2":"R","3":"1","4":"-1","5":"0","6":"177","7":"-89","8":"266"},{"1":"R3","2":"R","3":"3","4":"0","5":"1","6":"177","7":"-86","8":"263"},{"1":"R2","2":"R","3":"2","4":"1","5":"0","6":"179","7":"-86","8":"265"},{"1":"R2","2":"R","3":"2","4":"0","5":"-1","6":"179","7":"-88","8":"267"},{"1":"L1","2":"L","3":"1","4":"1","5":"0","6":"180","7":"-88","8":"268"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"180","7":"-89","8":"269"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"183","7":"-89","8":"272"},{"1":"L3","2":"L","3":"3","4":"0","5":"1","6":"183","7":"-86","8":"269"},{"1":"L3","2":"L","3":"3","4":"-1","5":"0","6":"180","7":"-86","8":"266"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"180","7":"-87","8":"267"},{"1":"R2","2":"R","3":"2","4":"-1","5":"0","6":"178","7":"-87","8":"265"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"178","7":"-88","8":"266"},{"1":"R4","2":"R","3":"4","4":"-1","5":"0","6":"174","7":"-88","8":"262"},{"1":"R4","2":"R","3":"4","4":"0","5":"1","6":"174","7":"-84","8":"258"},{"1":"L1","2":"L","3":"1","4":"-1","5":"0","6":"173","7":"-84","8":"257"},{"1":"L1","2":"L","3":"1","4":"0","5":"-1","6":"173","7":"-85","8":"258"},{"1":"R3","2":"R","3":"3","4":"-1","5":"0","6":"170","7":"-85","8":"255"},{"1":"R3","2":"R","3":"3","4":"0","5":"1","6":"170","7":"-82","8":"252"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"174","7":"-82","8":"256"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"174","7":"-83","8":"257"},{"1":"L5","2":"L","3":"5","4":"1","5":"0","6":"179","7":"-83","8":"262"},{"1":"L2","2":"L","3":"2","4":"0","5":"1","6":"179","7":"-81","8":"260"},{"1":"R2","2":"R","3":"2","4":"1","5":"0","6":"181","7":"-81","8":"262"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"181","7":"-84","8":"265"},{"1":"R2","2":"R","3":"2","4":"-1","5":"0","6":"179","7":"-84","8":"263"},{"1":"L3","2":"L","3":"3","4":"0","5":"-1","6":"179","7":"-87","8":"266"},{"1":"R4","2":"R","3":"4","4":"-1","5":"0","6":"175","7":"-87","8":"262"},{"1":"L5","2":"L","3":"5","4":"0","5":"-1","6":"175","7":"-92","8":"267"},{"1":"R1","2":"R","3":"1","4":"-1","5":"0","6":"174","7":"-92","8":"266"},{"1":"R4","2":"R","3":"4","4":"0","5":"1","6":"174","7":"-88","8":"262"},{"1":"R5","2":"R","3":"5","4":"1","5":"0","6":"179","7":"-88","8":"267"},{"1":"R4","2":"R","3":"4","4":"0","5":"-1","6":"179","7":"-92","8":"271"},{"1":"L4","2":"L","3":"4","4":"1","5":"0","6":"183","7":"-92","8":"275"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"183","7":"-93","8":"276"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"186","7":"-93","8":"279"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"186","7":"-94","8":"280"},{"1":"R3","2":"R","3":"3","4":"-1","5":"0","6":"183","7":"-94","8":"277"},{"1":"L2","2":"L","3":"2","4":"0","5":"-1","6":"183","7":"-96","8":"279"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"186","7":"-96","8":"282"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"186","7":"-97","8":"283"},{"1":"L2","2":"L","3":"2","4":"1","5":"0","6":"188","7":"-97","8":"285"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"188","7":"-100","8":"288"},{"1":"L3","2":"L","3":"3","4":"1","5":"0","6":"191","7":"-100","8":"291"},{"1":"L1","2":"L","3":"1","4":"0","5":"1","6":"191","7":"-99","8":"290"},{"1":"L3","2":"L","3":"3","4":"-1","5":"0","6":"188","7":"-99","8":"287"},{"1":"R4","2":"R","3":"4","4":"0","5":"1","6":"188","7":"-95","8":"283"},{"1":"L4","2":"L","3":"4","4":"-1","5":"0","6":"184","7":"-95","8":"279"},{"1":"L5","2":"L","3":"5","4":"0","5":"-1","6":"184","7":"-100","8":"284"},{"1":"R3","2":"R","3":"3","4":"-1","5":"0","6":"181","7":"-100","8":"281"},{"1":"R5","2":"R","3":"5","4":"0","5":"1","6":"181","7":"-95","8":"276"},{"1":"R4","2":"R","3":"4","4":"1","5":"0","6":"185","7":"-95","8":"280"},{"1":"R1","2":"R","3":"1","4":"0","5":"-1","6":"185","7":"-96","8":"281"},{"1":"L2","2":"L","3":"2","4":"1","5":"0","6":"187","7":"-96","8":"283"},{"1":"R3","2":"R","3":"3","4":"0","5":"-1","6":"187","7":"-99","8":"286"},{"1":"R5","2":"R","3":"5","4":"-1","5":"0","6":"182","7":"-99","8":"281"},{"1":"L5","2":"L","3":"5","4":"0","5":"-1","6":"182","7":"-104","8":"286"},{"1":"L4","2":"L","3":"4","4":"1","5":"0","6":"186","7":"-104","8":"290"},{"1":"L1","2":"L","3":"1","4":"0","5":"1","6":"186","7":"-103","8":"289"},{"1":"L1","2":"L","3":"1","4":"-1","5":"0","6":"185","7":"-103","8":"288"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -662,61 +501,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(position_x, position_y, distance) <span class="sc">|&gt;</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">second_time =</span> <span class="fu">nth</span>(time, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(second_time) <span class="sc">|&gt;</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">49</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 49 × 5</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## # Groups:   position_x, position_y [49]</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">##    position_x position_y distance count second_time</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">##         &lt;int&gt;      &lt;int&gt;    &lt;int&gt; &lt;int&gt;       &lt;int&gt;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  1         12        -99      111     2         554</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  2        173        -99      272     2         729</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  3        173       -102      275     2         764</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  4        173       -101      274     2         765</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  5        169       -102      271     3         770</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  6        169       -103      272     2         771</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  7        169       -104      273     2         772</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  8        169       -105      274     2         773</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  9        169       -106      275     2         774</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 10        170       -102      272     2         787</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 11        170       -101      271     2         788</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 12        170        -99      269     2         790</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 13        170        -97      267     3         792</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="do">## 14        171        -97      268     3         793</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="do">## 15        172        -97      269     2         794</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 16        173        -97      270     2         795</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="do">## 17        173        -96      269     2         796</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="do">## 18        172        -96      268     2         797</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 19        171        -96      267     3         798</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="do">## 20        170        -96      266     2         799</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="do">## 21        177        -86      263     2         854</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="do">## 22        178        -86      264     2         855</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="do">## 23        179        -87      266     3         871</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 24        178        -87      265     3         872</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="do">## 25        178        -88      266     3         873</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="do">## 26        177        -88      265     3         874</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="do">## 27        172        -85      257     2         884</span></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="do">## 28        172        -82      254     2         891</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="do">## 29        173        -82      255     2         892</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="do">## 30        174        -82      256     2         893</span></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="do">## 31        175        -83      258     2         895</span></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="do">## 32        179        -86      265     2         910</span></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="do">## 33        177        -87      264     2         913</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="do">## 34        175        -88      263     3         916</span></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="do">## 35        174        -88      262     2         925</span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="do">## 36        176        -88      264     2         927</span></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="do">## 37        179        -88      267     2         930</span></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="do">## 38        188        -99      287     2         964</span></span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="do">## 39        188        -98      286     2         965</span></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="do">## 40        188        -97      285     2         966</span></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="do">## 41        184        -96      280     2         973</span></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="do">## 42        183        -95      278     2         987</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="do">## 43        184        -95      279     2         988</span></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="do">## 44        185        -95      280     2         989</span></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="do">## 45        185        -96      281     2         990</span></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="do">## 46        186        -96      282     2         991</span></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="do">## 47        187        -97      284     2         993</span></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="do">## 48        184        -99      283     2         998</span></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="do">## 49        182       -100      282     2        1001</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(second_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["position_x"],"name":[1],"type":["int"],"align":["right"]},{"label":["position_y"],"name":[2],"type":["int"],"align":["right"]},{"label":["distance"],"name":[3],"type":["int"],"align":["right"]},{"label":["count"],"name":[4],"type":["int"],"align":["right"]},{"label":["second_time"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"12","2":"-99","3":"111","4":"2","5":"554"},{"1":"173","2":"-99","3":"272","4":"2","5":"729"},{"1":"173","2":"-102","3":"275","4":"2","5":"764"},{"1":"173","2":"-101","3":"274","4":"2","5":"765"},{"1":"169","2":"-102","3":"271","4":"3","5":"770"},{"1":"169","2":"-103","3":"272","4":"2","5":"771"},{"1":"169","2":"-104","3":"273","4":"2","5":"772"},{"1":"169","2":"-105","3":"274","4":"2","5":"773"},{"1":"169","2":"-106","3":"275","4":"2","5":"774"},{"1":"170","2":"-102","3":"272","4":"2","5":"787"},{"1":"170","2":"-101","3":"271","4":"2","5":"788"},{"1":"170","2":"-99","3":"269","4":"2","5":"790"},{"1":"170","2":"-97","3":"267","4":"3","5":"792"},{"1":"171","2":"-97","3":"268","4":"3","5":"793"},{"1":"172","2":"-97","3":"269","4":"2","5":"794"},{"1":"173","2":"-97","3":"270","4":"2","5":"795"},{"1":"173","2":"-96","3":"269","4":"2","5":"796"},{"1":"172","2":"-96","3":"268","4":"2","5":"797"},{"1":"171","2":"-96","3":"267","4":"3","5":"798"},{"1":"170","2":"-96","3":"266","4":"2","5":"799"},{"1":"177","2":"-86","3":"263","4":"2","5":"854"},{"1":"178","2":"-86","3":"264","4":"2","5":"855"},{"1":"179","2":"-87","3":"266","4":"3","5":"871"},{"1":"178","2":"-87","3":"265","4":"3","5":"872"},{"1":"178","2":"-88","3":"266","4":"3","5":"873"},{"1":"177","2":"-88","3":"265","4":"3","5":"874"},{"1":"172","2":"-85","3":"257","4":"2","5":"884"},{"1":"172","2":"-82","3":"254","4":"2","5":"891"},{"1":"173","2":"-82","3":"255","4":"2","5":"892"},{"1":"174","2":"-82","3":"256","4":"2","5":"893"},{"1":"175","2":"-83","3":"258","4":"2","5":"895"},{"1":"179","2":"-86","3":"265","4":"2","5":"910"},{"1":"177","2":"-87","3":"264","4":"2","5":"913"},{"1":"175","2":"-88","3":"263","4":"3","5":"916"},{"1":"174","2":"-88","3":"262","4":"2","5":"925"},{"1":"176","2":"-88","3":"264","4":"2","5":"927"},{"1":"179","2":"-88","3":"267","4":"2","5":"930"},{"1":"188","2":"-99","3":"287","4":"2","5":"964"},{"1":"188","2":"-98","3":"286","4":"2","5":"965"},{"1":"188","2":"-97","3":"285","4":"2","5":"966"},{"1":"184","2":"-96","3":"280","4":"2","5":"973"},{"1":"183","2":"-95","3":"278","4":"2","5":"987"},{"1":"184","2":"-95","3":"279","4":"2","5":"988"},{"1":"185","2":"-95","3":"280","4":"2","5":"989"},{"1":"185","2":"-96","3":"281","4":"2","5":"990"},{"1":"186","2":"-96","3":"282","4":"2","5":"991"},{"1":"187","2":"-97","3":"284","4":"2","5":"993"},{"1":"184","2":"-99","3":"283","4":"2","5":"998"},{"1":"182","2":"-100","3":"282","4":"2","5":"1001"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -777,18 +571,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -820,7 +603,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/Filebb\.github\.io\/advent-of-code\/");
@@ -828,7 +633,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
