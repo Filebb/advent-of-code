@@ -1,0 +1,83 @@
+---
+title: "Day 4: Giant Squid"
+---
+
+[Reference](https://adventofcode.com/2021/day/4)
+
+```{r}
+#| label: 2021 - day 4 - load data
+
+library(tidyverse)
+
+drawn_numbers <- read_lines(file = "inputs/2021/04.txt", n_max = 1) |> 
+    str_split_1(pattern = ",")
+
+boards <- seq(from = 2, by = 6, length = 100) |> 
+    map(\(skip) read_table(file = "inputs/2021/04.txt",
+                           skip = skip,
+                           n_max = 5,
+                           col_types = "ccccc",
+                           col_names = FALSE) |> 
+            as.matrix() |> 
+            unname())
+```
+
+## Part One
+
+```{r}
+#| label: 2021 - day 4 - part 1
+
+game_1 <- boards
+
+board_mark <- function(board, drawn_number) {
+    board |> 
+        str_replace(pattern = paste0("^", drawn_number, "$"),
+                    replacement = "X") |> 
+        matrix(ncol = 5)
+}
+
+full_rc <- function(board) {
+    
+    indeces <- 1:5
+    
+    target <- rep("X", times = 5)
+    
+    # rows
+    rows <- indeces |>
+        map_lgl(\(r) all(board[r,] == target)) |>
+        any()
+
+    # rows
+    cols <- indeces |>
+        map_lgl(\(c) all(board[,c] == target)) |>
+        any()
+    
+    return(rows | cols)
+}
+
+for (drawn_number in drawn_numbers) {
+    game_1 <- game_1 |> 
+        map(\(board) board_mark(board, drawn_number))
+    
+    check <- map_lgl(game_1, full_rc)
+    
+    if (any(check)) {
+        index <- which(check == TRUE)
+        break
+    }
+}
+
+game_1[[index]] |> 
+    str_remove_all("X") |> 
+    as.integer() |> 
+    sum(na.rm = TRUE) * as.integer(drawn_number)
+```
+
+## Part Two
+
+```{r}
+#| label: 2021 - day 4 - part 2
+
+
+```
+
