@@ -1,0 +1,345 @@
+---
+title: "Day 7: Some Assembly Required"
+---
+
+[Reference](https://adventofcode.com/2015/day/7)
+
+This solution is strongly inspired from
+[here](https://emilhvitfeldt.github.io/rstats-adventofcode/2015.html?panelset=day-7).
+
+```{r}
+#| label: 2015 - day 7 - load Tidyverse
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2015/07.txt")
+```
+
+## Bitwise Conversion
+
+To convent a number into binary we can use the function `base::intToBits()`.
+
+::: {.callout-note collapse="true"}
+## Example
+```{r}
+#| label: 2015 - day 7 - intToBits
+
+map(0:4, intToBits)
+```
+:::
+
+Since we are considering a 16-bit signal (a number from 0 to 65535), we can
+consider just the first 16 elements of the output vector of the output.
+
+```{r}
+#| label: 2015 - day 7 - int_to_bit16_01
+
+int_to_bit16_01 <- function(x) {
+    intToBits(x)[1:16]
+}
+```
+
+::: {.callout-note collapse="true"}
+## Example
+```{r}
+#| label: 2015 - day 7 - int_to_bit16_01 examples
+
+map(0:4, int_to_bit16_01)
+```
+:::
+
+Since we are going to perform bitwise operations, it is convenient to
+convert the output to logical type.
+
+```{r}
+#| label: 2015 - day 7 - int_to_bit16
+
+int_to_bit16 <- function(x) {
+    intToBits(x)[1:16] |> 
+        as.logical()
+}
+```
+
+::: {.callout-note collapse="true"}
+## Example
+```{r}
+#| label: 2015 - day 7 - int_to_bit16 example
+
+map(0:4, int_to_bit16)
+```
+:::
+
+Finally the inverse function is defined.
+
+```{r}
+#| label: 2015 - day 7 - bit16_to_int function
+
+bit16_to_int <- function(x) {
+    sum(2^(0:15) * x)
+}
+```
+
+::: {.callout-note collapse="true"}
+## Example
+```{r}
+#| label: 2015 - day 7 - bit16_to_int example
+
+example <- map(0:4, int_to_bit16)
+
+map(example, bit16_to_int)
+```
+:::
+
+## Bitwise Operations
+
+::: {.callout-tip collapse="true"}
+## Custom R Binary Operations
+
+In R a binary operation can be defined using `%` at the start and the end of its
+name. For example:
+
+```{r}
+#| label: 2015 - day 7 - custom R binary operation
+
+`%XOR%` <- function(x, y) (x & !y) | (!x & y)
+
+FALSE %XOR% FALSE
+FALSE %XOR% TRUE
+TRUE %XOR% FALSE
+TRUE %XOR% TRUE
+
+map2(.x = c(FALSE, FALSE, TRUE, TRUE),
+     .y = c(FALSE, TRUE, FALSE, TRUE), 
+     .f = `%XOR%`)
+```
+:::
+
+```{r}
+#| label: 2015 - day 7 - examples for bitwise operations
+
+(all_zeros <- int_to_bit16(0))
+(one <- int_to_bit16(1))
+(zero_one <- int_to_bit16(43690))
+(one_zero <- int_to_bit16(21845))
+(all_ones <- int_to_bit16(65535))
+```
+
+::: {.panel-tabset}
+## AND
+
+```{r}
+#| label: 2015 - day 7 - AND
+
+`%AND%` <- function(x, y) {
+    bit16_result <- int_to_bit16(x) & int_to_bit16(y)
+    bit16_to_int(bit16_result)
+}
+```
+
+::: {.callout-note}
+## Example
+```{r}
+#| label: 2015 - day 7 - AND examples
+
+zero_one %AND% one_zero
+```
+:::
+
+## OR
+
+```{r}
+#| label: 2015 - day 7 - OR
+
+`%OR%` <- function(x, y) {
+    bit16_result <- int_to_bit16(x) | int_to_bit16(y)
+    bit16_to_int(bit16_result)
+}
+```
+
+::: {.callout-note}
+## Example
+```{r}
+#| label: 2015 - day 7 - OR examples
+
+zero_one %OR% one_zero
+```
+:::
+
+## NOT
+
+```{r}
+#| label: 2015 - day 7 - NOT
+
+`%NOT%` <- function(dummy, x) {
+    bit16_result <- !int_to_bit16(x)
+    bit16_to_int(bit16_result)
+}
+```
+
+::: {.callout-note}
+## Example
+```{r}
+#| label: 2015 - day 7 - NOT examples
+
+zero_one %NOT% zero_one
+zero_one %NOT% one_zero
+```
+:::
+
+## RSHIFT
+
+```{r}
+#| label: 2015 - day 7 - RSHIFT
+
+`%RSHIFT%` <- function(x, y) {
+    bit16_result <- c(int_to_bit16(x)[seq(y + 1, 16)], rep(FALSE, y))
+    bit16_to_int(bit16_result)
+}
+```
+
+::: {.callout-note}
+## Example
+```{r}
+#| label: 2015 - day 7 - RSHIFT examples
+
+int_to_bit16(65300)
+65300 %RSHIFT% 2
+int_to_bit16(16325)
+```
+:::
+
+## LSHIFT
+
+```{r}
+#| label: 2015 - day 7 - LSHIFT
+
+`%LSHIFT%` <- function(x, y) {
+    bit16_result <- c(rep(FALSE, y), int_to_bit16(x)[seq(1, 16 - y)])
+    bit16_to_int(bit16_result)
+}
+```
+
+::: {.callout-note}
+## Example
+```{r}
+#| label: 2015 - day 7 - LSHIFT examples
+
+int_to_bit16(65300)
+65300 %LSHIFT% 2
+int_to_bit16(64592)
+```
+:::
+
+:::
+
+## Part One
+
+```{r}
+#| label: 2015 - day 7 - part 1
+
+# input <- c(
+#     "123 -> x",
+#     "456 -> y",
+#     "x AND y -> d",
+#     "x OR y -> e",
+#     "x LSHIFT 2 -> f",
+#     "y RSHIFT 2 -> g",
+#     "NOT x -> h",
+#     "NOT y -> i"
+# )
+
+instructions <- tibble(original = input) |> 
+    separate_wider_delim(cols = original,
+                         delim = " -> ",
+                         names = c("lhs", "rhs"),
+                         cols_remove = FALSE) |> 
+    mutate(
+        lhs = str_replace_all(lhs, c(
+            "AND"    = "%AND%",
+            "OR"     = "%OR%",
+            "NOT"    = "1 %NOT%",
+            "RSHIFT" = "%RSHIFT%",
+            "LSHIFT" = "%LSHIFT%"
+        )),
+    )
+
+lhs <- instructions |> pull(lhs)
+rhs <- instructions |> pull(rhs)
+
+repeat{
+    # find where we have JUST numbers
+    numbers_ind <- which(str_detect(lhs, "^[0-9]*$"))
+    
+    if (length(numbers_ind) == length(lhs)) break
+    
+    # create named vector (of regex) for replacement
+    # everyname must have (?<=^| ) before so either the name
+    # is a the beginning of the string or is following a space,
+    # and (?=$| ) at the end so either the name is at the end
+    # of the string or is followed by a space
+    #
+    # this is because some names are made or more than one letter
+    # and we don't want to "partially" replace a name 
+    replacement <- str_extract(lhs[numbers_ind], "[0-9]+")
+    names(replacement) <- paste0("(?<=^| )", rhs[numbers_ind], "(?=$| )")
+    
+    # replace values
+    lhs <- lhs %>%
+        str_replace_all(replacement)
+    
+    # evaluate instructions that can be evaluated
+    # these can be found where there are no lower case letters
+    # (operators use UPPERCASE LETTERS on purpose!)
+    lhs[!str_detect(lhs, "[a-z]+")] <-
+        map_chr(lhs[!str_detect(lhs, "[a-z]+")],
+                ~as.character(eval(parse(text = .))))
+}
+
+a <- lhs[rhs == "a"]
+cat(a)
+```
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 7 - part 2
+
+# take the signal you got on wire a, override wire b to that signal
+instructions <- instructions |> 
+    mutate(lhs = if_else(rhs == "b", a, lhs))
+
+lhs <- instructions |> pull(lhs)
+rhs <- instructions |> pull(rhs)
+
+repeat{
+    # find where we have JUST numbers
+    numbers_ind <- which(str_detect(lhs, "^[0-9]*$"))
+    
+    if (length(numbers_ind) == length(lhs)) break
+    
+    # create named vector (of regex) for replacement
+    # everyname must have (?<=^| ) before so either the name
+    # is a the beginning of the string or is following a space,
+    # and (?=$| ) at the end so either the name is at the end
+    # of the string or is followed by a space
+    #
+    # this is because some names are made or more than one letter
+    # and we don't want to "partially" replace a name 
+    replacement <- str_extract(lhs[numbers_ind], "[0-9]+")
+    names(replacement) <- paste0("(?<=^| )", rhs[numbers_ind], "(?=$| )")
+    
+    # replace values
+    lhs <- lhs %>%
+        str_replace_all(replacement)
+    
+    # evaluate instructions that can be evaluated
+    # these can be found where there are no lower case letters
+    # (operators use UPPERCASE LETTERS on purpose!)
+    lhs[!str_detect(lhs, "[a-z]+")] <-
+        map_chr(lhs[!str_detect(lhs, "[a-z]+")],
+                ~as.character(eval(parse(text = .))))
+}
+
+a <- lhs[rhs == "a"]
+cat(a)
+```
