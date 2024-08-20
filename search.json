@@ -792,7 +792,7 @@
     "href": "solutions/2015/10.html",
     "title": "Day 10: Elves Look, Elves Say",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"1321131112\"",
     "crumbs": [
       "2015",
       "Day 10: Elves Look, Elves Say"
@@ -803,7 +803,7 @@
     "href": "solutions/2015/10.html#part-one",
     "title": "Day 10: Elves Look, Elves Say",
     "section": "Part One",
-    "text": "Part One\n\ninput &lt;- read_lines(file = \"inputs/2015/10.txt\")\n\nfor (i in 1:40) {\n    input &lt;- input |&gt; \n        str_split_1(pattern = \"\") |&gt; \n        rle() |&gt; \n        unlist() |&gt; \n        matrix(nrow = 2, byrow = TRUE) |&gt; \n        str_flatten()\n}\n\nstr_length(input) |&gt; cat()\n## 492982",
+    "text": "Part One\n\nforty &lt;- input\n\nfor (i in 1:40) {\n    forty &lt;- forty |&gt; \n        str_split_1(pattern = \"\") |&gt; \n        rle() |&gt; \n        unlist() |&gt; \n        matrix(nrow = 2, byrow = TRUE) |&gt; \n        str_flatten()\n}\n\nstr_length(forty) |&gt; cat()\n## 492982",
     "crumbs": [
       "2015",
       "Day 10: Elves Look, Elves Say"
@@ -814,7 +814,7 @@
     "href": "solutions/2015/10.html#part-two",
     "title": "Day 10: Elves Look, Elves Say",
     "section": "Part Two",
-    "text": "Part Two\n\nfor (i in 1:10) {\n    input &lt;- input |&gt; \n        str_split_1(pattern = \"\") |&gt; \n        rle() |&gt; \n        unlist() |&gt; \n        matrix(nrow = 2, byrow = TRUE) |&gt; \n        str_flatten()\n}\n\nstr_length(input) |&gt; cat()\n## 6989950",
+    "text": "Part Two\n\nfifty &lt;- input\n\nfor (i in 1:50) {\n    fifty &lt;- fifty |&gt; \n        str_split_1(pattern = \"\") |&gt; \n        rle() |&gt; \n        unlist() |&gt; \n        matrix(nrow = 2, byrow = TRUE) |&gt; \n        str_flatten()\n}\n\nstr_length(fifty) |&gt; cat()\n## 6989950",
     "crumbs": [
       "2015",
       "Day 10: Elves Look, Elves Say"
