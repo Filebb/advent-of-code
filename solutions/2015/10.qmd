@@ -1,0 +1,47 @@
+---
+title: "Day 10: Elves Look, Elves Say"
+---
+
+[Reference](https://adventofcode.com/2015/day/10)
+
+```{r}
+#| label: 2015 - day 10 - load Tidyverse
+
+library(tidyverse)
+```
+
+## Part One
+
+```{r}
+#| label: 2015 - day 10 - part 1
+
+input <- read_lines(file = "inputs/2015/10.txt")
+
+for (i in 1:40) {
+    input <- input |> 
+        str_split_1(pattern = "") |> 
+        rle() |> 
+        unlist() |> 
+        matrix(nrow = 2, byrow = TRUE) |> 
+        str_flatten()
+}
+
+str_length(input) |> cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 10 - part 2
+
+for (i in 1:10) {
+    input <- input |> 
+        str_split_1(pattern = "") |> 
+        rle() |> 
+        unlist() |> 
+        matrix(nrow = 2, byrow = TRUE) |> 
+        str_flatten()
+}
+
+str_length(input) |> cat()
+```
