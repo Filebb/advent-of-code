@@ -1,0 +1,90 @@
+---
+title: "Day 11: Corporate Policy"
+---
+
+[Reference](https://adventofcode.com/2015/day/11)
+
+```{r}
+#| label: 2015 - day 11 - load Tidyverse
+
+library(tidyverse)
+
+input <- "cqjxjnds"
+```
+
+## Part One
+
+```{r}
+#| label: 2015 - day 11 - part 1
+
+which(letters == "x")
+
+has_iol <- function(string) {
+    string |> str_detect(pattern = "i|o|l")
+}
+
+# increasing3 <- character(24)
+# for (i in 1:24) {
+#     increasing3[i] <- paste0(letters[i:(i+2)], collapse = "")
+# }
+
+has_increasing3 <- function(string) {
+    string |> 
+        str_detect(
+            pattern = "abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz"
+        )
+}
+
+has_two_doubles <- function(string) {
+    string |> str_count(pattern = "([a-z])\\1") > 1
+}
+
+is_safe <- function(password){
+    !has_iol(password) & has_increasing3(password) & has_two_doubles(password)
+}
+
+increase_mod26 <- function(x, i = 8) {
+    if (all(x == rep(26, times = 8))) {
+        return(rep(1, times = 8))
+    }
+    
+    x[i] <- x[i] + 1
+    
+    if (x[i] == 27) {
+        x[i] <- 1
+        x <- increase_mod26(x, i-1)
+    }    
+    
+    return(x)
+}
+
+increase_password <- function(password) {
+    pw_split <- str_split_1(password, "") |> 
+        map_int(\(letter) which(letter == letters))
+    
+    letters[increase_mod26(pw_split)] |> 
+        paste0(collapse = "")
+}
+
+password <- increase_password(input)
+
+while (!is_safe(password)) {
+    password <- increase_password(password)
+}
+
+cat(password)
+```
+
+## Part Two
+
+```{r}
+#| label: 2015 - day 10 - part 2
+
+password <- increase_password("cqjxxyzz")
+
+while (!is_safe(password)) {
+    password <- increase_password(password)
+}
+
+cat(password)
+```
