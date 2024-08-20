@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Day 8: Matchsticks – Advent of Code</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Advent of Code</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-events" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Events</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-events">    
+        <li>
+    <a class="dropdown-item" href="../../solutions/2015/01.html">
+ <span class="dropdown-text">2015</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2016/01.html">
+ <span class="dropdown-text">2016</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2017/01.html">
+ <span class="dropdown-text">2017</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2018/01.html">
+ <span class="dropdown-text">2018</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2019/01.html">
+ <span class="dropdown-text">2019</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2020/01.html">
+ <span class="dropdown-text">2020</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2021/01.html">
+ <span class="dropdown-text">2021</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2022/01.html">
+ <span class="dropdown-text">2022</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../solutions/2023/01.html">
+ <span class="dropdown-text">2023</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/Filebb/advent-of-code" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../solutions/2015/01.html">2015</a></li><li class="breadcrumb-item"><a href="../../solutions/2015/08.html">Day 8: Matchsticks</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true">
+ <span class="menu-text">2015</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 1: Not Quite Lisp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 2: I Was Told There Would Be No Math</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 3: Perfectly Spherical Houses in a Vacuum</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 4: The Ideal Stocking Stuffer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 5: Doesn’t He Have Intern-Elves For This?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 6: Probably a Fire Hazard</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 7: Some Assembly Required</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/08.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Day 8: Matchsticks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 9: All in a Single Night</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../solutions/2015/10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Day 10: Elves Look, Elves Say</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../solutions/2015/01.html">2015</a></li><li class="breadcrumb-item"><a href="../../solutions/2015/08.html">Day 8: Matchsticks</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Day 8: Matchsticks</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://adventofcode.com/2015/day/8">Reference</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(<span class="at">file =</span> <span class="st">"inputs/2015/08.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="part-one" class="level2">
+<h2 class="anchored" data-anchor-id="part-one">Part One</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Solution</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Full Table</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>strings <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">original =</span> input,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">code     =</span> <span class="fu">str_length</span>(<span class="at">string =</span> input),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">memory   =</span> <span class="fu">map_int</span>(<span class="at">.x =</span> input, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">.f =</span> \(string) <span class="fu">parse</span>(<span class="at">text =</span> string) <span class="sc">|&gt;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                         <span class="fu">eval</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                         <span class="fu">nchar</span>(<span class="at">type =</span> <span class="st">"bytes"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">diff =</span> code <span class="sc">-</span> memory)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>strings <span class="sc">|&gt;</span>     </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">diff =</span> <span class="fu">sum</span>(diff)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(diff) <span class="sc">|&gt;</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1371</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["original"],"name":[1],"type":["chr"],"align":["left"]},{"label":["code"],"name":[2],"type":["int"],"align":["right"]},{"label":["memory"],"name":[3],"type":["int"],"align":["right"]},{"label":["diff"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"\"\\\\xa8br\\\\x8bjr\\\\\"\"","2":"16","3":"7","4":"9"},{"1":"\"nq\"","2":"4","3":"2","4":"2"},{"1":"\"zjrfcpbktjmrzgsz\\\\xcaqsc\\\\x03n\\\\\"huqab\"","2":"37","3":"28","4":"9"},{"1":"\"daz\\\\\\\\zyyxddpwk\"","2":"16","3":"13","4":"3"},{"1":"\"draes\\\\xa2n\\\\\\\\g\\\\x27ek\\\\\"lj\\\\\"\\\\\\\\viqych\"","2":"35","3":"23","4":"12"},{"1":"\"nnx\\\\\\\\krnrfomdnt\\\\x2flbl\\\\xd2xpo\\\\\"cp\\\\\"k\"","2":"38","3":"27","4":"11"},{"1":"\"kwdaapalq\"","2":"11","3":"9","4":"2"},{"1":"\"u\\\\\"ptk\"","2":"8","3":"5","4":"3"},{"1":"\"ckhorczuiudfjmmcc\\\\\\\\u\\\\\"wozqxibsfjma\"","2":"36","3":"32","4":"4"},{"1":"\"ydctdrxat\\\\\"pd\\\\\"lwi\\\\\"bjesevfw\\\\xe8\"","2":"34","3":"26","4":"8"},{"1":"\"v\\\\\"\\\\xa8rrzep\\\\\"\\\\\"r\"","2":"19","3":"11","4":"8"},{"1":"\"nbydghkfvmq\\\\\\\\\\\\xe0\\\\\"lfsrsvlsj\\\\\"i\\\\x61liif\"","2":"41","3":"30","4":"11"},{"1":"\"jsas\\\\\"u\"","2":"9","3":"6","4":"3"},{"1":"\"odipikxlo\"","2":"11","3":"9","4":"2"},{"1":"\"\\\\\"rnubsgwltqkbsu\\\\\"pcpcs\"","2":"25","3":"21","4":"4"},{"1":"\"eitk\\\\\\\\f\\\\\\\\mhcqqoym\\\\\\\\ji\"","2":"23","3":"18","4":"5"},{"1":"\"vnedc\"","2":"7","3":"5","4":"2"},{"1":"\"\\\\\"lhcaurdqzyjyu\"","2":"17","3":"14","4":"3"},{"1":"\"haxzsa\\\\\"zcn\\\\\"y\\\\\"foclgtjfcnv\\\\\"m\\\\x68krc\"","2":"39","3":"30","4":"9"},{"1":"\"\\\\\"eoeggg\\\\\"tmiydvcay\\\\\"vfavc\"","2":"28","3":"23","4":"5"},{"1":"\"snqvyqoncwxcvwbdktoywch\"","2":"25","3":"23","4":"2"},{"1":"\"rnfgjsyr\\\\xd5wacy\"","2":"18","3":"13","4":"5"},{"1":"\"ik\\\\\"hebrpvsts\"","2":"15","3":"12","4":"3"},{"1":"\"txw\"","2":"5","3":"3","4":"2"},{"1":"\"\\\\x15pxtdkogd\\\\\"urbm\\\\\"gevhh\\\\\"nxr\\\\x3erxtk\"","2":"40","3":"29","4":"11"},{"1":"\"cetqtcy\"","2":"9","3":"7","4":"2"},{"1":"\"inleep\\\\\\\\mgl\"","2":"13","3":"10","4":"3"},{"1":"\"uflwbxvww\\\\x2cxzezqnaply\\\\\"yh\\\\\"qlllzk\"","2":"37","3":"30","4":"7"},{"1":"\"eepak\\\\\"xqtedzt\"","2":"16","3":"13","4":"3"},{"1":"\"na\\\\x61qzfieafvyrsnwkssznohjmc\"","2":"31","3":"26","4":"5"},{"1":"\"yceaonylz\\\\xc1\\\\\\\\jrlbbkzwsidfi\"","2":"30","3":"24","4":"6"},{"1":"\"ybqafngkcqpbp\"","2":"15","3":"13","4":"2"},{"1":"\"\\\\xaft\"","2":"7","3":"2","4":"5"},{"1":"\"yidjpaobqydso\"","2":"15","3":"13","4":"2"},{"1":"\"ju\\\\\\\\ldxig\\\\\\\\lrdrhjcmm\\\\x77rc\"","2":"28","3":"21","4":"7"},{"1":"\"tylacqeslnwj\\\\x48ds\\\\\"tjxa\"","2":"26","3":"20","4":"6"},{"1":"\"efbfm\"","2":"7","3":"5","4":"2"},{"1":"\"\\\\\\\\fxkgoprgdcjgyajykg\\\\\\\\dtbrz\"","2":"29","3":"25","4":"4"},{"1":"\"eujvva\"","2":"8","3":"6","4":"2"},{"1":"\"h\\\\x7acwfpikme\\\\\\\\vwthyvrqdnx\\\\\"\"","2":"30","3":"23","4":"7"},{"1":"\"rbpbrxm\\\\\\\\\\\\\"\\\\\"\\\\\"voxx\"","2":"21","3":"15","4":"6"},{"1":"\"ykiw\\\\\"tkb\\\\\\\\lforu\\\\\"rsf\\\\\\\\tf\\\\\"x\\\\\"rqti\"","2":"36","3":"28","4":"8"},{"1":"\"e\\\\\\\\wh\\\\x77aqeugiq\\\\\\\\ihhfqfuaij\"","2":"30","3":"23","4":"7"},{"1":"\"g\\\\\"t\\\\\\\\o\"","2":"9","3":"5","4":"4"},{"1":"\"nxzo\\\\\"hf\\\\\\\\xp\"","2":"14","3":"10","4":"4"},{"1":"\"dxiaqfo\\\\xea\"","2":"13","3":"8","4":"5"},{"1":"\"kali\\\\\\\\zczhiqkqzybjj\\\\\"fgdjnik\"","2":"30","3":"26","4":"4"},{"1":"\"zdkgrqmdv\"","2":"11","3":"9","4":"2"},{"1":"\"bimxim\\\\xb6lrwsaj\\\\\"ui\\\\\"a\"","2":"25","3":"18","4":"7"},{"1":"\"\\\\\"rrznitibgx\\\\\\\\olpsjmjqzctxaubdifsq\"","2":"36","3":"32","4":"4"},{"1":"\"zb\\\\\"khzixaacmhuzmlymoformipdzml\"","2":"33","3":"30","4":"3"},{"1":"\"qfwi\"","2":"6","3":"4","4":"2"},{"1":"\"hjwsxfpphttjy\\\\\"\\\\\"zixais\\\\xbblgnqfto\"","2":"36","3":"29","4":"7"},{"1":"\"puj\\\\\\\\qmyu\\\\\"nqgaqfthbwjokbmrpbhpi\"","2":"34","3":"30","4":"4"},{"1":"\"cyxdpkh\\\\\\\\\\\\\"\"","2":"13","3":"9","4":"4"},{"1":"\"q\"","2":"3","3":"1","4":"2"},{"1":"\"m\"","2":"3","3":"1","4":"2"},{"1":"\"tbxdzzllarlo\"","2":"14","3":"12","4":"2"},{"1":"\"gbtys\"","2":"7","3":"5","4":"2"},{"1":"\"gytilk\\\\\\\\vlqxvcuutjunrqc\"","2":"25","3":"22","4":"3"},{"1":"\"uugkvcuzan\\\\\\\\eyhb\"","2":"18","3":"15","4":"3"},{"1":"\"yaxr\\\\\"genlbgw\\\\\"\\\\\\\\uc\"","2":"21","3":"16","4":"5"},{"1":"\"nrgecjeip\\\\\\\\sjdvgqaqxwsqactopu\"","2":"31","3":"28","4":"3"},{"1":"\"pu\\\\\"r\\\\\"txpyrkfny\\\\\\\\zmwfneyvwmnkkdipv\"","2":"37","3":"32","4":"5"},{"1":"\"jm\\\\xa3bhwvq\"","2":"13","3":"8","4":"5"},{"1":"\"qxojmnml\\\\\"w\\\\x9airr\"","2":"20","3":"14","4":"6"},{"1":"\"xbzsuihs\\\\x4dcedy\\\\xaclrhgii\\\\\\\\\\\\\"\"","2":"32","3":"22","4":"10"},{"1":"\"drgjirusrekrwmvxllwdm\"","2":"23","3":"21","4":"2"},{"1":"\"\\\\x28hfxnfpycmpnkku\\\\\"csuf\\\\xaarxlqyg\\\\\"x\"","2":"39","3":"29","4":"10"},{"1":"\"\\\\\"zvz\\\\\\\\rmg\\\\\"\\\\\\\\sxxoifffyqfyn\\\\\"iq\\\\\"ps\"","2":"37","3":"29","4":"8"},{"1":"\"\\\\\"z\"","2":"5","3":"2","4":"3"},{"1":"\"zbwkmk\\\\\"sgzos\\\\x93gtc\\\\\"\"","2":"24","3":"17","4":"7"},{"1":"\"bvm\\\\x28aa\\\\\\\\\\\\\\\\\\\\\"pywuhaniox\\\\\\\\z\\\\\\\\hbp\\\\xd7mold\"","2":"43","3":"30","4":"13"},{"1":"\"aszgvsyna\"","2":"11","3":"9","4":"2"},{"1":"\"qf\\\\\"vdwuss\"","2":"12","3":"9","4":"3"},{"1":"\"lnohni\\\\\"qwiacjsjegstlbfq\\\\\\\\kyjhyd\"","2":"34","3":"30","4":"4"},{"1":"\"c\\\\\\\\naawulxlqplnacvytspry\\\\xf5ytxxqq\"","2":"36","3":"30","4":"6"},{"1":"\"razwqmsqgbaaxcd\\\\\\\\f\"","2":"20","3":"17","4":"3"},{"1":"\"radggyrjrg\\\\\"zx\"","2":"16","3":"13","4":"3"},{"1":"\"\\\\\"pu\\\\x11t\\\\\\\\ajcjuieinlkvya\"","2":"27","3":"20","4":"7"},{"1":"\"veggiskh\"","2":"10","3":"8","4":"2"},{"1":"\"eglfhjxiet\\\\\"kouqfskwsy\\\\\"hpthsldel\"","2":"35","3":"31","4":"4"},{"1":"\"mv\\\\xc1b\\\\\"f\\\\\\\\shrssnjwcpmurepdxdlcj\"","2":"35","3":"28","4":"7"},{"1":"\"dlayjd\\\\\"suvzotgdtc\"","2":"20","3":"17","4":"3"},{"1":"\"\\\\xa9pvxeopn\"","2":"13","3":"8","4":"5"},{"1":"\"lpplsaxy\\\\\"oiwaq\"","2":"17","3":"14","4":"3"},{"1":"\"hqwh\\\\\\\\lusv\"","2":"12","3":"9","4":"3"},{"1":"\"hykykwlx\\\\\"\\\\xa5atkgh\\\\\\\\d\\\\x63dff\"","2":"31","3":"21","4":"10"},{"1":"\"vfktanpjy\\\\\"xxetc\"","2":"18","3":"15","4":"3"},{"1":"\"dnhwkgjnsmsswfuelvihvjl\\\\\"jtf\"","2":"30","3":"27","4":"3"},{"1":"\"x\\\\\"dwvzra\\\\\"nbbsewftehczgbvfzd\\\\\"rau\"","2":"36","3":"31","4":"5"},{"1":"\"csfi\\\\\"mzejnjqkqupwadrgti\\\\\"von\"","2":"31","3":"27","4":"4"},{"1":"\"xckf\\\\xf7xsm\\\\\\\\pgvlpetjndpyblais\\\\\\\\z\"","2":"35","3":"28","4":"7"},{"1":"\"yecy\\\\x6fuj\\\\x58bwpgeuiw\\\\\"mdu\"","2":"29","3":"20","4":"9"},{"1":"\"fgb\"","2":"5","3":"3","4":"2"},{"1":"\"c\\\\\\\\lx\\\\x3efthet\\\\xfdelgvwvpem\"","2":"29","3":"20","4":"9"},{"1":"\"kgyrmarvfwjinlowt\"","2":"19","3":"17","4":"2"},{"1":"\"yzte\"","2":"6","3":"4","4":"2"},{"1":"\"vc\\\\\"z\"","2":"7","3":"4","4":"3"},{"1":"\"sxevqfzmmdwsuu\\\\\"\"","2":"18","3":"15","4":"3"},{"1":"\"fxbaercmcy\\\\xb6md\"","2":"18","3":"13","4":"5"},{"1":"\"f\"","2":"3","3":"1","4":"2"},{"1":"\"m\\\\x44gqbcppho\\\\\\\\b\"","2":"18","3":"12","4":"6"},{"1":"\"gtafr\\\\x57m\\\\x11jy\\\\\"\\\\\"erwmmpiwjkbckuw\"","2":"37","3":"27","4":"10"},{"1":"\"ufdjt\\\\\"kssprzxqixzxmq\\\\x58q\"","2":"28","3":"22","4":"6"},{"1":"\"yzbyo\\\\\"lfdbyaxexyfbnyv\\\\\\\\\\\\xe8xmre\"","2":"34","3":"27","4":"7"},{"1":"\"u\\\\x43ntr\\\\\\\\\\\\\\\\byyfjr\\\\\"iveujvnwsqbnpuvrta\"","2":"40","3":"32","4":"8"},{"1":"\"us\\\\xf6bai\"","2":"11","3":"6","4":"5"},{"1":"\"c\\\\\\\\edh\"","2":"8","3":"5","4":"3"},{"1":"\"tzckolphexfq\\\\\\\\\\\\x23\\\\xfbdqv\\\\\\\\\\\\\"m\"","2":"32","3":"21","4":"11"},{"1":"\"yjafhbvhhj\\\\x1b\\\\\"bplb\"","2":"22","3":"16","4":"6"},{"1":"\"\\\\\"o\"","2":"5","3":"2","4":"3"},{"1":"\"rubahvmp\\\\\"\"","2":"12","3":"9","4":"3"},{"1":"\"qmkukrnrmqumh\"","2":"15","3":"13","4":"2"},{"1":"\"wdpxyvyidhwjf\\\\\\\\nabbijwhr\\\\xc5bksvy\\\\\"p\"","2":"38","3":"31","4":"7"},{"1":"\"u\\\\\"prlpg\\\\\"\"","2":"12","3":"8","4":"4"},{"1":"\"nsvcquyxbwilsxxemf\\\\xd9leq\"","2":"27","3":"22","4":"5"},{"1":"\"y\\\\xcetxuafl\"","2":"13","3":"8","4":"5"},{"1":"\"it\"","2":"4","3":"2","4":"2"},{"1":"\"kwdlysf\\\\\\\\xjpelae\"","2":"18","3":"15","4":"3"},{"1":"\"viwh\\\\x58wpjjlnvryuti\\\\x2chngrx\\\\\\\\nhtkui\"","2":"39","3":"30","4":"9"},{"1":"\"vhn\\\\x9ehre\\\\xc3ncsqbozms\\\\\"nl\"","2":"29","3":"20","4":"9"},{"1":"\"ytc\\\\xa3mgeeogjcqavmmmd\"","2":"24","3":"19","4":"5"},{"1":"\"xzlexlitseozoxtpzzutfq\"","2":"24","3":"22","4":"2"},{"1":"\"cish\\\\x07lmovj\"","2":"15","3":"10","4":"5"},{"1":"\"ekbflwqzaiivdr\\\\\"pq\\\\\\\\azrfbntqwkn\"","2":"33","3":"29","4":"4"},{"1":"\"uc\\\\\"xdbegmlmhksofzohavtrnxf\"","2":"29","3":"26","4":"3"},{"1":"\"xfdnrdqdrcjzbe\"","2":"16","3":"14","4":"2"},{"1":"\"ndg\\\\\"ckgrpisib\\\\\"rg\\\\\"p\\\\\\\\lmpfzlssnvk\"","2":"36","3":"30","4":"6"},{"1":"\"witfjwpbyyzlop\"","2":"16","3":"14","4":"2"},{"1":"\"zonlww\\\\\"emrbcsgdtrg\\\\\"rjzy\\\\x64zqntlw\"","2":"37","3":"30","4":"7"},{"1":"\"dvgb\\\\\"zn\\\\\\\\vrbzema\\\\\"ckmd\"","2":"25","3":"20","4":"5"},{"1":"\"\\\\\\\\vdlmxhlvldk\\\\\"pmzazeip\"","2":"25","3":"21","4":"4"},{"1":"\"\\\\\"\\\\\"r\"","2":"7","3":"3","4":"4"},{"1":"\"rsntinv\"","2":"9","3":"7","4":"2"},{"1":"\"iy\"","2":"4","3":"2","4":"2"},{"1":"\"lr\\\\x20efh\"","2":"11","3":"6","4":"5"},{"1":"\"csgexlb\\\\\"zqdavlxxhtdbh\\\\\"\\\\\"\\\\x0fkpvhiphm\"","2":"40","3":"32","4":"8"},{"1":"\"ouwhp\\\\\"ogbft\"","2":"14","3":"11","4":"3"},{"1":"\"cm\\\\\\\\ckltng\\\\\"dw\\\\x8brf\\\\xf0eppgckd\"","2":"33","3":"23","4":"10"},{"1":"\"zmnlsgalhpkejsizfsbtnfliu\\\\\"nhc\"","2":"32","3":"29","4":"3"},{"1":"\"pnrkaayqvwpdjbhcrbb\\\\\"yfeq\\\\\"aq\"","2":"31","3":"27","4":"4"},{"1":"\"ozh\\\\\\\\hoxow\\\\x2csrtr\\\\\\\\r\\\\\"\"","2":"25","3":"17","4":"8"},{"1":"\"bqxabj\\\\\"u\\\\\\\\s\"","2":"14","3":"10","4":"4"},{"1":"\"cpsjti\\\\\"gy\"","2":"12","3":"9","4":"3"},{"1":"\"aa\\\\\"p\\\\\\\\nki\\\\\\\\ajijkqev\"","2":"22","3":"17","4":"5"},{"1":"\"q\\\\\"\\\\\"lfdentjgd\\\\\\\\\"","2":"18","3":"13","4":"5"},{"1":"\"bmokvpoebutfki\"","2":"16","3":"14","4":"2"},{"1":"\"pielvcbne\\\\xf6efvzxn\"","2":"21","3":"16","4":"5"},{"1":"\"kx\"","2":"4","3":"2","4":"2"},{"1":"\"zlgmqagcrbhrwtwtmmg\"","2":"21","3":"19","4":"2"},{"1":"\"aiyhmntcqjbpv\\\\xb5hhswxbryoedvos\"","2":"33","3":"28","4":"5"},{"1":"\"tdpaxrb\"","2":"9","3":"7","4":"2"},{"1":"\"fu\\\\\"\\\\x7dttkyvhrlwko\"","2":"21","3":"15","4":"6"},{"1":"\"oirc\\\\\\\\\\\\\"cqlnqffjqt\\\\\\\\k\"","2":"23","3":"18","4":"5"},{"1":"\"edxlia\\\\\\\\tcyby\"","2":"15","3":"12","4":"3"},{"1":"\"jpeybgwfayerfrfbvfog\\\\\"ol\"","2":"26","3":"23","4":"3"},{"1":"\"ysr\"","2":"5","3":"3","4":"2"},{"1":"\"bzwzilgwfugjk\"","2":"15","3":"13","4":"2"},{"1":"\"tlcc\\\\x75nukvwjgftetjcs\\\\xaecwc\"","2":"31","3":"23","4":"8"},{"1":"\"dsqssa\\\\\"vzrf\\\\\"sewbp\\\\\\\\ahhlmhbeihlh\"","2":"35","3":"30","4":"5"},{"1":"\"qtgmjck\\\\\"n\\\\\"guki\\\\\"gmdivwqxismqj\"","2":"33","3":"28","4":"5"},{"1":"\"\\\\\"f\"","2":"5","3":"2","4":"3"},{"1":"\"wuorvlovucngbzdszqpikyk\"","2":"25","3":"23","4":"2"},{"1":"\"dfrdsacoukmgvhbq\\\\\"\\\\\"iwto\"","2":"26","3":"22","4":"4"},{"1":"\"\\\\\"ey\\\\\"ch\\\\\\\\wcgioe\\\\\\\\\\\\\"ouvligmsw\"","2":"31","3":"24","4":"7"},{"1":"\"ciqlszzgs\"","2":"11","3":"9","4":"2"},{"1":"\"\\\\\\\\tzyrkaoi\\\\\"sopjaq\"","2":"20","3":"16","4":"4"},{"1":"\"lmtnv\"","2":"7","3":"5","4":"2"},{"1":"\"ar\\\\\"fqoroigiertjjlm\\\\\"ymgi\\\\\\\\kkjewsxd\"","2":"37","3":"32","4":"5"},{"1":"\"wehcimlvudpxtamdn\\\\\"rwy\"","2":"24","3":"21","4":"3"},{"1":"\"hr\\\\\"zvrwthr\\\\\"vruzqfrldn\\\\\"b\"","2":"28","3":"23","4":"5"},{"1":"\"sggekodkiwvym\\\\\"mhsco\"","2":"22","3":"19","4":"3"},{"1":"\"ltlkfbrrdvk\\\\\\\\\"","2":"15","3":"12","4":"3"},{"1":"\"uut\\\\\"sfjnz\\\\\"\\\\\\\\ef\"","2":"18","3":"13","4":"5"},{"1":"\"hxilg\\\\\\\\\"","2":"9","3":"6","4":"3"},{"1":"\"zsredsiwlzrpedibn\"","2":"19","3":"17","4":"2"},{"1":"\"vtfi\"","2":"6","3":"4","4":"2"},{"1":"\"\\\\\\\\h\"","2":"5","3":"2","4":"3"},{"1":"\"qekfrc\\\\xf6wduodbwrguqcng\\\\\\\\n\"","2":"29","3":"23","4":"6"},{"1":"\"\\\\\"lljlfdrxftwidn\\\\\\\\pkv\\\\xd9ij\"","2":"29","3":"22","4":"7"},{"1":"\"mrvgqynpehkliuijlpp\"","2":"21","3":"19","4":"2"},{"1":"\"gikjph\"","2":"8","3":"6","4":"2"},{"1":"\"yoxcdrdt\\\\\"wbaurnyhoyxoihu\"","2":"27","3":"24","4":"3"},{"1":"\"onmomwuxuammbzxe\"","2":"18","3":"16","4":"2"},{"1":"\"rnrr\\\\\\\\twviz\\\\x61gqaljr\\\\x0dmtw\"","2":"30","3":"21","4":"9"},{"1":"\"r\\\\\"vupaoi\"","2":"11","3":"8","4":"3"},{"1":"\"l\"","2":"3","3":"1","4":"2"},{"1":"\"sei\"","2":"5","3":"3","4":"2"},{"1":"\"jwxtdtbkd\\\\\\\\kxd\"","2":"16","3":"13","4":"3"},{"1":"\"\\\\x22v\\\\\\\\\"","2":"9","3":"3","4":"6"},{"1":"\"ahd\"","2":"5","3":"3","4":"2"},{"1":"\"j\\\\\"bjqxs\"","2":"10","3":"7","4":"3"},{"1":"\"\\\\\\\\i\\\\x24gglxub\\\\\\\\nzsajokt\"","2":"25","3":"18","4":"7"},{"1":"\"lviwpu\\\\\"uxdlh\\\\\\\\zuy\\\\\"xqy\\\\\"ytdzlx\\\\\"r\"","2":"36","3":"29","4":"7"},{"1":"\"kptfmys\"","2":"9","3":"7","4":"2"},{"1":"\"fwxzikfhczkjwyjszqdbkepaeellc\"","2":"31","3":"29","4":"2"},{"1":"\"nlqpsvbrbd\\\\\\\\ns\"","2":"16","3":"13","4":"3"},{"1":"\"qryuwkjiodw\\\\\"\\\\\"vaqyq\\\\\"dmyifm\"","2":"30","3":"25","4":"5"},{"1":"\"tw\\\\x15kdmaudjl\\\\\\\\zorhp\\\\\"alwh\"","2":"29","3":"22","4":"7"},{"1":"\"aatrvczesykekkjfyb\\\\\"kb\"","2":"24","3":"21","4":"3"},{"1":"\"usqcutbqbxxhucwxo\\\\xc1ltb\\\\\"j\\\\\"bghjcvws\"","2":"39","3":"32","4":"7"},{"1":"\"ilhsrnzxkz\"","2":"12","3":"10","4":"2"},{"1":"\"bianqfdfdhvw\"","2":"14","3":"12","4":"2"},{"1":"\"hqibqs\\\\x7ax\\\\\"qoxqoaqtcsz\"","2":"26","3":"20","4":"6"},{"1":"\"htxtoojbbauztwxuiq\\\\\\\\ngyfy\\\\\\\\obzc\"","2":"33","3":"29","4":"4"},{"1":"\"rxn\\\\\\\\moxlj\"","2":"12","3":"9","4":"3"},{"1":"\"mtus\\\\x84erh\\\\\"dbe\"","2":"18","3":"12","4":"6"},{"1":"\"asx\\\\x50huvsitcxadt\"","2":"20","3":"15","4":"5"},{"1":"\"\\\\\"bugggtnrc\\\\\"\\\\\"kl\\\\\"hmpu\\\\x83hqrvhpo\"","2":"36","3":"27","4":"9"},{"1":"\"ewisbp\\\\\"\\\\\"vuzf\\\\\\\\w\\\\x5fvalszdhl\"","2":"31","3":"23","4":"8"},{"1":"\"scusplpwxfnxu\\\\x57\\\\\"zynpn\\\\x99xerc\\\\\\\\ri\"","2":"38","3":"28","4":"10"},{"1":"\"m\\\\\\\\kinmkke\\\\x0cl\"","2":"17","3":"11","4":"6"},{"1":"\"xhuzit\\\\x7fd\"","2":"13","3":"8","4":"5"},{"1":"\"kfbo\\\\x04\\\\x50ruqirn\"","2":"20","3":"12","4":"8"},{"1":"\"t\\\\\"\\\\\"xpbdscmdoug\"","2":"18","3":"14","4":"4"},{"1":"\"punvpsgnbgyxe\\\\\"sptmpz\"","2":"23","3":"20","4":"3"},{"1":"\"bxukkazijr\"","2":"12","3":"10","4":"2"},{"1":"\"nxyrcdaoo\\\\\"rjkk\\\\\"wntehcvcip\\\\\"vrd\"","2":"34","3":"29","4":"5"},{"1":"\"rdpvqskmihqaw\"","2":"15","3":"13","4":"2"},{"1":"\"p\\\\\\\\gwdhtqnpgthod\"","2":"18","3":"15","4":"3"},{"1":"\"nwnuf\\\\\"\\\\\"yebycearom\\\\\"nqym\\\\\"\\\\xd4sii\\\\xccle\"","2":"42","3":"30","4":"12"},{"1":"\"alda\\\\\"ptspo\\\\\"wkkv\\\\\"zoi\\\\\"hkb\\\\\"vnntyd\"","2":"37","3":"30","4":"7"},{"1":"\"ixpgpfzbqv\"","2":"12","3":"10","4":"2"},{"1":"\"znui\\\\\"\\\\\\\\fzn\\\\x03qozabh\\\\\"rva\\\\\"pv\\\\x67\"","2":"36","3":"24","4":"12"},{"1":"\"e\\\\\"zswmwuk\"","2":"12","3":"9","4":"3"},{"1":"\"hcccygwfa\"","2":"11","3":"9","4":"2"},{"1":"\"ngmace\\\\\\\\rtyllolr\\\\\"\\\\x68bw\"","2":"26","3":"19","4":"7"},{"1":"\"\\\\\\\\c\\\\\"jyufbry\\\\\"ryo\\\\\"xpo\\\\x26ecninfeckh\\\\\\\\s\"","2":"41","3":"31","4":"10"},{"1":"\"hdnpngtuc\\\\\"dzbvvosn\\\\x31fwtpzbrt\"","2":"33","3":"27","4":"6"},{"1":"\"hesbpd\\\\xd4\"","2":"12","3":"7","4":"5"},{"1":"\"dsdbstuzrdfmrnyntufs\\\\\"dmv\"","2":"27","3":"24","4":"3"},{"1":"\"d\\\\xeeibcwhcvkt\"","2":"16","3":"11","4":"5"},{"1":"\"fvzwrsfjdqdmy\\\\\"\\\\\"v\"","2":"20","3":"16","4":"4"},{"1":"\"ns\\\\\"dqafz\\\\\\\\lkyoflnazv\\\\\"mn\\\\x37\\\\\"o\\\\\"yj\\\\\"e\"","2":"41","3":"30","4":"11"},{"1":"\"dypilgbwzccayxa\\\\\"bnmuernx\"","2":"27","3":"24","4":"3"},{"1":"\"q\\\\xa9ztqrhreb\\\\\"\\\\\"kxfeyodqb\"","2":"28","3":"21","4":"7"},{"1":"\"iz\\\\xa5qjxqulaawuwz\\\\\"rqmpcj\\\\\\\\yel\"","2":"33","3":"26","4":"7"},{"1":"\"z\\\\\"\\\\\\\\pq\\\\\"\\\\\"y\\\\x67zpjtn\"","2":"23","3":"14","4":"9"},{"1":"\"ifxqvivp\\\\\"kiiftdoe\"","2":"20","3":"17","4":"3"},{"1":"\"jxzebj\\\\\"\\\\x35\\\\\"qr\\\\\"ecglcutuoyywqumcs\\\\\"kk\"","2":"41","3":"32","4":"9"},{"1":"\"q\"","2":"3","3":"1","4":"2"},{"1":"\"yob\\\\x85qmpuwexptczbkrl\"","2":"24","3":"19","4":"5"},{"1":"\"cjiavv\\\\\"uudpozvibyycnmxhxpxmpjoz\"","2":"34","3":"31","4":"3"},{"1":"\"xro\\\\\\\\uiqyrcid\"","2":"15","3":"12","4":"3"},{"1":"\"nod\\\\\\\\k\"","2":"8","3":"5","4":"3"},{"1":"\"d\\\\\"neiec\"","2":"10","3":"7","4":"3"},{"1":"\"tqyrqvwyvmz\\\\\\\\pzgzzcqsqsrgbqbtapoz\"","2":"35","3":"32","4":"3"},{"1":"\"r\\\\\"xvocpeuxfxslgueb\\\\x05kzyyie\\\\\"aoec\"","2":"37","3":"30","4":"7"},{"1":"\"\\\\\"du\\\\\\\\uirlhcbgv\\\\\\\\cjqhfreqnvn\"","2":"30","3":"25","4":"5"},{"1":"\"zp\\\\x04\\\\x15\\\\\"pbjwhrjtmiba\"","2":"26","3":"17","4":"9"},{"1":"\"\\\\\\\\cv\\\\\"\"","2":"8","3":"4","4":"4"},{"1":"\"k\\\\\"rwnb\\\\\\\\hiu\\\\\"rqd\\\\\"rc\\\\\\\\nyakrhly\"","2":"33","3":"26","4":"7"},{"1":"\"klrmafjzandiddodgz\"","2":"20","3":"18","4":"2"},{"1":"\"xipzhqzhvlpykzcuppx\"","2":"21","3":"19","4":"2"},{"1":"\"zdvrvn\\\\xd0mtfvpylbn\\\\\\\\\\\\\\\\sxcznrzugwznl\"","2":"38","3":"31","4":"7"},{"1":"\"ody\\\\\\\\pvm\\\\\"kpjiudzhxazirgxzvumeat\\\\\"o\"","2":"37","3":"32","4":"5"},{"1":"\"kllvhdp\\\\\"prjikzrrc\\\\\"adgpegc\\\\\\\\\\\\\"gk\"","2":"35","3":"29","4":"6"},{"1":"\"sqtpug\\\\xbcaauxaamw\"","2":"20","3":"15","4":"5"},{"1":"\"wegxxrrxdvpivrqievfeokmnojsk\"","2":"30","3":"28","4":"2"},{"1":"\"\\\\\\\\bo\"","2":"6","3":"3","4":"3"},{"1":"\"gijhz\"","2":"7","3":"5","4":"2"},{"1":"\"ylowluvabwrigssdgtxdwsiorxev\\\\xdd\"","2":"34","3":"29","4":"5"},{"1":"\"\\\\\"\"","2":"4","3":"1","4":"3"},{"1":"\"ghnsrnsqtxpygikahkrl\"","2":"22","3":"20","4":"2"},{"1":"\"\\\\\"rcfqkbjf\\\\\"sgxg\\\\\"vnd\\\\\\\\rotn\"","2":"29","3":"23","4":"6"},{"1":"\"ap\\\\\"smgsuexjrbuqs\\\\\"mpbstogj\\\\\"x\"","2":"32","3":"27","4":"5"},{"1":"\"koaunz\\\\\\\\sgt\\\\\"opv\"","2":"18","3":"14","4":"4"},{"1":"\"yialiuzwix\"","2":"12","3":"10","4":"2"},{"1":"\"yp\\\\\"ndxgwzml\\\\\"bt\"","2":"18","3":"14","4":"4"},{"1":"\"lpcjxmggfsy\\\\\\\\szbxccarjkqzasqkb\\\\xcfd\\\\x0c\"","2":"41","3":"32","4":"9"},{"1":"\"x\"","2":"3","3":"1","4":"2"},{"1":"\"mgakc\"","2":"7","3":"5","4":"2"},{"1":"\"vjieunoh\\\\x73fjwx\"","2":"18","3":"13","4":"5"},{"1":"\"erbvv\\\\\"qulsd\"","2":"14","3":"11","4":"3"},{"1":"\"mimycrbfhqkarmz\"","2":"17","3":"15","4":"2"},{"1":"\"tihfbgcszuej\\\\\"c\\\\xfbvoqskkhbgpaddioo\"","2":"37","3":"31","4":"6"},{"1":"\"mziavkwrmekriqghw\"","2":"19","3":"17","4":"2"},{"1":"\"izk\\\\\\\\tnjd\\\\\\\\ed\\\\\\\\emokvjoc\"","2":"25","3":"20","4":"5"},{"1":"\"c\\\\\"nhbqzndro\\\\\\\\g\"","2":"17","3":"13","4":"4"},{"1":"\"usfngdo\"","2":"9","3":"7","4":"2"},{"1":"\"aypljdftvptt\"","2":"14","3":"12","4":"2"},{"1":"\"ym\\\\\"afvq\\\\xbcc\"","2":"15","3":"9","4":"6"},{"1":"\"zabi\\\\\"wjpvugwhl\"","2":"17","3":"14","4":"3"},{"1":"\"ebvptcjqjhc\\\\\"n\\\\\"p\\\\\"dxrphegr\\\\\\\\\"","2":"31","3":"25","4":"6"},{"1":"\"mzlqqxokhye\\\\xd9\\\\\\\\rffhnzs\"","2":"26","3":"20","4":"6"},{"1":"\"hnipqknwpsjakanuewe\"","2":"21","3":"19","4":"2"},{"1":"\"rqgbfcjdrmiz\\\\\"h\"","2":"17","3":"14","4":"3"},{"1":"\"kzzp\\\\\\\\z\\\\\\\\txmkwaouxictybwx\"","2":"27","3":"23","4":"4"},{"1":"\"yzmspjkqrteiydswlvb\"","2":"21","3":"19","4":"2"},{"1":"\"gjpxklgpzv\\\\\"txri\\\\\\\\hotpuiukzzzd\"","2":"32","3":"28","4":"4"},{"1":"\"p\\\\\"rxergtbsxmjmkeeqwvoagnki\\\\\"\"","2":"31","3":"27","4":"4"},{"1":"\"santipvuiq\"","2":"12","3":"10","4":"2"},{"1":"\"\\\\\"ihjqlhtwbuy\\\\\"hdkiv\\\\\"mtiqacnf\\\\\\\\\"","2":"34","3":"28","4":"6"},{"1":"\"oliaggtqyyx\"","2":"13","3":"11","4":"2"},{"1":"\"fwwnpmbb\"","2":"10","3":"8","4":"2"},{"1":"\"yrtdrieazfxyyneo\"","2":"18","3":"16","4":"2"},{"1":"\"nywbv\\\\\\\\\"","2":"9","3":"6","4":"3"},{"1":"\"twc\\\\\\\\ehfqxhgomgrgwpxyzmnkioj\"","2":"30","3":"27","4":"3"},{"1":"\"qludrkkvljljd\\\\\\\\xvdeum\\\\x4e\"","2":"27","3":"21","4":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-one-1" class="level2">
+<h2 class="anchored" data-anchor-id="part-one-1">Part One</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Solution</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Full Table</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>strings <span class="ot">&lt;-</span> strings <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">encoded =</span> stringi<span class="sc">::</span><span class="fu">stri_escape_unicode</span>(input),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">encoded_len =</span> <span class="fu">str_length</span>(encoded),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">diff2 =</span> encoded_len <span class="sc">+</span> <span class="dv">2</span> <span class="sc">-</span> code)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>strings <span class="sc">|&gt;</span>     </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">diff2 =</span> <span class="fu">sum</span>(diff2)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(diff2) <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>()</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 2117</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["original"],"name":[1],"type":["chr"],"align":["left"]},{"label":["code"],"name":[2],"type":["int"],"align":["right"]},{"label":["memory"],"name":[3],"type":["int"],"align":["right"]},{"label":["diff"],"name":[4],"type":["int"],"align":["right"]},{"label":["encoded"],"name":[5],"type":["chr"],"align":["left"]},{"label":["encoded_len"],"name":[6],"type":["int"],"align":["right"]},{"label":["diff2"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"\"\\\\xa8br\\\\x8bjr\\\\\"\"","2":"16","3":"7","4":"9","5":"\\\\\"\\\\\\\\xa8br\\\\\\\\x8bjr\\\\\\\\\\\\\"\\\\\"","6":"22","7":"8"},{"1":"\"nq\"","2":"4","3":"2","4":"2","5":"\\\\\"nq\\\\\"","6":"6","7":"4"},{"1":"\"zjrfcpbktjmrzgsz\\\\xcaqsc\\\\x03n\\\\\"huqab\"","2":"37","3":"28","4":"9","5":"\\\\\"zjrfcpbktjmrzgsz\\\\\\\\xcaqsc\\\\\\\\x03n\\\\\\\\\\\\\"huqab\\\\\"","6":"43","7":"8"},{"1":"\"daz\\\\\\\\zyyxddpwk\"","2":"16","3":"13","4":"3","5":"\\\\\"daz\\\\\\\\\\\\\\\\zyyxddpwk\\\\\"","6":"20","7":"6"},{"1":"\"draes\\\\xa2n\\\\\\\\g\\\\x27ek\\\\\"lj\\\\\"\\\\\\\\viqych\"","2":"35","3":"23","4":"12","5":"\\\\\"draes\\\\\\\\xa2n\\\\\\\\\\\\\\\\g\\\\\\\\x27ek\\\\\\\\\\\\\"lj\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\viqych\\\\\"","6":"47","7":"14"},{"1":"\"nnx\\\\\\\\krnrfomdnt\\\\x2flbl\\\\xd2xpo\\\\\"cp\\\\\"k\"","2":"38","3":"27","4":"11","5":"\\\\\"nnx\\\\\\\\\\\\\\\\krnrfomdnt\\\\\\\\x2flbl\\\\\\\\xd2xpo\\\\\\\\\\\\\"cp\\\\\\\\\\\\\"k\\\\\"","6":"48","7":"12"},{"1":"\"kwdaapalq\"","2":"11","3":"9","4":"2","5":"\\\\\"kwdaapalq\\\\\"","6":"13","7":"4"},{"1":"\"u\\\\\"ptk\"","2":"8","3":"5","4":"3","5":"\\\\\"u\\\\\\\\\\\\\"ptk\\\\\"","6":"12","7":"6"},{"1":"\"ckhorczuiudfjmmcc\\\\\\\\u\\\\\"wozqxibsfjma\"","2":"36","3":"32","4":"4","5":"\\\\\"ckhorczuiudfjmmcc\\\\\\\\\\\\\\\\u\\\\\\\\\\\\\"wozqxibsfjma\\\\\"","6":"42","7":"8"},{"1":"\"ydctdrxat\\\\\"pd\\\\\"lwi\\\\\"bjesevfw\\\\xe8\"","2":"34","3":"26","4":"8","5":"\\\\\"ydctdrxat\\\\\\\\\\\\\"pd\\\\\\\\\\\\\"lwi\\\\\\\\\\\\\"bjesevfw\\\\\\\\xe8\\\\\"","6":"43","7":"11"},{"1":"\"v\\\\\"\\\\xa8rrzep\\\\\"\\\\\"r\"","2":"19","3":"11","4":"8","5":"\\\\\"v\\\\\\\\\\\\\"\\\\\\\\xa8rrzep\\\\\\\\\\\\\"\\\\\\\\\\\\\"r\\\\\"","6":"28","7":"11"},{"1":"\"nbydghkfvmq\\\\\\\\\\\\xe0\\\\\"lfsrsvlsj\\\\\"i\\\\x61liif\"","2":"41","3":"30","4":"11","5":"\\\\\"nbydghkfvmq\\\\\\\\\\\\\\\\\\\\\\\\xe0\\\\\\\\\\\\\"lfsrsvlsj\\\\\\\\\\\\\"i\\\\\\\\x61liif\\\\\"","6":"51","7":"12"},{"1":"\"jsas\\\\\"u\"","2":"9","3":"6","4":"3","5":"\\\\\"jsas\\\\\\\\\\\\\"u\\\\\"","6":"13","7":"6"},{"1":"\"odipikxlo\"","2":"11","3":"9","4":"2","5":"\\\\\"odipikxlo\\\\\"","6":"13","7":"4"},{"1":"\"\\\\\"rnubsgwltqkbsu\\\\\"pcpcs\"","2":"25","3":"21","4":"4","5":"\\\\\"\\\\\\\\\\\\\"rnubsgwltqkbsu\\\\\\\\\\\\\"pcpcs\\\\\"","6":"31","7":"8"},{"1":"\"eitk\\\\\\\\f\\\\\\\\mhcqqoym\\\\\\\\ji\"","2":"23","3":"18","4":"5","5":"\\\\\"eitk\\\\\\\\\\\\\\\\f\\\\\\\\\\\\\\\\mhcqqoym\\\\\\\\\\\\\\\\ji\\\\\"","6":"31","7":"10"},{"1":"\"vnedc\"","2":"7","3":"5","4":"2","5":"\\\\\"vnedc\\\\\"","6":"9","7":"4"},{"1":"\"\\\\\"lhcaurdqzyjyu\"","2":"17","3":"14","4":"3","5":"\\\\\"\\\\\\\\\\\\\"lhcaurdqzyjyu\\\\\"","6":"21","7":"6"},{"1":"\"haxzsa\\\\\"zcn\\\\\"y\\\\\"foclgtjfcnv\\\\\"m\\\\x68krc\"","2":"39","3":"30","4":"9","5":"\\\\\"haxzsa\\\\\\\\\\\\\"zcn\\\\\\\\\\\\\"y\\\\\\\\\\\\\"foclgtjfcnv\\\\\\\\\\\\\"m\\\\\\\\x68krc\\\\\"","6":"50","7":"13"},{"1":"\"\\\\\"eoeggg\\\\\"tmiydvcay\\\\\"vfavc\"","2":"28","3":"23","4":"5","5":"\\\\\"\\\\\\\\\\\\\"eoeggg\\\\\\\\\\\\\"tmiydvcay\\\\\\\\\\\\\"vfavc\\\\\"","6":"36","7":"10"},{"1":"\"snqvyqoncwxcvwbdktoywch\"","2":"25","3":"23","4":"2","5":"\\\\\"snqvyqoncwxcvwbdktoywch\\\\\"","6":"27","7":"4"},{"1":"\"rnfgjsyr\\\\xd5wacy\"","2":"18","3":"13","4":"5","5":"\\\\\"rnfgjsyr\\\\\\\\xd5wacy\\\\\"","6":"21","7":"5"},{"1":"\"ik\\\\\"hebrpvsts\"","2":"15","3":"12","4":"3","5":"\\\\\"ik\\\\\\\\\\\\\"hebrpvsts\\\\\"","6":"19","7":"6"},{"1":"\"txw\"","2":"5","3":"3","4":"2","5":"\\\\\"txw\\\\\"","6":"7","7":"4"},{"1":"\"\\\\x15pxtdkogd\\\\\"urbm\\\\\"gevhh\\\\\"nxr\\\\x3erxtk\"","2":"40","3":"29","4":"11","5":"\\\\\"\\\\\\\\x15pxtdkogd\\\\\\\\\\\\\"urbm\\\\\\\\\\\\\"gevhh\\\\\\\\\\\\\"nxr\\\\\\\\x3erxtk\\\\\"","6":"50","7":"12"},{"1":"\"cetqtcy\"","2":"9","3":"7","4":"2","5":"\\\\\"cetqtcy\\\\\"","6":"11","7":"4"},{"1":"\"inleep\\\\\\\\mgl\"","2":"13","3":"10","4":"3","5":"\\\\\"inleep\\\\\\\\\\\\\\\\mgl\\\\\"","6":"17","7":"6"},{"1":"\"uflwbxvww\\\\x2cxzezqnaply\\\\\"yh\\\\\"qlllzk\"","2":"37","3":"30","4":"7","5":"\\\\\"uflwbxvww\\\\\\\\x2cxzezqnaply\\\\\\\\\\\\\"yh\\\\\\\\\\\\\"qlllzk\\\\\"","6":"44","7":"9"},{"1":"\"eepak\\\\\"xqtedzt\"","2":"16","3":"13","4":"3","5":"\\\\\"eepak\\\\\\\\\\\\\"xqtedzt\\\\\"","6":"20","7":"6"},{"1":"\"na\\\\x61qzfieafvyrsnwkssznohjmc\"","2":"31","3":"26","4":"5","5":"\\\\\"na\\\\\\\\x61qzfieafvyrsnwkssznohjmc\\\\\"","6":"34","7":"5"},{"1":"\"yceaonylz\\\\xc1\\\\\\\\jrlbbkzwsidfi\"","2":"30","3":"24","4":"6","5":"\\\\\"yceaonylz\\\\\\\\xc1\\\\\\\\\\\\\\\\jrlbbkzwsidfi\\\\\"","6":"35","7":"7"},{"1":"\"ybqafngkcqpbp\"","2":"15","3":"13","4":"2","5":"\\\\\"ybqafngkcqpbp\\\\\"","6":"17","7":"4"},{"1":"\"\\\\xaft\"","2":"7","3":"2","4":"5","5":"\\\\\"\\\\\\\\xaft\\\\\"","6":"10","7":"5"},{"1":"\"yidjpaobqydso\"","2":"15","3":"13","4":"2","5":"\\\\\"yidjpaobqydso\\\\\"","6":"17","7":"4"},{"1":"\"ju\\\\\\\\ldxig\\\\\\\\lrdrhjcmm\\\\x77rc\"","2":"28","3":"21","4":"7","5":"\\\\\"ju\\\\\\\\\\\\\\\\ldxig\\\\\\\\\\\\\\\\lrdrhjcmm\\\\\\\\x77rc\\\\\"","6":"35","7":"9"},{"1":"\"tylacqeslnwj\\\\x48ds\\\\\"tjxa\"","2":"26","3":"20","4":"6","5":"\\\\\"tylacqeslnwj\\\\\\\\x48ds\\\\\\\\\\\\\"tjxa\\\\\"","6":"31","7":"7"},{"1":"\"efbfm\"","2":"7","3":"5","4":"2","5":"\\\\\"efbfm\\\\\"","6":"9","7":"4"},{"1":"\"\\\\\\\\fxkgoprgdcjgyajykg\\\\\\\\dtbrz\"","2":"29","3":"25","4":"4","5":"\\\\\"\\\\\\\\\\\\\\\\fxkgoprgdcjgyajykg\\\\\\\\\\\\\\\\dtbrz\\\\\"","6":"35","7":"8"},{"1":"\"eujvva\"","2":"8","3":"6","4":"2","5":"\\\\\"eujvva\\\\\"","6":"10","7":"4"},{"1":"\"h\\\\x7acwfpikme\\\\\\\\vwthyvrqdnx\\\\\"\"","2":"30","3":"23","4":"7","5":"\\\\\"h\\\\\\\\x7acwfpikme\\\\\\\\\\\\\\\\vwthyvrqdnx\\\\\\\\\\\\\"\\\\\"","6":"37","7":"9"},{"1":"\"rbpbrxm\\\\\\\\\\\\\"\\\\\"\\\\\"voxx\"","2":"21","3":"15","4":"6","5":"\\\\\"rbpbrxm\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\"voxx\\\\\"","6":"31","7":"12"},{"1":"\"ykiw\\\\\"tkb\\\\\\\\lforu\\\\\"rsf\\\\\\\\tf\\\\\"x\\\\\"rqti\"","2":"36","3":"28","4":"8","5":"\\\\\"ykiw\\\\\\\\\\\\\"tkb\\\\\\\\\\\\\\\\lforu\\\\\\\\\\\\\"rsf\\\\\\\\\\\\\\\\tf\\\\\\\\\\\\\"x\\\\\\\\\\\\\"rqti\\\\\"","6":"50","7":"16"},{"1":"\"e\\\\\\\\wh\\\\x77aqeugiq\\\\\\\\ihhfqfuaij\"","2":"30","3":"23","4":"7","5":"\\\\\"e\\\\\\\\\\\\\\\\wh\\\\\\\\x77aqeugiq\\\\\\\\\\\\\\\\ihhfqfuaij\\\\\"","6":"37","7":"9"},{"1":"\"g\\\\\"t\\\\\\\\o\"","2":"9","3":"5","4":"4","5":"\\\\\"g\\\\\\\\\\\\\"t\\\\\\\\\\\\\\\\o\\\\\"","6":"15","7":"8"},{"1":"\"nxzo\\\\\"hf\\\\\\\\xp\"","2":"14","3":"10","4":"4","5":"\\\\\"nxzo\\\\\\\\\\\\\"hf\\\\\\\\\\\\\\\\xp\\\\\"","6":"20","7":"8"},{"1":"\"dxiaqfo\\\\xea\"","2":"13","3":"8","4":"5","5":"\\\\\"dxiaqfo\\\\\\\\xea\\\\\"","6":"16","7":"5"},{"1":"\"kali\\\\\\\\zczhiqkqzybjj\\\\\"fgdjnik\"","2":"30","3":"26","4":"4","5":"\\\\\"kali\\\\\\\\\\\\\\\\zczhiqkqzybjj\\\\\\\\\\\\\"fgdjnik\\\\\"","6":"36","7":"8"},{"1":"\"zdkgrqmdv\"","2":"11","3":"9","4":"2","5":"\\\\\"zdkgrqmdv\\\\\"","6":"13","7":"4"},{"1":"\"bimxim\\\\xb6lrwsaj\\\\\"ui\\\\\"a\"","2":"25","3":"18","4":"7","5":"\\\\\"bimxim\\\\\\\\xb6lrwsaj\\\\\\\\\\\\\"ui\\\\\\\\\\\\\"a\\\\\"","6":"32","7":"9"},{"1":"\"\\\\\"rrznitibgx\\\\\\\\olpsjmjqzctxaubdifsq\"","2":"36","3":"32","4":"4","5":"\\\\\"\\\\\\\\\\\\\"rrznitibgx\\\\\\\\\\\\\\\\olpsjmjqzctxaubdifsq\\\\\"","6":"42","7":"8"},{"1":"\"zb\\\\\"khzixaacmhuzmlymoformipdzml\"","2":"33","3":"30","4":"3","5":"\\\\\"zb\\\\\\\\\\\\\"khzixaacmhuzmlymoformipdzml\\\\\"","6":"37","7":"6"},{"1":"\"qfwi\"","2":"6","3":"4","4":"2","5":"\\\\\"qfwi\\\\\"","6":"8","7":"4"},{"1":"\"hjwsxfpphttjy\\\\\"\\\\\"zixais\\\\xbblgnqfto\"","2":"36","3":"29","4":"7","5":"\\\\\"hjwsxfpphttjy\\\\\\\\\\\\\"\\\\\\\\\\\\\"zixais\\\\\\\\xbblgnqfto\\\\\"","6":"43","7":"9"},{"1":"\"puj\\\\\\\\qmyu\\\\\"nqgaqfthbwjokbmrpbhpi\"","2":"34","3":"30","4":"4","5":"\\\\\"puj\\\\\\\\\\\\\\\\qmyu\\\\\\\\\\\\\"nqgaqfthbwjokbmrpbhpi\\\\\"","6":"40","7":"8"},{"1":"\"cyxdpkh\\\\\\\\\\\\\"\"","2":"13","3":"9","4":"4","5":"\\\\\"cyxdpkh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\"","6":"19","7":"8"},{"1":"\"q\"","2":"3","3":"1","4":"2","5":"\\\\\"q\\\\\"","6":"5","7":"4"},{"1":"\"m\"","2":"3","3":"1","4":"2","5":"\\\\\"m\\\\\"","6":"5","7":"4"},{"1":"\"tbxdzzllarlo\"","2":"14","3":"12","4":"2","5":"\\\\\"tbxdzzllarlo\\\\\"","6":"16","7":"4"},{"1":"\"gbtys\"","2":"7","3":"5","4":"2","5":"\\\\\"gbtys\\\\\"","6":"9","7":"4"},{"1":"\"gytilk\\\\\\\\vlqxvcuutjunrqc\"","2":"25","3":"22","4":"3","5":"\\\\\"gytilk\\\\\\\\\\\\\\\\vlqxvcuutjunrqc\\\\\"","6":"29","7":"6"},{"1":"\"uugkvcuzan\\\\\\\\eyhb\"","2":"18","3":"15","4":"3","5":"\\\\\"uugkvcuzan\\\\\\\\\\\\\\\\eyhb\\\\\"","6":"22","7":"6"},{"1":"\"yaxr\\\\\"genlbgw\\\\\"\\\\\\\\uc\"","2":"21","3":"16","4":"5","5":"\\\\\"yaxr\\\\\\\\\\\\\"genlbgw\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\uc\\\\\"","6":"29","7":"10"},{"1":"\"nrgecjeip\\\\\\\\sjdvgqaqxwsqactopu\"","2":"31","3":"28","4":"3","5":"\\\\\"nrgecjeip\\\\\\\\\\\\\\\\sjdvgqaqxwsqactopu\\\\\"","6":"35","7":"6"},{"1":"\"pu\\\\\"r\\\\\"txpyrkfny\\\\\\\\zmwfneyvwmnkkdipv\"","2":"37","3":"32","4":"5","5":"\\\\\"pu\\\\\\\\\\\\\"r\\\\\\\\\\\\\"txpyrkfny\\\\\\\\\\\\\\\\zmwfneyvwmnkkdipv\\\\\"","6":"45","7":"10"},{"1":"\"jm\\\\xa3bhwvq\"","2":"13","3":"8","4":"5","5":"\\\\\"jm\\\\\\\\xa3bhwvq\\\\\"","6":"16","7":"5"},{"1":"\"qxojmnml\\\\\"w\\\\x9airr\"","2":"20","3":"14","4":"6","5":"\\\\\"qxojmnml\\\\\\\\\\\\\"w\\\\\\\\x9airr\\\\\"","6":"25","7":"7"},{"1":"\"xbzsuihs\\\\x4dcedy\\\\xaclrhgii\\\\\\\\\\\\\"\"","2":"32","3":"22","4":"10","5":"\\\\\"xbzsuihs\\\\\\\\x4dcedy\\\\\\\\xaclrhgii\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\"","6":"40","7":"10"},{"1":"\"drgjirusrekrwmvxllwdm\"","2":"23","3":"21","4":"2","5":"\\\\\"drgjirusrekrwmvxllwdm\\\\\"","6":"25","7":"4"},{"1":"\"\\\\x28hfxnfpycmpnkku\\\\\"csuf\\\\xaarxlqyg\\\\\"x\"","2":"39","3":"29","4":"10","5":"\\\\\"\\\\\\\\x28hfxnfpycmpnkku\\\\\\\\\\\\\"csuf\\\\\\\\xaarxlqyg\\\\\\\\\\\\\"x\\\\\"","6":"47","7":"10"},{"1":"\"\\\\\"zvz\\\\\\\\rmg\\\\\"\\\\\\\\sxxoifffyqfyn\\\\\"iq\\\\\"ps\"","2":"37","3":"29","4":"8","5":"\\\\\"\\\\\\\\\\\\\"zvz\\\\\\\\\\\\\\\\rmg\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\sxxoifffyqfyn\\\\\\\\\\\\\"iq\\\\\\\\\\\\\"ps\\\\\"","6":"51","7":"16"},{"1":"\"\\\\\"z\"","2":"5","3":"2","4":"3","5":"\\\\\"\\\\\\\\\\\\\"z\\\\\"","6":"9","7":"6"},{"1":"\"zbwkmk\\\\\"sgzos\\\\x93gtc\\\\\"\"","2":"24","3":"17","4":"7","5":"\\\\\"zbwkmk\\\\\\\\\\\\\"sgzos\\\\\\\\x93gtc\\\\\\\\\\\\\"\\\\\"","6":"31","7":"9"},{"1":"\"bvm\\\\x28aa\\\\\\\\\\\\\\\\\\\\\"pywuhaniox\\\\\\\\z\\\\\\\\hbp\\\\xd7mold\"","2":"43","3":"30","4":"13","5":"\\\\\"bvm\\\\\\\\x28aa\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"pywuhaniox\\\\\\\\\\\\\\\\z\\\\\\\\\\\\\\\\hbp\\\\\\\\xd7mold\\\\\"","6":"57","7":"16"},{"1":"\"aszgvsyna\"","2":"11","3":"9","4":"2","5":"\\\\\"aszgvsyna\\\\\"","6":"13","7":"4"},{"1":"\"qf\\\\\"vdwuss\"","2":"12","3":"9","4":"3","5":"\\\\\"qf\\\\\\\\\\\\\"vdwuss\\\\\"","6":"16","7":"6"},{"1":"\"lnohni\\\\\"qwiacjsjegstlbfq\\\\\\\\kyjhyd\"","2":"34","3":"30","4":"4","5":"\\\\\"lnohni\\\\\\\\\\\\\"qwiacjsjegstlbfq\\\\\\\\\\\\\\\\kyjhyd\\\\\"","6":"40","7":"8"},{"1":"\"c\\\\\\\\naawulxlqplnacvytspry\\\\xf5ytxxqq\"","2":"36","3":"30","4":"6","5":"\\\\\"c\\\\\\\\\\\\\\\\naawulxlqplnacvytspry\\\\\\\\xf5ytxxqq\\\\\"","6":"41","7":"7"},{"1":"\"razwqmsqgbaaxcd\\\\\\\\f\"","2":"20","3":"17","4":"3","5":"\\\\\"razwqmsqgbaaxcd\\\\\\\\\\\\\\\\f\\\\\"","6":"24","7":"6"},{"1":"\"radggyrjrg\\\\\"zx\"","2":"16","3":"13","4":"3","5":"\\\\\"radggyrjrg\\\\\\\\\\\\\"zx\\\\\"","6":"20","7":"6"},{"1":"\"\\\\\"pu\\\\x11t\\\\\\\\ajcjuieinlkvya\"","2":"27","3":"20","4":"7","5":"\\\\\"\\\\\\\\\\\\\"pu\\\\\\\\x11t\\\\\\\\\\\\\\\\ajcjuieinlkvya\\\\\"","6":"34","7":"9"},{"1":"\"veggiskh\"","2":"10","3":"8","4":"2","5":"\\\\\"veggiskh\\\\\"","6":"12","7":"4"},{"1":"\"eglfhjxiet\\\\\"kouqfskwsy\\\\\"hpthsldel\"","2":"35","3":"31","4":"4","5":"\\\\\"eglfhjxiet\\\\\\\\\\\\\"kouqfskwsy\\\\\\\\\\\\\"hpthsldel\\\\\"","6":"41","7":"8"},{"1":"\"mv\\\\xc1b\\\\\"f\\\\\\\\shrssnjwcpmurepdxdlcj\"","2":"35","3":"28","4":"7","5":"\\\\\"mv\\\\\\\\xc1b\\\\\\\\\\\\\"f\\\\\\\\\\\\\\\\shrssnjwcpmurepdxdlcj\\\\\"","6":"42","7":"9"},{"1":"\"dlayjd\\\\\"suvzotgdtc\"","2":"20","3":"17","4":"3","5":"\\\\\"dlayjd\\\\\\\\\\\\\"suvzotgdtc\\\\\"","6":"24","7":"6"},{"1":"\"\\\\xa9pvxeopn\"","2":"13","3":"8","4":"5","5":"\\\\\"\\\\\\\\xa9pvxeopn\\\\\"","6":"16","7":"5"},{"1":"\"lpplsaxy\\\\\"oiwaq\"","2":"17","3":"14","4":"3","5":"\\\\\"lpplsaxy\\\\\\\\\\\\\"oiwaq\\\\\"","6":"21","7":"6"},{"1":"\"hqwh\\\\\\\\lusv\"","2":"12","3":"9","4":"3","5":"\\\\\"hqwh\\\\\\\\\\\\\\\\lusv\\\\\"","6":"16","7":"6"},{"1":"\"hykykwlx\\\\\"\\\\xa5atkgh\\\\\\\\d\\\\x63dff\"","2":"31","3":"21","4":"10","5":"\\\\\"hykykwlx\\\\\\\\\\\\\"\\\\\\\\xa5atkgh\\\\\\\\\\\\\\\\d\\\\\\\\x63dff\\\\\"","6":"39","7":"10"},{"1":"\"vfktanpjy\\\\\"xxetc\"","2":"18","3":"15","4":"3","5":"\\\\\"vfktanpjy\\\\\\\\\\\\\"xxetc\\\\\"","6":"22","7":"6"},{"1":"\"dnhwkgjnsmsswfuelvihvjl\\\\\"jtf\"","2":"30","3":"27","4":"3","5":"\\\\\"dnhwkgjnsmsswfuelvihvjl\\\\\\\\\\\\\"jtf\\\\\"","6":"34","7":"6"},{"1":"\"x\\\\\"dwvzra\\\\\"nbbsewftehczgbvfzd\\\\\"rau\"","2":"36","3":"31","4":"5","5":"\\\\\"x\\\\\\\\\\\\\"dwvzra\\\\\\\\\\\\\"nbbsewftehczgbvfzd\\\\\\\\\\\\\"rau\\\\\"","6":"44","7":"10"},{"1":"\"csfi\\\\\"mzejnjqkqupwadrgti\\\\\"von\"","2":"31","3":"27","4":"4","5":"\\\\\"csfi\\\\\\\\\\\\\"mzejnjqkqupwadrgti\\\\\\\\\\\\\"von\\\\\"","6":"37","7":"8"},{"1":"\"xckf\\\\xf7xsm\\\\\\\\pgvlpetjndpyblais\\\\\\\\z\"","2":"35","3":"28","4":"7","5":"\\\\\"xckf\\\\\\\\xf7xsm\\\\\\\\\\\\\\\\pgvlpetjndpyblais\\\\\\\\\\\\\\\\z\\\\\"","6":"42","7":"9"},{"1":"\"yecy\\\\x6fuj\\\\x58bwpgeuiw\\\\\"mdu\"","2":"29","3":"20","4":"9","5":"\\\\\"yecy\\\\\\\\x6fuj\\\\\\\\x58bwpgeuiw\\\\\\\\\\\\\"mdu\\\\\"","6":"35","7":"8"},{"1":"\"fgb\"","2":"5","3":"3","4":"2","5":"\\\\\"fgb\\\\\"","6":"7","7":"4"},{"1":"\"c\\\\\\\\lx\\\\x3efthet\\\\xfdelgvwvpem\"","2":"29","3":"20","4":"9","5":"\\\\\"c\\\\\\\\\\\\\\\\lx\\\\\\\\x3efthet\\\\\\\\xfdelgvwvpem\\\\\"","6":"35","7":"8"},{"1":"\"kgyrmarvfwjinlowt\"","2":"19","3":"17","4":"2","5":"\\\\\"kgyrmarvfwjinlowt\\\\\"","6":"21","7":"4"},{"1":"\"yzte\"","2":"6","3":"4","4":"2","5":"\\\\\"yzte\\\\\"","6":"8","7":"4"},{"1":"\"vc\\\\\"z\"","2":"7","3":"4","4":"3","5":"\\\\\"vc\\\\\\\\\\\\\"z\\\\\"","6":"11","7":"6"},{"1":"\"sxevqfzmmdwsuu\\\\\"\"","2":"18","3":"15","4":"3","5":"\\\\\"sxevqfzmmdwsuu\\\\\\\\\\\\\"\\\\\"","6":"22","7":"6"},{"1":"\"fxbaercmcy\\\\xb6md\"","2":"18","3":"13","4":"5","5":"\\\\\"fxbaercmcy\\\\\\\\xb6md\\\\\"","6":"21","7":"5"},{"1":"\"f\"","2":"3","3":"1","4":"2","5":"\\\\\"f\\\\\"","6":"5","7":"4"},{"1":"\"m\\\\x44gqbcppho\\\\\\\\b\"","2":"18","3":"12","4":"6","5":"\\\\\"m\\\\\\\\x44gqbcppho\\\\\\\\\\\\\\\\b\\\\\"","6":"23","7":"7"},{"1":"\"gtafr\\\\x57m\\\\x11jy\\\\\"\\\\\"erwmmpiwjkbckuw\"","2":"37","3":"27","4":"10","5":"\\\\\"gtafr\\\\\\\\x57m\\\\\\\\x11jy\\\\\\\\\\\\\"\\\\\\\\\\\\\"erwmmpiwjkbckuw\\\\\"","6":"45","7":"10"},{"1":"\"ufdjt\\\\\"kssprzxqixzxmq\\\\x58q\"","2":"28","3":"22","4":"6","5":"\\\\\"ufdjt\\\\\\\\\\\\\"kssprzxqixzxmq\\\\\\\\x58q\\\\\"","6":"33","7":"7"},{"1":"\"yzbyo\\\\\"lfdbyaxexyfbnyv\\\\\\\\\\\\xe8xmre\"","2":"34","3":"27","4":"7","5":"\\\\\"yzbyo\\\\\\\\\\\\\"lfdbyaxexyfbnyv\\\\\\\\\\\\\\\\\\\\\\\\xe8xmre\\\\\"","6":"41","7":"9"},{"1":"\"u\\\\x43ntr\\\\\\\\\\\\\\\\byyfjr\\\\\"iveujvnwsqbnpuvrta\"","2":"40","3":"32","4":"8","5":"\\\\\"u\\\\\\\\x43ntr\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\byyfjr\\\\\\\\\\\\\"iveujvnwsqbnpuvrta\\\\\"","6":"49","7":"11"},{"1":"\"us\\\\xf6bai\"","2":"11","3":"6","4":"5","5":"\\\\\"us\\\\\\\\xf6bai\\\\\"","6":"14","7":"5"},{"1":"\"c\\\\\\\\edh\"","2":"8","3":"5","4":"3","5":"\\\\\"c\\\\\\\\\\\\\\\\edh\\\\\"","6":"12","7":"6"},{"1":"\"tzckolphexfq\\\\\\\\\\\\x23\\\\xfbdqv\\\\\\\\\\\\\"m\"","2":"32","3":"21","4":"11","5":"\\\\\"tzckolphexfq\\\\\\\\\\\\\\\\\\\\\\\\x23\\\\\\\\xfbdqv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"m\\\\\"","6":"42","7":"12"},{"1":"\"yjafhbvhhj\\\\x1b\\\\\"bplb\"","2":"22","3":"16","4":"6","5":"\\\\\"yjafhbvhhj\\\\\\\\x1b\\\\\\\\\\\\\"bplb\\\\\"","6":"27","7":"7"},{"1":"\"\\\\\"o\"","2":"5","3":"2","4":"3","5":"\\\\\"\\\\\\\\\\\\\"o\\\\\"","6":"9","7":"6"},{"1":"\"rubahvmp\\\\\"\"","2":"12","3":"9","4":"3","5":"\\\\\"rubahvmp\\\\\\\\\\\\\"\\\\\"","6":"16","7":"6"},{"1":"\"qmkukrnrmqumh\"","2":"15","3":"13","4":"2","5":"\\\\\"qmkukrnrmqumh\\\\\"","6":"17","7":"4"},{"1":"\"wdpxyvyidhwjf\\\\\\\\nabbijwhr\\\\xc5bksvy\\\\\"p\"","2":"38","3":"31","4":"7","5":"\\\\\"wdpxyvyidhwjf\\\\\\\\\\\\\\\\nabbijwhr\\\\\\\\xc5bksvy\\\\\\\\\\\\\"p\\\\\"","6":"45","7":"9"},{"1":"\"u\\\\\"prlpg\\\\\"\"","2":"12","3":"8","4":"4","5":"\\\\\"u\\\\\\\\\\\\\"prlpg\\\\\\\\\\\\\"\\\\\"","6":"18","7":"8"},{"1":"\"nsvcquyxbwilsxxemf\\\\xd9leq\"","2":"27","3":"22","4":"5","5":"\\\\\"nsvcquyxbwilsxxemf\\\\\\\\xd9leq\\\\\"","6":"30","7":"5"},{"1":"\"y\\\\xcetxuafl\"","2":"13","3":"8","4":"5","5":"\\\\\"y\\\\\\\\xcetxuafl\\\\\"","6":"16","7":"5"},{"1":"\"it\"","2":"4","3":"2","4":"2","5":"\\\\\"it\\\\\"","6":"6","7":"4"},{"1":"\"kwdlysf\\\\\\\\xjpelae\"","2":"18","3":"15","4":"3","5":"\\\\\"kwdlysf\\\\\\\\\\\\\\\\xjpelae\\\\\"","6":"22","7":"6"},{"1":"\"viwh\\\\x58wpjjlnvryuti\\\\x2chngrx\\\\\\\\nhtkui\"","2":"39","3":"30","4":"9","5":"\\\\\"viwh\\\\\\\\x58wpjjlnvryuti\\\\\\\\x2chngrx\\\\\\\\\\\\\\\\nhtkui\\\\\"","6":"45","7":"8"},{"1":"\"vhn\\\\x9ehre\\\\xc3ncsqbozms\\\\\"nl\"","2":"29","3":"20","4":"9","5":"\\\\\"vhn\\\\\\\\x9ehre\\\\\\\\xc3ncsqbozms\\\\\\\\\\\\\"nl\\\\\"","6":"35","7":"8"},{"1":"\"ytc\\\\xa3mgeeogjcqavmmmd\"","2":"24","3":"19","4":"5","5":"\\\\\"ytc\\\\\\\\xa3mgeeogjcqavmmmd\\\\\"","6":"27","7":"5"},{"1":"\"xzlexlitseozoxtpzzutfq\"","2":"24","3":"22","4":"2","5":"\\\\\"xzlexlitseozoxtpzzutfq\\\\\"","6":"26","7":"4"},{"1":"\"cish\\\\x07lmovj\"","2":"15","3":"10","4":"5","5":"\\\\\"cish\\\\\\\\x07lmovj\\\\\"","6":"18","7":"5"},{"1":"\"ekbflwqzaiivdr\\\\\"pq\\\\\\\\azrfbntqwkn\"","2":"33","3":"29","4":"4","5":"\\\\\"ekbflwqzaiivdr\\\\\\\\\\\\\"pq\\\\\\\\\\\\\\\\azrfbntqwkn\\\\\"","6":"39","7":"8"},{"1":"\"uc\\\\\"xdbegmlmhksofzohavtrnxf\"","2":"29","3":"26","4":"3","5":"\\\\\"uc\\\\\\\\\\\\\"xdbegmlmhksofzohavtrnxf\\\\\"","6":"33","7":"6"},{"1":"\"xfdnrdqdrcjzbe\"","2":"16","3":"14","4":"2","5":"\\\\\"xfdnrdqdrcjzbe\\\\\"","6":"18","7":"4"},{"1":"\"ndg\\\\\"ckgrpisib\\\\\"rg\\\\\"p\\\\\\\\lmpfzlssnvk\"","2":"36","3":"30","4":"6","5":"\\\\\"ndg\\\\\\\\\\\\\"ckgrpisib\\\\\\\\\\\\\"rg\\\\\\\\\\\\\"p\\\\\\\\\\\\\\\\lmpfzlssnvk\\\\\"","6":"46","7":"12"},{"1":"\"witfjwpbyyzlop\"","2":"16","3":"14","4":"2","5":"\\\\\"witfjwpbyyzlop\\\\\"","6":"18","7":"4"},{"1":"\"zonlww\\\\\"emrbcsgdtrg\\\\\"rjzy\\\\x64zqntlw\"","2":"37","3":"30","4":"7","5":"\\\\\"zonlww\\\\\\\\\\\\\"emrbcsgdtrg\\\\\\\\\\\\\"rjzy\\\\\\\\x64zqntlw\\\\\"","6":"44","7":"9"},{"1":"\"dvgb\\\\\"zn\\\\\\\\vrbzema\\\\\"ckmd\"","2":"25","3":"20","4":"5","5":"\\\\\"dvgb\\\\\\\\\\\\\"zn\\\\\\\\\\\\\\\\vrbzema\\\\\\\\\\\\\"ckmd\\\\\"","6":"33","7":"10"},{"1":"\"\\\\\\\\vdlmxhlvldk\\\\\"pmzazeip\"","2":"25","3":"21","4":"4","5":"\\\\\"\\\\\\\\\\\\\\\\vdlmxhlvldk\\\\\\\\\\\\\"pmzazeip\\\\\"","6":"31","7":"8"},{"1":"\"\\\\\"\\\\\"r\"","2":"7","3":"3","4":"4","5":"\\\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\"r\\\\\"","6":"13","7":"8"},{"1":"\"rsntinv\"","2":"9","3":"7","4":"2","5":"\\\\\"rsntinv\\\\\"","6":"11","7":"4"},{"1":"\"iy\"","2":"4","3":"2","4":"2","5":"\\\\\"iy\\\\\"","6":"6","7":"4"},{"1":"\"lr\\\\x20efh\"","2":"11","3":"6","4":"5","5":"\\\\\"lr\\\\\\\\x20efh\\\\\"","6":"14","7":"5"},{"1":"\"csgexlb\\\\\"zqdavlxxhtdbh\\\\\"\\\\\"\\\\x0fkpvhiphm\"","2":"40","3":"32","4":"8","5":"\\\\\"csgexlb\\\\\\\\\\\\\"zqdavlxxhtdbh\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\\\\\\x0fkpvhiphm\\\\\"","6":"49","7":"11"},{"1":"\"ouwhp\\\\\"ogbft\"","2":"14","3":"11","4":"3","5":"\\\\\"ouwhp\\\\\\\\\\\\\"ogbft\\\\\"","6":"18","7":"6"},{"1":"\"cm\\\\\\\\ckltng\\\\\"dw\\\\x8brf\\\\xf0eppgckd\"","2":"33","3":"23","4":"10","5":"\\\\\"cm\\\\\\\\\\\\\\\\ckltng\\\\\\\\\\\\\"dw\\\\\\\\x8brf\\\\\\\\xf0eppgckd\\\\\"","6":"41","7":"10"},{"1":"\"zmnlsgalhpkejsizfsbtnfliu\\\\\"nhc\"","2":"32","3":"29","4":"3","5":"\\\\\"zmnlsgalhpkejsizfsbtnfliu\\\\\\\\\\\\\"nhc\\\\\"","6":"36","7":"6"},{"1":"\"pnrkaayqvwpdjbhcrbb\\\\\"yfeq\\\\\"aq\"","2":"31","3":"27","4":"4","5":"\\\\\"pnrkaayqvwpdjbhcrbb\\\\\\\\\\\\\"yfeq\\\\\\\\\\\\\"aq\\\\\"","6":"37","7":"8"},{"1":"\"ozh\\\\\\\\hoxow\\\\x2csrtr\\\\\\\\r\\\\\"\"","2":"25","3":"17","4":"8","5":"\\\\\"ozh\\\\\\\\\\\\\\\\hoxow\\\\\\\\x2csrtr\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\"\\\\\"","6":"34","7":"11"},{"1":"\"bqxabj\\\\\"u\\\\\\\\s\"","2":"14","3":"10","4":"4","5":"\\\\\"bqxabj\\\\\\\\\\\\\"u\\\\\\\\\\\\\\\\s\\\\\"","6":"20","7":"8"},{"1":"\"cpsjti\\\\\"gy\"","2":"12","3":"9","4":"3","5":"\\\\\"cpsjti\\\\\\\\\\\\\"gy\\\\\"","6":"16","7":"6"},{"1":"\"aa\\\\\"p\\\\\\\\nki\\\\\\\\ajijkqev\"","2":"22","3":"17","4":"5","5":"\\\\\"aa\\\\\\\\\\\\\"p\\\\\\\\\\\\\\\\nki\\\\\\\\\\\\\\\\ajijkqev\\\\\"","6":"30","7":"10"},{"1":"\"q\\\\\"\\\\\"lfdentjgd\\\\\\\\\"","2":"18","3":"13","4":"5","5":"\\\\\"q\\\\\\\\\\\\\"\\\\\\\\\\\\\"lfdentjgd\\\\\\\\\\\\\\\\\\\\\"","6":"26","7":"10"},{"1":"\"bmokvpoebutfki\"","2":"16","3":"14","4":"2","5":"\\\\\"bmokvpoebutfki\\\\\"","6":"18","7":"4"},{"1":"\"pielvcbne\\\\xf6efvzxn\"","2":"21","3":"16","4":"5","5":"\\\\\"pielvcbne\\\\\\\\xf6efvzxn\\\\\"","6":"24","7":"5"},{"1":"\"kx\"","2":"4","3":"2","4":"2","5":"\\\\\"kx\\\\\"","6":"6","7":"4"},{"1":"\"zlgmqagcrbhrwtwtmmg\"","2":"21","3":"19","4":"2","5":"\\\\\"zlgmqagcrbhrwtwtmmg\\\\\"","6":"23","7":"4"},{"1":"\"aiyhmntcqjbpv\\\\xb5hhswxbryoedvos\"","2":"33","3":"28","4":"5","5":"\\\\\"aiyhmntcqjbpv\\\\\\\\xb5hhswxbryoedvos\\\\\"","6":"36","7":"5"},{"1":"\"tdpaxrb\"","2":"9","3":"7","4":"2","5":"\\\\\"tdpaxrb\\\\\"","6":"11","7":"4"},{"1":"\"fu\\\\\"\\\\x7dttkyvhrlwko\"","2":"21","3":"15","4":"6","5":"\\\\\"fu\\\\\\\\\\\\\"\\\\\\\\x7dttkyvhrlwko\\\\\"","6":"26","7":"7"},{"1":"\"oirc\\\\\\\\\\\\\"cqlnqffjqt\\\\\\\\k\"","2":"23","3":"18","4":"5","5":"\\\\\"oirc\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"cqlnqffjqt\\\\\\\\\\\\\\\\k\\\\\"","6":"31","7":"10"},{"1":"\"edxlia\\\\\\\\tcyby\"","2":"15","3":"12","4":"3","5":"\\\\\"edxlia\\\\\\\\\\\\\\\\tcyby\\\\\"","6":"19","7":"6"},{"1":"\"jpeybgwfayerfrfbvfog\\\\\"ol\"","2":"26","3":"23","4":"3","5":"\\\\\"jpeybgwfayerfrfbvfog\\\\\\\\\\\\\"ol\\\\\"","6":"30","7":"6"},{"1":"\"ysr\"","2":"5","3":"3","4":"2","5":"\\\\\"ysr\\\\\"","6":"7","7":"4"},{"1":"\"bzwzilgwfugjk\"","2":"15","3":"13","4":"2","5":"\\\\\"bzwzilgwfugjk\\\\\"","6":"17","7":"4"},{"1":"\"tlcc\\\\x75nukvwjgftetjcs\\\\xaecwc\"","2":"31","3":"23","4":"8","5":"\\\\\"tlcc\\\\\\\\x75nukvwjgftetjcs\\\\\\\\xaecwc\\\\\"","6":"35","7":"6"},{"1":"\"dsqssa\\\\\"vzrf\\\\\"sewbp\\\\\\\\ahhlmhbeihlh\"","2":"35","3":"30","4":"5","5":"\\\\\"dsqssa\\\\\\\\\\\\\"vzrf\\\\\\\\\\\\\"sewbp\\\\\\\\\\\\\\\\ahhlmhbeihlh\\\\\"","6":"43","7":"10"},{"1":"\"qtgmjck\\\\\"n\\\\\"guki\\\\\"gmdivwqxismqj\"","2":"33","3":"28","4":"5","5":"\\\\\"qtgmjck\\\\\\\\\\\\\"n\\\\\\\\\\\\\"guki\\\\\\\\\\\\\"gmdivwqxismqj\\\\\"","6":"41","7":"10"},{"1":"\"\\\\\"f\"","2":"5","3":"2","4":"3","5":"\\\\\"\\\\\\\\\\\\\"f\\\\\"","6":"9","7":"6"},{"1":"\"wuorvlovucngbzdszqpikyk\"","2":"25","3":"23","4":"2","5":"\\\\\"wuorvlovucngbzdszqpikyk\\\\\"","6":"27","7":"4"},{"1":"\"dfrdsacoukmgvhbq\\\\\"\\\\\"iwto\"","2":"26","3":"22","4":"4","5":"\\\\\"dfrdsacoukmgvhbq\\\\\\\\\\\\\"\\\\\\\\\\\\\"iwto\\\\\"","6":"32","7":"8"},{"1":"\"\\\\\"ey\\\\\"ch\\\\\\\\wcgioe\\\\\\\\\\\\\"ouvligmsw\"","2":"31","3":"24","4":"7","5":"\\\\\"\\\\\\\\\\\\\"ey\\\\\\\\\\\\\"ch\\\\\\\\\\\\\\\\wcgioe\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"ouvligmsw\\\\\"","6":"43","7":"14"},{"1":"\"ciqlszzgs\"","2":"11","3":"9","4":"2","5":"\\\\\"ciqlszzgs\\\\\"","6":"13","7":"4"},{"1":"\"\\\\\\\\tzyrkaoi\\\\\"sopjaq\"","2":"20","3":"16","4":"4","5":"\\\\\"\\\\\\\\\\\\\\\\tzyrkaoi\\\\\\\\\\\\\"sopjaq\\\\\"","6":"26","7":"8"},{"1":"\"lmtnv\"","2":"7","3":"5","4":"2","5":"\\\\\"lmtnv\\\\\"","6":"9","7":"4"},{"1":"\"ar\\\\\"fqoroigiertjjlm\\\\\"ymgi\\\\\\\\kkjewsxd\"","2":"37","3":"32","4":"5","5":"\\\\\"ar\\\\\\\\\\\\\"fqoroigiertjjlm\\\\\\\\\\\\\"ymgi\\\\\\\\\\\\\\\\kkjewsxd\\\\\"","6":"45","7":"10"},{"1":"\"wehcimlvudpxtamdn\\\\\"rwy\"","2":"24","3":"21","4":"3","5":"\\\\\"wehcimlvudpxtamdn\\\\\\\\\\\\\"rwy\\\\\"","6":"28","7":"6"},{"1":"\"hr\\\\\"zvrwthr\\\\\"vruzqfrldn\\\\\"b\"","2":"28","3":"23","4":"5","5":"\\\\\"hr\\\\\\\\\\\\\"zvrwthr\\\\\\\\\\\\\"vruzqfrldn\\\\\\\\\\\\\"b\\\\\"","6":"36","7":"10"},{"1":"\"sggekodkiwvym\\\\\"mhsco\"","2":"22","3":"19","4":"3","5":"\\\\\"sggekodkiwvym\\\\\\\\\\\\\"mhsco\\\\\"","6":"26","7":"6"},{"1":"\"ltlkfbrrdvk\\\\\\\\\"","2":"15","3":"12","4":"3","5":"\\\\\"ltlkfbrrdvk\\\\\\\\\\\\\\\\\\\\\"","6":"19","7":"6"},{"1":"\"uut\\\\\"sfjnz\\\\\"\\\\\\\\ef\"","2":"18","3":"13","4":"5","5":"\\\\\"uut\\\\\\\\\\\\\"sfjnz\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\ef\\\\\"","6":"26","7":"10"},{"1":"\"hxilg\\\\\\\\\"","2":"9","3":"6","4":"3","5":"\\\\\"hxilg\\\\\\\\\\\\\\\\\\\\\"","6":"13","7":"6"},{"1":"\"zsredsiwlzrpedibn\"","2":"19","3":"17","4":"2","5":"\\\\\"zsredsiwlzrpedibn\\\\\"","6":"21","7":"4"},{"1":"\"vtfi\"","2":"6","3":"4","4":"2","5":"\\\\\"vtfi\\\\\"","6":"8","7":"4"},{"1":"\"\\\\\\\\h\"","2":"5","3":"2","4":"3","5":"\\\\\"\\\\\\\\\\\\\\\\h\\\\\"","6":"9","7":"6"},{"1":"\"qekfrc\\\\xf6wduodbwrguqcng\\\\\\\\n\"","2":"29","3":"23","4":"6","5":"\\\\\"qekfrc\\\\\\\\xf6wduodbwrguqcng\\\\\\\\\\\\\\\\n\\\\\"","6":"34","7":"7"},{"1":"\"\\\\\"lljlfdrxftwidn\\\\\\\\pkv\\\\xd9ij\"","2":"29","3":"22","4":"7","5":"\\\\\"\\\\\\\\\\\\\"lljlfdrxftwidn\\\\\\\\\\\\\\\\pkv\\\\\\\\xd9ij\\\\\"","6":"36","7":"9"},{"1":"\"mrvgqynpehkliuijlpp\"","2":"21","3":"19","4":"2","5":"\\\\\"mrvgqynpehkliuijlpp\\\\\"","6":"23","7":"4"},{"1":"\"gikjph\"","2":"8","3":"6","4":"2","5":"\\\\\"gikjph\\\\\"","6":"10","7":"4"},{"1":"\"yoxcdrdt\\\\\"wbaurnyhoyxoihu\"","2":"27","3":"24","4":"3","5":"\\\\\"yoxcdrdt\\\\\\\\\\\\\"wbaurnyhoyxoihu\\\\\"","6":"31","7":"6"},{"1":"\"onmomwuxuammbzxe\"","2":"18","3":"16","4":"2","5":"\\\\\"onmomwuxuammbzxe\\\\\"","6":"20","7":"4"},{"1":"\"rnrr\\\\\\\\twviz\\\\x61gqaljr\\\\x0dmtw\"","2":"30","3":"21","4":"9","5":"\\\\\"rnrr\\\\\\\\\\\\\\\\twviz\\\\\\\\x61gqaljr\\\\\\\\x0dmtw\\\\\"","6":"36","7":"8"},{"1":"\"r\\\\\"vupaoi\"","2":"11","3":"8","4":"3","5":"\\\\\"r\\\\\\\\\\\\\"vupaoi\\\\\"","6":"15","7":"6"},{"1":"\"l\"","2":"3","3":"1","4":"2","5":"\\\\\"l\\\\\"","6":"5","7":"4"},{"1":"\"sei\"","2":"5","3":"3","4":"2","5":"\\\\\"sei\\\\\"","6":"7","7":"4"},{"1":"\"jwxtdtbkd\\\\\\\\kxd\"","2":"16","3":"13","4":"3","5":"\\\\\"jwxtdtbkd\\\\\\\\\\\\\\\\kxd\\\\\"","6":"20","7":"6"},{"1":"\"\\\\x22v\\\\\\\\\"","2":"9","3":"3","4":"6","5":"\\\\\"\\\\\\\\x22v\\\\\\\\\\\\\\\\\\\\\"","6":"14","7":"7"},{"1":"\"ahd\"","2":"5","3":"3","4":"2","5":"\\\\\"ahd\\\\\"","6":"7","7":"4"},{"1":"\"j\\\\\"bjqxs\"","2":"10","3":"7","4":"3","5":"\\\\\"j\\\\\\\\\\\\\"bjqxs\\\\\"","6":"14","7":"6"},{"1":"\"\\\\\\\\i\\\\x24gglxub\\\\\\\\nzsajokt\"","2":"25","3":"18","4":"7","5":"\\\\\"\\\\\\\\\\\\\\\\i\\\\\\\\x24gglxub\\\\\\\\\\\\\\\\nzsajokt\\\\\"","6":"32","7":"9"},{"1":"\"lviwpu\\\\\"uxdlh\\\\\\\\zuy\\\\\"xqy\\\\\"ytdzlx\\\\\"r\"","2":"36","3":"29","4":"7","5":"\\\\\"lviwpu\\\\\\\\\\\\\"uxdlh\\\\\\\\\\\\\\\\zuy\\\\\\\\\\\\\"xqy\\\\\\\\\\\\\"ytdzlx\\\\\\\\\\\\\"r\\\\\"","6":"48","7":"14"},{"1":"\"kptfmys\"","2":"9","3":"7","4":"2","5":"\\\\\"kptfmys\\\\\"","6":"11","7":"4"},{"1":"\"fwxzikfhczkjwyjszqdbkepaeellc\"","2":"31","3":"29","4":"2","5":"\\\\\"fwxzikfhczkjwyjszqdbkepaeellc\\\\\"","6":"33","7":"4"},{"1":"\"nlqpsvbrbd\\\\\\\\ns\"","2":"16","3":"13","4":"3","5":"\\\\\"nlqpsvbrbd\\\\\\\\\\\\\\\\ns\\\\\"","6":"20","7":"6"},{"1":"\"qryuwkjiodw\\\\\"\\\\\"vaqyq\\\\\"dmyifm\"","2":"30","3":"25","4":"5","5":"\\\\\"qryuwkjiodw\\\\\\\\\\\\\"\\\\\\\\\\\\\"vaqyq\\\\\\\\\\\\\"dmyifm\\\\\"","6":"38","7":"10"},{"1":"\"tw\\\\x15kdmaudjl\\\\\\\\zorhp\\\\\"alwh\"","2":"29","3":"22","4":"7","5":"\\\\\"tw\\\\\\\\x15kdmaudjl\\\\\\\\\\\\\\\\zorhp\\\\\\\\\\\\\"alwh\\\\\"","6":"36","7":"9"},{"1":"\"aatrvczesykekkjfyb\\\\\"kb\"","2":"24","3":"21","4":"3","5":"\\\\\"aatrvczesykekkjfyb\\\\\\\\\\\\\"kb\\\\\"","6":"28","7":"6"},{"1":"\"usqcutbqbxxhucwxo\\\\xc1ltb\\\\\"j\\\\\"bghjcvws\"","2":"39","3":"32","4":"7","5":"\\\\\"usqcutbqbxxhucwxo\\\\\\\\xc1ltb\\\\\\\\\\\\\"j\\\\\\\\\\\\\"bghjcvws\\\\\"","6":"46","7":"9"},{"1":"\"ilhsrnzxkz\"","2":"12","3":"10","4":"2","5":"\\\\\"ilhsrnzxkz\\\\\"","6":"14","7":"4"},{"1":"\"bianqfdfdhvw\"","2":"14","3":"12","4":"2","5":"\\\\\"bianqfdfdhvw\\\\\"","6":"16","7":"4"},{"1":"\"hqibqs\\\\x7ax\\\\\"qoxqoaqtcsz\"","2":"26","3":"20","4":"6","5":"\\\\\"hqibqs\\\\\\\\x7ax\\\\\\\\\\\\\"qoxqoaqtcsz\\\\\"","6":"31","7":"7"},{"1":"\"htxtoojbbauztwxuiq\\\\\\\\ngyfy\\\\\\\\obzc\"","2":"33","3":"29","4":"4","5":"\\\\\"htxtoojbbauztwxuiq\\\\\\\\\\\\\\\\ngyfy\\\\\\\\\\\\\\\\obzc\\\\\"","6":"39","7":"8"},{"1":"\"rxn\\\\\\\\moxlj\"","2":"12","3":"9","4":"3","5":"\\\\\"rxn\\\\\\\\\\\\\\\\moxlj\\\\\"","6":"16","7":"6"},{"1":"\"mtus\\\\x84erh\\\\\"dbe\"","2":"18","3":"12","4":"6","5":"\\\\\"mtus\\\\\\\\x84erh\\\\\\\\\\\\\"dbe\\\\\"","6":"23","7":"7"},{"1":"\"asx\\\\x50huvsitcxadt\"","2":"20","3":"15","4":"5","5":"\\\\\"asx\\\\\\\\x50huvsitcxadt\\\\\"","6":"23","7":"5"},{"1":"\"\\\\\"bugggtnrc\\\\\"\\\\\"kl\\\\\"hmpu\\\\x83hqrvhpo\"","2":"36","3":"27","4":"9","5":"\\\\\"\\\\\\\\\\\\\"bugggtnrc\\\\\\\\\\\\\"\\\\\\\\\\\\\"kl\\\\\\\\\\\\\"hmpu\\\\\\\\x83hqrvhpo\\\\\"","6":"47","7":"13"},{"1":"\"ewisbp\\\\\"\\\\\"vuzf\\\\\\\\w\\\\x5fvalszdhl\"","2":"31","3":"23","4":"8","5":"\\\\\"ewisbp\\\\\\\\\\\\\"\\\\\\\\\\\\\"vuzf\\\\\\\\\\\\\\\\w\\\\\\\\x5fvalszdhl\\\\\"","6":"40","7":"11"},{"1":"\"scusplpwxfnxu\\\\x57\\\\\"zynpn\\\\x99xerc\\\\\\\\ri\"","2":"38","3":"28","4":"10","5":"\\\\\"scusplpwxfnxu\\\\\\\\x57\\\\\\\\\\\\\"zynpn\\\\\\\\x99xerc\\\\\\\\\\\\\\\\ri\\\\\"","6":"46","7":"10"},{"1":"\"m\\\\\\\\kinmkke\\\\x0cl\"","2":"17","3":"11","4":"6","5":"\\\\\"m\\\\\\\\\\\\\\\\kinmkke\\\\\\\\x0cl\\\\\"","6":"22","7":"7"},{"1":"\"xhuzit\\\\x7fd\"","2":"13","3":"8","4":"5","5":"\\\\\"xhuzit\\\\\\\\x7fd\\\\\"","6":"16","7":"5"},{"1":"\"kfbo\\\\x04\\\\x50ruqirn\"","2":"20","3":"12","4":"8","5":"\\\\\"kfbo\\\\\\\\x04\\\\\\\\x50ruqirn\\\\\"","6":"24","7":"6"},{"1":"\"t\\\\\"\\\\\"xpbdscmdoug\"","2":"18","3":"14","4":"4","5":"\\\\\"t\\\\\\\\\\\\\"\\\\\\\\\\\\\"xpbdscmdoug\\\\\"","6":"24","7":"8"},{"1":"\"punvpsgnbgyxe\\\\\"sptmpz\"","2":"23","3":"20","4":"3","5":"\\\\\"punvpsgnbgyxe\\\\\\\\\\\\\"sptmpz\\\\\"","6":"27","7":"6"},{"1":"\"bxukkazijr\"","2":"12","3":"10","4":"2","5":"\\\\\"bxukkazijr\\\\\"","6":"14","7":"4"},{"1":"\"nxyrcdaoo\\\\\"rjkk\\\\\"wntehcvcip\\\\\"vrd\"","2":"34","3":"29","4":"5","5":"\\\\\"nxyrcdaoo\\\\\\\\\\\\\"rjkk\\\\\\\\\\\\\"wntehcvcip\\\\\\\\\\\\\"vrd\\\\\"","6":"42","7":"10"},{"1":"\"rdpvqskmihqaw\"","2":"15","3":"13","4":"2","5":"\\\\\"rdpvqskmihqaw\\\\\"","6":"17","7":"4"},{"1":"\"p\\\\\\\\gwdhtqnpgthod\"","2":"18","3":"15","4":"3","5":"\\\\\"p\\\\\\\\\\\\\\\\gwdhtqnpgthod\\\\\"","6":"22","7":"6"},{"1":"\"nwnuf\\\\\"\\\\\"yebycearom\\\\\"nqym\\\\\"\\\\xd4sii\\\\xccle\"","2":"42","3":"30","4":"12","5":"\\\\\"nwnuf\\\\\\\\\\\\\"\\\\\\\\\\\\\"yebycearom\\\\\\\\\\\\\"nqym\\\\\\\\\\\\\"\\\\\\\\xd4sii\\\\\\\\xccle\\\\\"","6":"54","7":"14"},{"1":"\"alda\\\\\"ptspo\\\\\"wkkv\\\\\"zoi\\\\\"hkb\\\\\"vnntyd\"","2":"37","3":"30","4":"7","5":"\\\\\"alda\\\\\\\\\\\\\"ptspo\\\\\\\\\\\\\"wkkv\\\\\\\\\\\\\"zoi\\\\\\\\\\\\\"hkb\\\\\\\\\\\\\"vnntyd\\\\\"","6":"49","7":"14"},{"1":"\"ixpgpfzbqv\"","2":"12","3":"10","4":"2","5":"\\\\\"ixpgpfzbqv\\\\\"","6":"14","7":"4"},{"1":"\"znui\\\\\"\\\\\\\\fzn\\\\x03qozabh\\\\\"rva\\\\\"pv\\\\x67\"","2":"36","3":"24","4":"12","5":"\\\\\"znui\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\fzn\\\\\\\\x03qozabh\\\\\\\\\\\\\"rva\\\\\\\\\\\\\"pv\\\\\\\\x67\\\\\"","6":"48","7":"14"},{"1":"\"e\\\\\"zswmwuk\"","2":"12","3":"9","4":"3","5":"\\\\\"e\\\\\\\\\\\\\"zswmwuk\\\\\"","6":"16","7":"6"},{"1":"\"hcccygwfa\"","2":"11","3":"9","4":"2","5":"\\\\\"hcccygwfa\\\\\"","6":"13","7":"4"},{"1":"\"ngmace\\\\\\\\rtyllolr\\\\\"\\\\x68bw\"","2":"26","3":"19","4":"7","5":"\\\\\"ngmace\\\\\\\\\\\\\\\\rtyllolr\\\\\\\\\\\\\"\\\\\\\\x68bw\\\\\"","6":"33","7":"9"},{"1":"\"\\\\\\\\c\\\\\"jyufbry\\\\\"ryo\\\\\"xpo\\\\x26ecninfeckh\\\\\\\\s\"","2":"41","3":"31","4":"10","5":"\\\\\"\\\\\\\\\\\\\\\\c\\\\\\\\\\\\\"jyufbry\\\\\\\\\\\\\"ryo\\\\\\\\\\\\\"xpo\\\\\\\\x26ecninfeckh\\\\\\\\\\\\\\\\s\\\\\"","6":"54","7":"15"},{"1":"\"hdnpngtuc\\\\\"dzbvvosn\\\\x31fwtpzbrt\"","2":"33","3":"27","4":"6","5":"\\\\\"hdnpngtuc\\\\\\\\\\\\\"dzbvvosn\\\\\\\\x31fwtpzbrt\\\\\"","6":"38","7":"7"},{"1":"\"hesbpd\\\\xd4\"","2":"12","3":"7","4":"5","5":"\\\\\"hesbpd\\\\\\\\xd4\\\\\"","6":"15","7":"5"},{"1":"\"dsdbstuzrdfmrnyntufs\\\\\"dmv\"","2":"27","3":"24","4":"3","5":"\\\\\"dsdbstuzrdfmrnyntufs\\\\\\\\\\\\\"dmv\\\\\"","6":"31","7":"6"},{"1":"\"d\\\\xeeibcwhcvkt\"","2":"16","3":"11","4":"5","5":"\\\\\"d\\\\\\\\xeeibcwhcvkt\\\\\"","6":"19","7":"5"},{"1":"\"fvzwrsfjdqdmy\\\\\"\\\\\"v\"","2":"20","3":"16","4":"4","5":"\\\\\"fvzwrsfjdqdmy\\\\\\\\\\\\\"\\\\\\\\\\\\\"v\\\\\"","6":"26","7":"8"},{"1":"\"ns\\\\\"dqafz\\\\\\\\lkyoflnazv\\\\\"mn\\\\x37\\\\\"o\\\\\"yj\\\\\"e\"","2":"41","3":"30","4":"11","5":"\\\\\"ns\\\\\\\\\\\\\"dqafz\\\\\\\\\\\\\\\\lkyoflnazv\\\\\\\\\\\\\"mn\\\\\\\\x37\\\\\\\\\\\\\"o\\\\\\\\\\\\\"yj\\\\\\\\\\\\\"e\\\\\"","6":"56","7":"17"},{"1":"\"dypilgbwzccayxa\\\\\"bnmuernx\"","2":"27","3":"24","4":"3","5":"\\\\\"dypilgbwzccayxa\\\\\\\\\\\\\"bnmuernx\\\\\"","6":"31","7":"6"},{"1":"\"q\\\\xa9ztqrhreb\\\\\"\\\\\"kxfeyodqb\"","2":"28","3":"21","4":"7","5":"\\\\\"q\\\\\\\\xa9ztqrhreb\\\\\\\\\\\\\"\\\\\\\\\\\\\"kxfeyodqb\\\\\"","6":"35","7":"9"},{"1":"\"iz\\\\xa5qjxqulaawuwz\\\\\"rqmpcj\\\\\\\\yel\"","2":"33","3":"26","4":"7","5":"\\\\\"iz\\\\\\\\xa5qjxqulaawuwz\\\\\\\\\\\\\"rqmpcj\\\\\\\\\\\\\\\\yel\\\\\"","6":"40","7":"9"},{"1":"\"z\\\\\"\\\\\\\\pq\\\\\"\\\\\"y\\\\x67zpjtn\"","2":"23","3":"14","4":"9","5":"\\\\\"z\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\pq\\\\\\\\\\\\\"\\\\\\\\\\\\\"y\\\\\\\\x67zpjtn\\\\\"","6":"34","7":"13"},{"1":"\"ifxqvivp\\\\\"kiiftdoe\"","2":"20","3":"17","4":"3","5":"\\\\\"ifxqvivp\\\\\\\\\\\\\"kiiftdoe\\\\\"","6":"24","7":"6"},{"1":"\"jxzebj\\\\\"\\\\x35\\\\\"qr\\\\\"ecglcutuoyywqumcs\\\\\"kk\"","2":"41","3":"32","4":"9","5":"\\\\\"jxzebj\\\\\\\\\\\\\"\\\\\\\\x35\\\\\\\\\\\\\"qr\\\\\\\\\\\\\"ecglcutuoyywqumcs\\\\\\\\\\\\\"kk\\\\\"","6":"52","7":"13"},{"1":"\"q\"","2":"3","3":"1","4":"2","5":"\\\\\"q\\\\\"","6":"5","7":"4"},{"1":"\"yob\\\\x85qmpuwexptczbkrl\"","2":"24","3":"19","4":"5","5":"\\\\\"yob\\\\\\\\x85qmpuwexptczbkrl\\\\\"","6":"27","7":"5"},{"1":"\"cjiavv\\\\\"uudpozvibyycnmxhxpxmpjoz\"","2":"34","3":"31","4":"3","5":"\\\\\"cjiavv\\\\\\\\\\\\\"uudpozvibyycnmxhxpxmpjoz\\\\\"","6":"38","7":"6"},{"1":"\"xro\\\\\\\\uiqyrcid\"","2":"15","3":"12","4":"3","5":"\\\\\"xro\\\\\\\\\\\\\\\\uiqyrcid\\\\\"","6":"19","7":"6"},{"1":"\"nod\\\\\\\\k\"","2":"8","3":"5","4":"3","5":"\\\\\"nod\\\\\\\\\\\\\\\\k\\\\\"","6":"12","7":"6"},{"1":"\"d\\\\\"neiec\"","2":"10","3":"7","4":"3","5":"\\\\\"d\\\\\\\\\\\\\"neiec\\\\\"","6":"14","7":"6"},{"1":"\"tqyrqvwyvmz\\\\\\\\pzgzzcqsqsrgbqbtapoz\"","2":"35","3":"32","4":"3","5":"\\\\\"tqyrqvwyvmz\\\\\\\\\\\\\\\\pzgzzcqsqsrgbqbtapoz\\\\\"","6":"39","7":"6"},{"1":"\"r\\\\\"xvocpeuxfxslgueb\\\\x05kzyyie\\\\\"aoec\"","2":"37","3":"30","4":"7","5":"\\\\\"r\\\\\\\\\\\\\"xvocpeuxfxslgueb\\\\\\\\x05kzyyie\\\\\\\\\\\\\"aoec\\\\\"","6":"44","7":"9"},{"1":"\"\\\\\"du\\\\\\\\uirlhcbgv\\\\\\\\cjqhfreqnvn\"","2":"30","3":"25","4":"5","5":"\\\\\"\\\\\\\\\\\\\"du\\\\\\\\\\\\\\\\uirlhcbgv\\\\\\\\\\\\\\\\cjqhfreqnvn\\\\\"","6":"38","7":"10"},{"1":"\"zp\\\\x04\\\\x15\\\\\"pbjwhrjtmiba\"","2":"26","3":"17","4":"9","5":"\\\\\"zp\\\\\\\\x04\\\\\\\\x15\\\\\\\\\\\\\"pbjwhrjtmiba\\\\\"","6":"32","7":"8"},{"1":"\"\\\\\\\\cv\\\\\"\"","2":"8","3":"4","4":"4","5":"\\\\\"\\\\\\\\\\\\\\\\cv\\\\\\\\\\\\\"\\\\\"","6":"14","7":"8"},{"1":"\"k\\\\\"rwnb\\\\\\\\hiu\\\\\"rqd\\\\\"rc\\\\\\\\nyakrhly\"","2":"33","3":"26","4":"7","5":"\\\\\"k\\\\\\\\\\\\\"rwnb\\\\\\\\\\\\\\\\hiu\\\\\\\\\\\\\"rqd\\\\\\\\\\\\\"rc\\\\\\\\\\\\\\\\nyakrhly\\\\\"","6":"45","7":"14"},{"1":"\"klrmafjzandiddodgz\"","2":"20","3":"18","4":"2","5":"\\\\\"klrmafjzandiddodgz\\\\\"","6":"22","7":"4"},{"1":"\"xipzhqzhvlpykzcuppx\"","2":"21","3":"19","4":"2","5":"\\\\\"xipzhqzhvlpykzcuppx\\\\\"","6":"23","7":"4"},{"1":"\"zdvrvn\\\\xd0mtfvpylbn\\\\\\\\\\\\\\\\sxcznrzugwznl\"","2":"38","3":"31","4":"7","5":"\\\\\"zdvrvn\\\\\\\\xd0mtfvpylbn\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\sxcznrzugwznl\\\\\"","6":"45","7":"9"},{"1":"\"ody\\\\\\\\pvm\\\\\"kpjiudzhxazirgxzvumeat\\\\\"o\"","2":"37","3":"32","4":"5","5":"\\\\\"ody\\\\\\\\\\\\\\\\pvm\\\\\\\\\\\\\"kpjiudzhxazirgxzvumeat\\\\\\\\\\\\\"o\\\\\"","6":"45","7":"10"},{"1":"\"kllvhdp\\\\\"prjikzrrc\\\\\"adgpegc\\\\\\\\\\\\\"gk\"","2":"35","3":"29","4":"6","5":"\\\\\"kllvhdp\\\\\\\\\\\\\"prjikzrrc\\\\\\\\\\\\\"adgpegc\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"gk\\\\\"","6":"45","7":"12"},{"1":"\"sqtpug\\\\xbcaauxaamw\"","2":"20","3":"15","4":"5","5":"\\\\\"sqtpug\\\\\\\\xbcaauxaamw\\\\\"","6":"23","7":"5"},{"1":"\"wegxxrrxdvpivrqievfeokmnojsk\"","2":"30","3":"28","4":"2","5":"\\\\\"wegxxrrxdvpivrqievfeokmnojsk\\\\\"","6":"32","7":"4"},{"1":"\"\\\\\\\\bo\"","2":"6","3":"3","4":"3","5":"\\\\\"\\\\\\\\\\\\\\\\bo\\\\\"","6":"10","7":"6"},{"1":"\"gijhz\"","2":"7","3":"5","4":"2","5":"\\\\\"gijhz\\\\\"","6":"9","7":"4"},{"1":"\"ylowluvabwrigssdgtxdwsiorxev\\\\xdd\"","2":"34","3":"29","4":"5","5":"\\\\\"ylowluvabwrigssdgtxdwsiorxev\\\\\\\\xdd\\\\\"","6":"37","7":"5"},{"1":"\"\\\\\"\"","2":"4","3":"1","4":"3","5":"\\\\\"\\\\\\\\\\\\\"\\\\\"","6":"8","7":"6"},{"1":"\"ghnsrnsqtxpygikahkrl\"","2":"22","3":"20","4":"2","5":"\\\\\"ghnsrnsqtxpygikahkrl\\\\\"","6":"24","7":"4"},{"1":"\"\\\\\"rcfqkbjf\\\\\"sgxg\\\\\"vnd\\\\\\\\rotn\"","2":"29","3":"23","4":"6","5":"\\\\\"\\\\\\\\\\\\\"rcfqkbjf\\\\\\\\\\\\\"sgxg\\\\\\\\\\\\\"vnd\\\\\\\\\\\\\\\\rotn\\\\\"","6":"39","7":"12"},{"1":"\"ap\\\\\"smgsuexjrbuqs\\\\\"mpbstogj\\\\\"x\"","2":"32","3":"27","4":"5","5":"\\\\\"ap\\\\\\\\\\\\\"smgsuexjrbuqs\\\\\\\\\\\\\"mpbstogj\\\\\\\\\\\\\"x\\\\\"","6":"40","7":"10"},{"1":"\"koaunz\\\\\\\\sgt\\\\\"opv\"","2":"18","3":"14","4":"4","5":"\\\\\"koaunz\\\\\\\\\\\\\\\\sgt\\\\\\\\\\\\\"opv\\\\\"","6":"24","7":"8"},{"1":"\"yialiuzwix\"","2":"12","3":"10","4":"2","5":"\\\\\"yialiuzwix\\\\\"","6":"14","7":"4"},{"1":"\"yp\\\\\"ndxgwzml\\\\\"bt\"","2":"18","3":"14","4":"4","5":"\\\\\"yp\\\\\\\\\\\\\"ndxgwzml\\\\\\\\\\\\\"bt\\\\\"","6":"24","7":"8"},{"1":"\"lpcjxmggfsy\\\\\\\\szbxccarjkqzasqkb\\\\xcfd\\\\x0c\"","2":"41","3":"32","4":"9","5":"\\\\\"lpcjxmggfsy\\\\\\\\\\\\\\\\szbxccarjkqzasqkb\\\\\\\\xcfd\\\\\\\\x0c\\\\\"","6":"47","7":"8"},{"1":"\"x\"","2":"3","3":"1","4":"2","5":"\\\\\"x\\\\\"","6":"5","7":"4"},{"1":"\"mgakc\"","2":"7","3":"5","4":"2","5":"\\\\\"mgakc\\\\\"","6":"9","7":"4"},{"1":"\"vjieunoh\\\\x73fjwx\"","2":"18","3":"13","4":"5","5":"\\\\\"vjieunoh\\\\\\\\x73fjwx\\\\\"","6":"21","7":"5"},{"1":"\"erbvv\\\\\"qulsd\"","2":"14","3":"11","4":"3","5":"\\\\\"erbvv\\\\\\\\\\\\\"qulsd\\\\\"","6":"18","7":"6"},{"1":"\"mimycrbfhqkarmz\"","2":"17","3":"15","4":"2","5":"\\\\\"mimycrbfhqkarmz\\\\\"","6":"19","7":"4"},{"1":"\"tihfbgcszuej\\\\\"c\\\\xfbvoqskkhbgpaddioo\"","2":"37","3":"31","4":"6","5":"\\\\\"tihfbgcszuej\\\\\\\\\\\\\"c\\\\\\\\xfbvoqskkhbgpaddioo\\\\\"","6":"42","7":"7"},{"1":"\"mziavkwrmekriqghw\"","2":"19","3":"17","4":"2","5":"\\\\\"mziavkwrmekriqghw\\\\\"","6":"21","7":"4"},{"1":"\"izk\\\\\\\\tnjd\\\\\\\\ed\\\\\\\\emokvjoc\"","2":"25","3":"20","4":"5","5":"\\\\\"izk\\\\\\\\\\\\\\\\tnjd\\\\\\\\\\\\\\\\ed\\\\\\\\\\\\\\\\emokvjoc\\\\\"","6":"33","7":"10"},{"1":"\"c\\\\\"nhbqzndro\\\\\\\\g\"","2":"17","3":"13","4":"4","5":"\\\\\"c\\\\\\\\\\\\\"nhbqzndro\\\\\\\\\\\\\\\\g\\\\\"","6":"23","7":"8"},{"1":"\"usfngdo\"","2":"9","3":"7","4":"2","5":"\\\\\"usfngdo\\\\\"","6":"11","7":"4"},{"1":"\"aypljdftvptt\"","2":"14","3":"12","4":"2","5":"\\\\\"aypljdftvptt\\\\\"","6":"16","7":"4"},{"1":"\"ym\\\\\"afvq\\\\xbcc\"","2":"15","3":"9","4":"6","5":"\\\\\"ym\\\\\\\\\\\\\"afvq\\\\\\\\xbcc\\\\\"","6":"20","7":"7"},{"1":"\"zabi\\\\\"wjpvugwhl\"","2":"17","3":"14","4":"3","5":"\\\\\"zabi\\\\\\\\\\\\\"wjpvugwhl\\\\\"","6":"21","7":"6"},{"1":"\"ebvptcjqjhc\\\\\"n\\\\\"p\\\\\"dxrphegr\\\\\\\\\"","2":"31","3":"25","4":"6","5":"\\\\\"ebvptcjqjhc\\\\\\\\\\\\\"n\\\\\\\\\\\\\"p\\\\\\\\\\\\\"dxrphegr\\\\\\\\\\\\\\\\\\\\\"","6":"41","7":"12"},{"1":"\"mzlqqxokhye\\\\xd9\\\\\\\\rffhnzs\"","2":"26","3":"20","4":"6","5":"\\\\\"mzlqqxokhye\\\\\\\\xd9\\\\\\\\\\\\\\\\rffhnzs\\\\\"","6":"31","7":"7"},{"1":"\"hnipqknwpsjakanuewe\"","2":"21","3":"19","4":"2","5":"\\\\\"hnipqknwpsjakanuewe\\\\\"","6":"23","7":"4"},{"1":"\"rqgbfcjdrmiz\\\\\"h\"","2":"17","3":"14","4":"3","5":"\\\\\"rqgbfcjdrmiz\\\\\\\\\\\\\"h\\\\\"","6":"21","7":"6"},{"1":"\"kzzp\\\\\\\\z\\\\\\\\txmkwaouxictybwx\"","2":"27","3":"23","4":"4","5":"\\\\\"kzzp\\\\\\\\\\\\\\\\z\\\\\\\\\\\\\\\\txmkwaouxictybwx\\\\\"","6":"33","7":"8"},{"1":"\"yzmspjkqrteiydswlvb\"","2":"21","3":"19","4":"2","5":"\\\\\"yzmspjkqrteiydswlvb\\\\\"","6":"23","7":"4"},{"1":"\"gjpxklgpzv\\\\\"txri\\\\\\\\hotpuiukzzzd\"","2":"32","3":"28","4":"4","5":"\\\\\"gjpxklgpzv\\\\\\\\\\\\\"txri\\\\\\\\\\\\\\\\hotpuiukzzzd\\\\\"","6":"38","7":"8"},{"1":"\"p\\\\\"rxergtbsxmjmkeeqwvoagnki\\\\\"\"","2":"31","3":"27","4":"4","5":"\\\\\"p\\\\\\\\\\\\\"rxergtbsxmjmkeeqwvoagnki\\\\\\\\\\\\\"\\\\\"","6":"37","7":"8"},{"1":"\"santipvuiq\"","2":"12","3":"10","4":"2","5":"\\\\\"santipvuiq\\\\\"","6":"14","7":"4"},{"1":"\"\\\\\"ihjqlhtwbuy\\\\\"hdkiv\\\\\"mtiqacnf\\\\\\\\\"","2":"34","3":"28","4":"6","5":"\\\\\"\\\\\\\\\\\\\"ihjqlhtwbuy\\\\\\\\\\\\\"hdkiv\\\\\\\\\\\\\"mtiqacnf\\\\\\\\\\\\\\\\\\\\\"","6":"44","7":"12"},{"1":"\"oliaggtqyyx\"","2":"13","3":"11","4":"2","5":"\\\\\"oliaggtqyyx\\\\\"","6":"15","7":"4"},{"1":"\"fwwnpmbb\"","2":"10","3":"8","4":"2","5":"\\\\\"fwwnpmbb\\\\\"","6":"12","7":"4"},{"1":"\"yrtdrieazfxyyneo\"","2":"18","3":"16","4":"2","5":"\\\\\"yrtdrieazfxyyneo\\\\\"","6":"20","7":"4"},{"1":"\"nywbv\\\\\\\\\"","2":"9","3":"6","4":"3","5":"\\\\\"nywbv\\\\\\\\\\\\\\\\\\\\\"","6":"13","7":"6"},{"1":"\"twc\\\\\\\\ehfqxhgomgrgwpxyzmnkioj\"","2":"30","3":"27","4":"3","5":"\\\\\"twc\\\\\\\\\\\\\\\\ehfqxhgomgrgwpxyzmnkioj\\\\\"","6":"34","7":"6"},{"1":"\"qludrkkvljljd\\\\\\\\xvdeum\\\\x4e\"","2":"27","3":"21","4":"6","5":"\\\\\"qludrkkvljljd\\\\\\\\\\\\\\\\xvdeum\\\\\\\\x4e\\\\\"","6":"32","7":"7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/Filebb\.github\.io\/advent-of-code\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

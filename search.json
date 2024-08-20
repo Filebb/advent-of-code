@@ -451,219 +451,36 @@
     ]
   },
   {
-    "objectID": "solutions/2015/06.html",
-    "href": "solutions/2015/06.html",
-    "title": "Day 6: Probably a Fire Hazard",
+    "objectID": "solutions/2015/09.html",
+    "href": "solutions/2015/09.html",
+    "title": "Day 9: All in a Single Night",
     "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv2(file = \"inputs/2015/06.txt\", col_names = \"original\")",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/09.txt\")",
     "crumbs": [
       "2015",
-      "Day 6: Probably a Fire Hazard"
+      "Day 9: All in a Single Night"
     ]
   },
   {
-    "objectID": "solutions/2015/06.html#part-one",
-    "href": "solutions/2015/06.html#part-one",
-    "title": "Day 6: Probably a Fire Hazard",
+    "objectID": "solutions/2015/09.html#part-one",
+    "href": "solutions/2015/09.html#part-one",
+    "title": "Day 9: All in a Single Night",
     "section": "Part One",
-    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\ninstructions &lt;- input |&gt; \n    mutate(instruction = str_extract(string = original, pattern = \"toggle|turn on|turn off\"),\n           position    = str_extract_all(string = original, pattern = \"[0-9]+\")) |&gt; \n    unnest_wider(col = position, names_sep = \"_\") |&gt; \n    mutate(across(.cols = starts_with(\"position\"), .fns = \\(x) as.integer(x) + 1L)) |&gt; \n    mutate(x_range = map2(.x = position_1, .y = position_3, .f = \\(a, b) a:b),\n           y_range = map2(.x = position_2, .y = position_4, .f = \\(a, b) a:b))\n\n# initial grid\ngrid_start &lt;- matrix(FALSE, 1e3, 1e3)\n\naction &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- !grid[x_range, y_range]\n    \n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- TRUE\n    \n    else if (instruction == \"turn off\")\n        grid[x_range, y_range] &lt;- FALSE\n    \n    return(grid)\n}\n\nmake_story &lt;- function(instructions, action, grid_start) {\n    # initialize list\n    grid_story &lt;- vector(mode = \"list\", length = nrow(instructions))\n    for (i in 1:nrow(instructions)) grid_story[[i]] &lt;- grid_start\n    \n    # perform instructions\n    for (i in seq_along(grid_story)) {\n        \n        if (i == 1) {\n            grid_story[[1]] &lt;- action(instruction = instructions[[1, \"instruction\"]][[1]],\n                                      x_range     = instructions[[1, \"x_range\"]][[1]],\n                                      y_range     = instructions[[1, \"y_range\"]][[1]],\n                                      grid        = grid_story[[1]])\n        } else {\n            grid_story[[i]] &lt;- action(instruction = instructions[[i, \"instruction\"]][[1]],\n                                      x_range     = instructions[[i, \"x_range\"]][[1]],\n                                      y_range     = instructions[[i, \"y_range\"]][[1]],\n                                      grid        = grid_story[[i-1]])\n        }\n    }\n    \n    return(grid_story)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid = make_story(instructions, action, grid_start),\n           n_on = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(n_on) |&gt; \n    cat()\n## 543903",
+    "text": "Part One\n\nSolutionData\n\n\n\ndistances &lt;- tibble(original = input) |&gt; \n    separate_wider_delim(original,\n                         delim = \" = \",\n                         names = c(\"trip\", \"distance\")) |&gt; \n    separate_wider_delim(trip,\n                         delim = \" to \",\n                         names = c(\"from\", \"to\")) |&gt; \n    mutate(distance = as.integer(distance))\n\nlocations &lt;- distances |&gt;\n    select(from, to) |&gt; \n    unlist() |&gt; \n    unique()\n\ndistance &lt;- function(.from, .to) {\n    if (.from == .to) {\n        return(0)\n    }\n    \n    tentative &lt;- distances |&gt; filter(from == .from) |&gt; \n        filter(to == .to) |&gt;  pull(distance)\n    \n    if (length(tentative &gt; 0)) {\n        return(tentative)\n    } else {\n        distances |&gt; filter(from == .to, to == .from) |&gt;  pull(distance)\n    }\n}\n\na &lt;- matrix(ncol = 8, nrow = 8, dimnames = list(locations, locations))\n\nfor (location1 in locations) {\n    for (location2 in locations) {\n        a[location1, location2] &lt;- distance(location1, location2)\n    }\n}\n\ntravels &lt;- gtools::permutations(n = 8, r = 8, locations) |&gt; \n    as_tibble() |&gt; \n    mutate(total_distance = pmap_int(.l = list(V1, V2, V3, V4, V5, V6, V7, V8),\n                                     .f = \\(V1, V2, V3, V4, V5, V6, V7, V8)\n                                     a[V1, V2] + a[V2, V3] + a[V3, V4] +\n                                         a[V4, V5] + a[V5, V6] + \n                                         a[V6, V7] + a[V7, V8])) |&gt; \n    arrange(total_distance)\n\ntravels |&gt; \n    slice(1) |&gt; \n    pull(total_distance) |&gt; \n    cat()\n## 141",
     "crumbs": [
       "2015",
-      "Day 6: Probably a Fire Hazard"
+      "Day 9: All in a Single Night"
     ]
   },
   {
-    "objectID": "solutions/2015/06.html#part-two",
-    "href": "solutions/2015/06.html#part-two",
-    "title": "Day 6: Probably a Fire Hazard",
+    "objectID": "solutions/2015/09.html#part-two",
+    "href": "solutions/2015/09.html#part-two",
+    "title": "Day 9: All in a Single Night",
     "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\n# initial grid\ngrid_start &lt;- matrix(0, 1e3, 1e3)\n\nnew_action &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 2\n\n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 1\n\n    else if (instruction == \"turn off\") \n        grid[x_range, y_range] &lt;- pmax(grid[x_range, y_range] - 1, 0)\n    \n    return(grid)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid       = make_story(instructions, new_action, grid_start),\n           brightness = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(brightness) |&gt; \n    cat()\n## 14687245",
+    "text": "Part Two\n\nSolutionData\n\n\n\ntravels |&gt; \n    arrange(desc(total_distance)) |&gt; \n    slice(1) |&gt; \n    pull(total_distance) |&gt; \n    cat()\n## 736",
     "crumbs": [
       "2015",
-      "Day 6: Probably a Fire Hazard"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/04.html",
-    "href": "solutions/2015/04.html",
-    "title": "Day 4: The Ideal Stocking Stuffer",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"bgvyzdsv\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")",
-    "crumbs": [
-      "2015",
-      "Day 4: The Ideal Stocking Stuffer"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/04.html#part-one",
-    "href": "solutions/2015/04.html#part-one",
-    "title": "Day 4: The Ideal Stocking Stuffer",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
-    "crumbs": [
-      "2015",
-      "Day 4: The Ideal Stocking Stuffer"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/04.html#part-two",
-    "href": "solutions/2015/04.html#part-two",
-    "title": "Day 4: The Ideal Stocking Stuffer",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
-    "crumbs": [
-      "2015",
-      "Day 4: The Ideal Stocking Stuffer"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/02.html",
-    "href": "solutions/2015/02.html",
-    "title": "Day 2: I Was Told There Would Be No Math",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/02.txt\", col_names = \"original\")",
-    "crumbs": [
-      "2015",
-      "Day 2: I Was Told There Would Be No Math"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/02.html#part-one",
-    "href": "solutions/2015/02.html#part-one",
-    "title": "Day 2: I Was Told There Would Be No Math",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |&gt; \n\n    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
-    "crumbs": [
-      "2015",
-      "Day 2: I Was Told There Would Be No Math"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/02.html#part-two",
-    "href": "solutions/2015/02.html#part-two",
-    "title": "Day 2: I Was Told There Would Be No Math",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nribbon_length &lt;- function(l, w, h) {\n    2L * (l+w+h - max(l, w, h)) + l*w*h\n}\n\npaper &lt;- paper |&gt;\n    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))\n\npaper |&gt; \n    summarise(total_ribbon = sum(ribbon)) |&gt; \n    pull(total_ribbon) |&gt; \n    cat()\n## 3842356",
-    "crumbs": [
-      "2015",
-      "Day 2: I Was Told There Would Be No Math"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "This website contains my solutions to programming challenges proposed by Advent of Code"
-  },
-  {
-    "objectID": "solutions/2015/01.html",
-    "href": "solutions/2015/01.html",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/01.txt\")",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html#part-one",
-    "href": "solutions/2015/01.html#part-one",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nmoves &lt;- tibble(input  = str_split_1(string = input, pattern = \"\"),\n                move   = case_match(input, \"(\" ~  1L, \")\" ~ -1L),\n                height = cumsum(move))\n\nmoves |&gt; \n    tail(1) |&gt; \n    pull(height) |&gt; \n    cat()\n## 232",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html#part-two",
-    "href": "solutions/2015/01.html#part-two",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nmoves &lt;- moves |&gt; \n    rowid_to_column(\"time\")\n\nmoves |&gt; \n    filter(height == -1) |&gt; \n    head(1) |&gt; \n    pull(time) |&gt; \n    cat()\n## 1783",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/01.html#plot",
-    "href": "solutions/2015/01.html#plot",
-    "title": "Day 1: Not Quite Lisp",
-    "section": "Plot",
-    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = time, y = height)) +\n    geom_line() +\n    theme_bw()",
-    "crumbs": [
-      "2015",
-      "Day 1: Not Quite Lisp"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/03.html",
-    "href": "solutions/2015/03.html",
-    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/03.txt\")",
-    "crumbs": [
-      "2015",
-      "Day 3: Perfectly Spherical Houses in a Vacuum"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/03.html#part-one",
-    "href": "solutions/2015/03.html#part-one",
-    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- tibble(input  = str_split_1(input, pattern = \"\"),\n                move_x = case_match(input, \"^\" ~  0, \"&gt;\" ~  1,\n                                           \"v\" ~  0, \"&lt;\" ~ -1),\n                move_y = case_match(input, \"^\" ~  1, \"&gt;\" ~  0,\n                                           \"v\" ~ -1, \"&lt;\" ~  0),\n                pos_x  = cumsum(move_x),\n                pos_y  = cumsum(move_y)) |&gt; \n    \n    add_row(pos_x = 0, pos_y = 0, .before = 1)\n    \nmoves |&gt; \n    distinct(pos_x, pos_y) |&gt; \n    nrow() |&gt;\n    cat()\n## 2081\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y)) +\n    geom_path() +\n    theme_bw()",
-    "crumbs": [
-      "2015",
-      "Day 3: Perfectly Spherical Houses in a Vacuum"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/03.html#part-two",
-    "href": "solutions/2015/03.html#part-two",
-    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- moves |&gt; \n\n    mutate(who = case_when(row_number() - 1  == 0 ~ \"both\",\n                           row_number() %% 2 == 0 ~ \"santa\",\n                           .default = \"robo\")) |&gt; \n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt; \n\n    mutate(across(.cols = starts_with(\"pos\"), .fns = \\(x) coalesce(x, 0)))\n\nmoves |&gt;\n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +\n    geom_path() +\n    theme_bw()",
-    "crumbs": [
-      "2015",
-      "Day 3: Perfectly Spherical Houses in a Vacuum"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/05.html",
-    "href": "solutions/2015/05.html",
-    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
-    "section": "",
-    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/05.txt\", col_names = \"original\")",
-    "crumbs": [
-      "2015",
-      "Day 5: Doesn't He Have Intern-Elves For This?"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/05.html#part-one",
-    "href": "solutions/2015/05.html#part-one",
-    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
-    "section": "Part One",
-    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_3more_vowels &lt;- function(string) {\n    str_count(string = string, pattern = \"[aeiou]\") &gt;= 3\n}\n\nhas_1more_double &lt;- function(string) {\n    str_count(string = string, pattern = \"([a-z])\\\\1\") &gt;= 1\n}\n\nhas_not_ab_cd_pq_xy &lt;- function(string) {\n    !str_detect(string = string, pattern = \"ab|cd|pq|xy\")\n}\n\nis_nice &lt;- function(string) {\n    has_3more_vowels(string) &\n    has_1more_double(string) &\n    has_not_ab_cd_pq_xy(string)\n}\n\nnice &lt;- input |&gt; \n    mutate(three_more_vowels = map_lgl(.x = original, .f = has_3more_vowels),\n           one_more_double   = map_lgl(.x = original, .f = has_1more_double),\n           not_ab_cd_pq_xy   = map_lgl(.x = original, .f = has_not_ab_cd_pq_xy),\n           nice              = map_lgl(.x = original, .f = is_nice))\n\nnice |&gt; \n    summarise(total_nice = sum(nice)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 258",
-    "crumbs": [
-      "2015",
-      "Day 5: Doesn't He Have Intern-Elves For This?"
-    ]
-  },
-  {
-    "objectID": "solutions/2015/05.html#part-two",
-    "href": "solutions/2015/05.html#part-two",
-    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
-    "section": "Part Two",
-    "text": "Part Two\n\nSolutionFull Table\n\n\n\nhas_couple_twice &lt;- function(string) {\n    str_detect(string = string, pattern = \"[a-z]*([a-z]{2})[a-z]*\\\\1[a-z]*\")\n}\n\nhas_az_any_az &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])[a-z]\\\\1\")\n}\n\nis_nice_new &lt;- function(string) {\n    has_couple_twice(string) &\n    has_az_any_az(string)\n}\n\nnice_new &lt;- input |&gt; \n    mutate(couple_twice = map_lgl(.x = original, .f = has_couple_twice),\n           az_any_az    = map_lgl(.x = original, .f = has_az_any_az),\n           nice_new     = map_lgl(.x = original, .f = is_nice_new))\n\nnice_new |&gt; \n    summarise(total_nice = sum(nice_new)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 53",
-    "crumbs": [
-      "2015",
-      "Day 5: Doesn't He Have Intern-Elves For This?"
+      "Day 9: All in a Single Night"
     ]
   },
   {
@@ -719,6 +536,288 @@
     "crumbs": [
       "2015",
       "Day 7: Some Assembly Required"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/05.html",
+    "href": "solutions/2015/05.html",
+    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/05.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2015",
+      "Day 5: Doesn't He Have Intern-Elves For This?"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/05.html#part-one",
+    "href": "solutions/2015/05.html#part-one",
+    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nhas_3more_vowels &lt;- function(string) {\n    str_count(string = string, pattern = \"[aeiou]\") &gt;= 3\n}\n\nhas_1more_double &lt;- function(string) {\n    str_count(string = string, pattern = \"([a-z])\\\\1\") &gt;= 1\n}\n\nhas_not_ab_cd_pq_xy &lt;- function(string) {\n    !str_detect(string = string, pattern = \"ab|cd|pq|xy\")\n}\n\nis_nice &lt;- function(string) {\n    has_3more_vowels(string) &\n    has_1more_double(string) &\n    has_not_ab_cd_pq_xy(string)\n}\n\nnice &lt;- input |&gt; \n    mutate(three_more_vowels = map_lgl(.x = original, .f = has_3more_vowels),\n           one_more_double   = map_lgl(.x = original, .f = has_1more_double),\n           not_ab_cd_pq_xy   = map_lgl(.x = original, .f = has_not_ab_cd_pq_xy),\n           nice              = map_lgl(.x = original, .f = is_nice))\n\nnice |&gt; \n    summarise(total_nice = sum(nice)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 258",
+    "crumbs": [
+      "2015",
+      "Day 5: Doesn't He Have Intern-Elves For This?"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/05.html#part-two",
+    "href": "solutions/2015/05.html#part-two",
+    "title": "Day 5: Doesn’t He Have Intern-Elves For This?",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nhas_couple_twice &lt;- function(string) {\n    str_detect(string = string, pattern = \"[a-z]*([a-z]{2})[a-z]*\\\\1[a-z]*\")\n}\n\nhas_az_any_az &lt;- function(string) {\n    str_detect(string = string, pattern = \"([a-z])[a-z]\\\\1\")\n}\n\nis_nice_new &lt;- function(string) {\n    has_couple_twice(string) &\n    has_az_any_az(string)\n}\n\nnice_new &lt;- input |&gt; \n    mutate(couple_twice = map_lgl(.x = original, .f = has_couple_twice),\n           az_any_az    = map_lgl(.x = original, .f = has_az_any_az),\n           nice_new     = map_lgl(.x = original, .f = is_nice_new))\n\nnice_new |&gt; \n    summarise(total_nice = sum(nice_new)) |&gt; \n    pull(total_nice) |&gt; \n    cat()\n## 53",
+    "crumbs": [
+      "2015",
+      "Day 5: Doesn't He Have Intern-Elves For This?"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/03.html",
+    "href": "solutions/2015/03.html",
+    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/03.txt\")",
+    "crumbs": [
+      "2015",
+      "Day 3: Perfectly Spherical Houses in a Vacuum"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/03.html#part-one",
+    "href": "solutions/2015/03.html#part-one",
+    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- tibble(input  = str_split_1(input, pattern = \"\"),\n                move_x = case_match(input, \"^\" ~  0, \"&gt;\" ~  1,\n                                           \"v\" ~  0, \"&lt;\" ~ -1),\n                move_y = case_match(input, \"^\" ~  1, \"&gt;\" ~  0,\n                                           \"v\" ~ -1, \"&lt;\" ~  0),\n                pos_x  = cumsum(move_x),\n                pos_y  = cumsum(move_y)) |&gt; \n    \n    add_row(pos_x = 0, pos_y = 0, .before = 1)\n    \nmoves |&gt; \n    distinct(pos_x, pos_y) |&gt; \n    nrow() |&gt;\n    cat()\n## 2081\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y)) +\n    geom_path() +\n    theme_bw()",
+    "crumbs": [
+      "2015",
+      "Day 3: Perfectly Spherical Houses in a Vacuum"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/03.html#part-two",
+    "href": "solutions/2015/03.html#part-two",
+    "title": "Day 3: Perfectly Spherical Houses in a Vacuum",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\nmoves &lt;- moves |&gt; \n\n    mutate(who = case_when(row_number() - 1  == 0 ~ \"both\",\n                           row_number() %% 2 == 0 ~ \"santa\",\n                           .default = \"robo\")) |&gt; \n\n    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |&gt; \n\n    mutate(across(.cols = starts_with(\"pos\"), .fns = \\(x) coalesce(x, 0)))\n\nmoves |&gt;\n    distinct(pos_x, pos_y) |&gt;\n    nrow() |&gt;\n    cat()\n## 2341\n\n\n\n\n\n\n  \n\n\n\n\n\n\nmoves |&gt; \n    ggplot(mapping = aes(x = pos_x, y = pos_y, col = who)) +\n    geom_path() +\n    theme_bw()",
+    "crumbs": [
+      "2015",
+      "Day 3: Perfectly Spherical Houses in a Vacuum"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html",
+    "href": "solutions/2015/01.html",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/01.txt\")",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html#part-one",
+    "href": "solutions/2015/01.html#part-one",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nmoves &lt;- tibble(input  = str_split_1(string = input, pattern = \"\"),\n                move   = case_match(input, \"(\" ~  1L, \")\" ~ -1L),\n                height = cumsum(move))\n\nmoves |&gt; \n    tail(1) |&gt; \n    pull(height) |&gt; \n    cat()\n## 232",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html#part-two",
+    "href": "solutions/2015/01.html#part-two",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nmoves &lt;- moves |&gt; \n    rowid_to_column(\"time\")\n\nmoves |&gt; \n    filter(height == -1) |&gt; \n    head(1) |&gt; \n    pull(time) |&gt; \n    cat()\n## 1783",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/01.html#plot",
+    "href": "solutions/2015/01.html#plot",
+    "title": "Day 1: Not Quite Lisp",
+    "section": "Plot",
+    "text": "Plot\n\nmoves |&gt; \n    ggplot(mapping = aes(x = time, y = height)) +\n    geom_line() +\n    theme_bw()",
+    "crumbs": [
+      "2015",
+      "Day 1: Not Quite Lisp"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "This website contains my solutions to programming challenges proposed by Advent of Code"
+  },
+  {
+    "objectID": "solutions/2015/02.html",
+    "href": "solutions/2015/02.html",
+    "title": "Day 2: I Was Told There Would Be No Math",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv(file = \"inputs/2015/02.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2015",
+      "Day 2: I Was Told There Would Be No Math"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/02.html#part-one",
+    "href": "solutions/2015/02.html#part-one",
+    "title": "Day 2: I Was Told There Would Be No Math",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\npaper_area &lt;- function(l, w, h) {\n    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)\n}\n\npaper &lt;- input |&gt; \n\n    separate_wider_delim(cols        = original,\n                         names       = c(\"l\", \"w\", \"h\"),\n                         delim       = \"x\",\n                         cols_remove = FALSE) |&gt; \n\n    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |&gt; \n\n    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))\n\npaper |&gt; \n    summarise(total_paper = sum(paper)) |&gt; \n    pull(total_paper) |&gt; \n    cat()\n## 1606483",
+    "crumbs": [
+      "2015",
+      "Day 2: I Was Told There Would Be No Math"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/02.html#part-two",
+    "href": "solutions/2015/02.html#part-two",
+    "title": "Day 2: I Was Told There Would Be No Math",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull Table\n\n\n\nribbon_length &lt;- function(l, w, h) {\n    2L * (l+w+h - max(l, w, h)) + l*w*h\n}\n\npaper &lt;- paper |&gt;\n    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))\n\npaper |&gt; \n    summarise(total_ribbon = sum(ribbon)) |&gt; \n    pull(total_ribbon) |&gt; \n    cat()\n## 3842356",
+    "crumbs": [
+      "2015",
+      "Day 2: I Was Told There Would Be No Math"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/04.html",
+    "href": "solutions/2015/04.html",
+    "title": "Day 4: The Ideal Stocking Stuffer",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- \"bgvyzdsv\"\n\n# get md5 function from digest package\n# when using it remember to set serialize = FALSE\n# see help for more details\nmd5 &lt;- digest::getVDigest(algo = \"md5\")",
+    "crumbs": [
+      "2015",
+      "Day 4: The Ideal Stocking Stuffer"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/04.html#part-one",
+    "href": "solutions/2015/04.html#part-one",
+    "title": "Day 4: The Ideal Stocking Stuffer",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 2.55e5\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE)))\n\nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 5) == \"00000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 254575",
+    "crumbs": [
+      "2015",
+      "Day 4: The Ideal Stocking Stuffer"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/04.html#part-two",
+    "href": "solutions/2015/04.html#part-two",
+    "title": "Day 4: The Ideal Stocking Stuffer",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionPartial Table\n\n\n\n# number of attempts, this is empirically enough\nn &lt;- 1.04e6\n\nmd5_hashes &lt;- tibble(number = 1:n,\n                     string = paste0(input, number),\n                     hash   = map_chr(.x = string, .f = \\(x) md5(x, serialize = FALSE))) \n    \nmd5_hashes |&gt; \n    filter(str_sub(string = hash, start = 1, end = 6) == \"000000\") |&gt; \n    pull(number) |&gt; \n    cat()\n## 1038736",
+    "crumbs": [
+      "2015",
+      "Day 4: The Ideal Stocking Stuffer"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/06.html",
+    "href": "solutions/2015/06.html",
+    "title": "Day 6: Probably a Fire Hazard",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_csv2(file = \"inputs/2015/06.txt\", col_names = \"original\")",
+    "crumbs": [
+      "2015",
+      "Day 6: Probably a Fire Hazard"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/06.html#part-one",
+    "href": "solutions/2015/06.html#part-one",
+    "title": "Day 6: Probably a Fire Hazard",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull TablePlot\n\n\n\ninstructions &lt;- input |&gt; \n    mutate(instruction = str_extract(string = original, pattern = \"toggle|turn on|turn off\"),\n           position    = str_extract_all(string = original, pattern = \"[0-9]+\")) |&gt; \n    unnest_wider(col = position, names_sep = \"_\") |&gt; \n    mutate(across(.cols = starts_with(\"position\"), .fns = \\(x) as.integer(x) + 1L)) |&gt; \n    mutate(x_range = map2(.x = position_1, .y = position_3, .f = \\(a, b) a:b),\n           y_range = map2(.x = position_2, .y = position_4, .f = \\(a, b) a:b))\n\n# initial grid\ngrid_start &lt;- matrix(FALSE, 1e3, 1e3)\n\naction &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- !grid[x_range, y_range]\n    \n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- TRUE\n    \n    else if (instruction == \"turn off\")\n        grid[x_range, y_range] &lt;- FALSE\n    \n    return(grid)\n}\n\nmake_story &lt;- function(instructions, action, grid_start) {\n    # initialize list\n    grid_story &lt;- vector(mode = \"list\", length = nrow(instructions))\n    for (i in 1:nrow(instructions)) grid_story[[i]] &lt;- grid_start\n    \n    # perform instructions\n    for (i in seq_along(grid_story)) {\n        \n        if (i == 1) {\n            grid_story[[1]] &lt;- action(instruction = instructions[[1, \"instruction\"]][[1]],\n                                      x_range     = instructions[[1, \"x_range\"]][[1]],\n                                      y_range     = instructions[[1, \"y_range\"]][[1]],\n                                      grid        = grid_story[[1]])\n        } else {\n            grid_story[[i]] &lt;- action(instruction = instructions[[i, \"instruction\"]][[1]],\n                                      x_range     = instructions[[i, \"x_range\"]][[1]],\n                                      y_range     = instructions[[i, \"y_range\"]][[1]],\n                                      grid        = grid_story[[i-1]])\n        }\n    }\n    \n    return(grid_story)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid = make_story(instructions, action, grid_start),\n           n_on = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(n_on) |&gt; \n    cat()\n## 543903",
+    "crumbs": [
+      "2015",
+      "Day 6: Probably a Fire Hazard"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/06.html#part-two",
+    "href": "solutions/2015/06.html#part-two",
+    "title": "Day 6: Probably a Fire Hazard",
+    "section": "Part Two",
+    "text": "Part Two\n\nSolutionFull TablePlot\n\n\n\n# initial grid\ngrid_start &lt;- matrix(0, 1e3, 1e3)\n\nnew_action &lt;- function(instruction, x_range, y_range, grid) {\n    if (instruction == \"toggle\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 2\n\n    else if (instruction == \"turn on\")\n        grid[x_range, y_range] &lt;- grid[x_range, y_range] + 1\n\n    else if (instruction == \"turn off\") \n        grid[x_range, y_range] &lt;- pmax(grid[x_range, y_range] - 1, 0)\n    \n    return(grid)\n}\n\ninstructions &lt;- instructions |&gt; \n    mutate(grid       = make_story(instructions, new_action, grid_start),\n           brightness = map_int(grid, sum))\n\ninstructions |&gt; \n    tail(1) |&gt; \n    pull(brightness) |&gt; \n    cat()\n## 14687245",
+    "crumbs": [
+      "2015",
+      "Day 6: Probably a Fire Hazard"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/08.html",
+    "href": "solutions/2015/08.html",
+    "title": "Day 8: Matchsticks",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)\n\ninput &lt;- read_lines(file = \"inputs/2015/08.txt\")",
+    "crumbs": [
+      "2015",
+      "Day 8: Matchsticks"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/08.html#part-one",
+    "href": "solutions/2015/08.html#part-one",
+    "title": "Day 8: Matchsticks",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nstrings &lt;- tibble(original = input,\n                  code     = str_length(string = input),\n                  memory   = map_int(.x = input, \n                                     .f = \\(string) parse(text = string) |&gt; \n                                         eval() |&gt; \n                                         nchar(type = \"bytes\"))) |&gt; \n    mutate(diff = code - memory)\n\nstrings |&gt;     \n    summarise(diff = sum(diff)) |&gt; \n    pull(diff) |&gt; \n    cat()\n## 1371",
+    "crumbs": [
+      "2015",
+      "Day 8: Matchsticks"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/08.html#part-one-1",
+    "href": "solutions/2015/08.html#part-one-1",
+    "title": "Day 8: Matchsticks",
+    "section": "Part One",
+    "text": "Part One\n\nSolutionFull Table\n\n\n\nstrings &lt;- strings |&gt; \n    mutate(encoded = stringi::stri_escape_unicode(input),\n           encoded_len = str_length(encoded),\n           diff2 = encoded_len + 2 - code)\n\nstrings |&gt;     \n    summarise(diff2 = sum(diff2)) |&gt; \n    pull(diff2) |&gt; \n    cat()\n## 2117",
+    "crumbs": [
+      "2015",
+      "Day 8: Matchsticks"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/10.html",
+    "href": "solutions/2015/10.html",
+    "title": "Day 10: Elves Look, Elves Say",
+    "section": "",
+    "text": "Reference\nlibrary(tidyverse)",
+    "crumbs": [
+      "2015",
+      "Day 10: Elves Look, Elves Say"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/10.html#part-one",
+    "href": "solutions/2015/10.html#part-one",
+    "title": "Day 10: Elves Look, Elves Say",
+    "section": "Part One",
+    "text": "Part One\n\ninput &lt;- read_lines(file = \"inputs/2015/10.txt\")\n\nfor (i in 1:40) {\n    input &lt;- input |&gt; \n        str_split_1(pattern = \"\") |&gt; \n        rle() |&gt; \n        unlist() |&gt; \n        matrix(nrow = 2, byrow = TRUE) |&gt; \n        str_flatten()\n}\n\nstr_length(input) |&gt; cat()\n## 492982",
+    "crumbs": [
+      "2015",
+      "Day 10: Elves Look, Elves Say"
+    ]
+  },
+  {
+    "objectID": "solutions/2015/10.html#part-two",
+    "href": "solutions/2015/10.html#part-two",
+    "title": "Day 10: Elves Look, Elves Say",
+    "section": "Part Two",
+    "text": "Part Two\n\nfor (i in 1:10) {\n    input &lt;- input |&gt; \n        str_split_1(pattern = \"\") |&gt; \n        rle() |&gt; \n        unlist() |&gt; \n        matrix(nrow = 2, byrow = TRUE) |&gt; \n        str_flatten()\n}\n\nstr_length(input) |&gt; cat()\n## 6989950",
+    "crumbs": [
+      "2015",
+      "Day 10: Elves Look, Elves Say"
     ]
   },
   {
