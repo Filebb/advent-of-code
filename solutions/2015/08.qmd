@@ -1,0 +1,78 @@
+---
+title: "Day 8: Matchsticks"
+---
+
+[Reference](https://adventofcode.com/2015/day/8)
+
+```{r}
+#| label: 2015 - day 8 - load Tidyverse
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2015/08.txt")
+```
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2015 - day 8 - part 1
+
+strings <- tibble(original = input,
+                  code     = str_length(string = input),
+                  memory   = map_int(.x = input, 
+                                     .f = \(string) parse(text = string) |> 
+                                         eval() |> 
+                                         nchar(type = "bytes"))) |> 
+    mutate(diff = code - memory)
+
+strings |>     
+    summarise(diff = sum(diff)) |> 
+    pull(diff) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2015 - day 8 - pat 1 full table
+#| echo: false
+
+rmarkdown::paged_table(strings)
+```
+
+:::
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2015 - day 8 - part 2
+
+strings <- strings |> 
+    mutate(encoded = stringi::stri_escape_unicode(input),
+           encoded_len = str_length(encoded),
+           diff2 = encoded_len + 2 - code)
+
+strings |>     
+    summarise(diff2 = sum(diff2)) |> 
+    pull(diff2) |> 
+    cat()
+```
+
+## Full Table
+
+```{r}
+#| label: 2015 - day 8 - pat 2 full table
+#| echo: false
+
+rmarkdown::paged_table(strings)
+```
+
+:::
