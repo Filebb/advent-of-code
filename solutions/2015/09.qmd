@@ -1,0 +1,114 @@
+---
+title: "Day 9: All in a Single Night"
+---
+
+[Reference](https://adventofcode.com/2015/day/9)
+
+```{r}
+#| label: 2015 - day 9 - load Tidyverse
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2015/09.txt")
+```
+
+## Part One
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2015 - day 9 - part 1
+
+distances <- tibble(original = input) |> 
+    separate_wider_delim(original,
+                         delim = " = ",
+                         names = c("trip", "distance")) |> 
+    separate_wider_delim(trip,
+                         delim = " to ",
+                         names = c("from", "to")) |> 
+    mutate(distance = as.integer(distance))
+
+locations <- distances |>
+    select(from, to) |> 
+    unlist() |> 
+    unique()
+
+distance <- function(.from, .to) {
+    if (.from == .to) {
+        return(0)
+    }
+    
+    tentative <- distances |> filter(from == .from) |> 
+        filter(to == .to) |>  pull(distance)
+    
+    if (length(tentative > 0)) {
+        return(tentative)
+    } else {
+        distances |> filter(from == .to, to == .from) |>  pull(distance)
+    }
+}
+
+a <- matrix(ncol = 8, nrow = 8, dimnames = list(locations, locations))
+
+for (location1 in locations) {
+    for (location2 in locations) {
+        a[location1, location2] <- distance(location1, location2)
+    }
+}
+
+travels <- gtools::permutations(n = 8, r = 8, locations) |> 
+    as_tibble() |> 
+    mutate(total_distance = pmap_int(.l = list(V1, V2, V3, V4, V5, V6, V7, V8),
+                                     .f = \(V1, V2, V3, V4, V5, V6, V7, V8)
+                                     a[V1, V2] + a[V2, V3] + a[V3, V4] +
+                                         a[V4, V5] + a[V5, V6] + 
+                                         a[V6, V7] + a[V7, V8])) |> 
+    arrange(total_distance)
+
+travels |> 
+    slice(1) |> 
+    pull(total_distance) |> 
+    cat()
+```
+
+## Data
+
+```{r}
+#| label: 2015 - day 9 - pat 1 data
+#| echo: false
+
+rmarkdown::paged_table(travels)
+```
+
+:::
+
+## Part Two
+
+::: {.panel-tabset}
+
+## Solution
+
+```{r}
+#| label: 2015 - day 9 - part 2
+
+travels |> 
+    arrange(desc(total_distance)) |> 
+    slice(1) |> 
+    pull(total_distance) |> 
+    cat()
+```
+
+## Data
+
+```{r}
+#| label: 2015 - day 9 - pat 2 data
+#| echo: false
+
+travels |> 
+    arrange(desc(total_distance)) |> 
+    rmarkdown::paged_table()
+```
+
+:::
