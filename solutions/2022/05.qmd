@@ -1,0 +1,86 @@
+---
+title: "Day 5: Supply Stacks"
+---
+
+[Reference](https://adventofcode.com/2022/day/5)
+
+```{r}
+#| label: 2022 - day 5 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2022/05.txt")
+```
+
+## Part One
+
+```{r}
+#| label: 2022 - day 5 - part 1
+
+moves_start <- which(str_detect(input, pattern = "move") == TRUE) |> 
+    head(1)
+
+starting <- read_fwf(file = "inputs/2022/05.txt", n_max = moves_start - 3)
+moves <- read_lines(file = "inputs/2022/05.txt", skip = moves_start - 1)
+moves <- tibble(original = moves,
+                numbers = str_extract_all(moves, pattern = "\\d+")) |> 
+    unnest_wider(numbers, names_sep = "_") |> 
+    rename(quantity = numbers_1,
+           from     = numbers_2,
+           to       = numbers_3) |> 
+    mutate(across(-original, as.integer))
+
+quantity <- moves |> pull(quantity)
+from <- moves |> pull(from)
+to <- moves |> pull(to)
+
+stacks <- starting |> 
+    as.list() |> 
+    map(rev) |> 
+    map(\(vec) vec[!is.na(vec)])
+
+move <- function(before, quantity, from, to) {
+    after <- before
+    after[[to]] <- c(after[[to]], after[[from]] |> tail(quantity) |> rev())
+    after[[from]] <- after[[from]] |> head(-quantity)
+    return(after)
+}
+
+for (i in seq_along(quantity)) {
+    stacks <- stacks |> move(quantity[i], from[i], to[i])
+}
+
+stacks |> 
+    map_chr(\(stack) stack |> tail(1)) |> 
+    str_remove_all(pattern = "\\[|\\]") |> 
+    str_flatten() |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2022 - day 5 - part 2
+
+stacks <- starting |> 
+    as.list() |> 
+    map(rev) |> 
+    map(\(vec) vec[!is.na(vec)])
+
+move <- function(before, quantity, from, to) {
+    after <- before
+    after[[to]] <- c(after[[to]], after[[from]] |> tail(quantity))
+    after[[from]] <- after[[from]] |> head(-quantity)
+    return(after)
+}
+
+for (i in seq_along(quantity)) {
+    stacks <- stacks |> move(quantity[i], from[i], to[i])
+}
+
+stacks |> 
+    map_chr(\(stack) stack |> tail(1)) |> 
+    str_remove_all(pattern = "\\[|\\]") |> 
+    str_flatten() |> 
+    cat()
+```
