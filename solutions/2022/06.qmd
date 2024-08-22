@@ -1,0 +1,47 @@
+---
+title: "Day 6: Tuning Trouble"
+---
+
+[Reference](https://adventofcode.com/2022/day/6)
+
+```{r}
+#| label: 2022 - day 6 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2022/06.txt")
+```
+
+## Part One
+
+```{r}
+#| label: 2022 - day 6 - part 1
+
+for (i in 4:str_length(input)) {
+    n_unique <- str_sub(input, i-3, i) |> 
+        str_split_1("") |> 
+        unique() |> 
+        length()
+    
+    if (n_unique == 4) break
+}
+
+cat(i)
+```
+
+## Part Two
+
+```{r}
+#| label: 2022 - day 6 - part 2
+
+for (i in 14:str_length(input)) {
+    n_unique <- str_sub(input, i-13, i) |> 
+        str_split_1("") |> 
+        unique() |> 
+        length()
+    
+    if (n_unique == 14) break
+}
+
+cat(i)
+```

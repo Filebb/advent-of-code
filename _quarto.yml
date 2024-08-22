@@ -103,6 +103,7 @@ website:
                 - solutions/2022/03.qmd
                 - solutions/2022/04.qmd
                 - solutions/2022/05.qmd
+                - solutions/2022/06.qmd
       - title: "2023"
         contents:
             - text: "2023"
