@@ -1,0 +1,57 @@
+---
+title: "Day 3: Mull It Over"
+---
+
+[Reference](https://adventofcode.com/2024/day/3)
+
+```{r}
+#| label: 2024 - day 3 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2024/03.txt")
+```
+
+## Part One
+
+```{r}
+#| label: 2024 - day 3 - part 1
+
+valid_input <- input |>
+    str_extract_all(pattern = "mul\\(\\d+,\\d+\\)") |> 
+    list_c()
+
+valid_input |> 
+    tibble(numbers = str_extract_all(valid_input, pattern = "\\d+")) |> 
+    unnest_wider(numbers, names_sep = "_") |> 
+    mutate(across(starts_with("numbers_"), as.integer),
+           product = numbers_1 * numbers_2) |> 
+    summarise(total = sum(product)) |> 
+    pull(total) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2024 - day 3 - part 2
+
+valid_input <- input |>
+    str_extract_all(pattern = "mul\\(\\d+,\\d+\\)|do\\(\\)|don't\\(\\)") |> 
+    list_c() |> 
+    str_c(collapse = " ") |> 
+    str_split_1(pattern = " (?=do\\(\\)|don't\\(\\))") |>  
+    keep(\(x) !str_detect(x, pattern = "^don't")) |> 
+    str_remove_all(pattern = "do\\(\\) ") |> 
+    str_c(collapse = " ") |> 
+    str_split_1(pattern = " ")
+
+valid_input |> 
+    tibble(numbers = str_extract_all(valid_input, pattern = "\\d+")) |> 
+    unnest_wider(numbers, names_sep = "_") |> 
+    mutate(across(starts_with("numbers_"), as.integer),
+           product = numbers_1 * numbers_2) |>
+    summarise(total = sum(product)) |> 
+    pull(total) |> 
+    cat()
+```
