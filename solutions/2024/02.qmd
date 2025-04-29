@@ -1,0 +1,58 @@
+---
+title: "Day 2: Red-Nosed Reports"
+---
+
+[Reference](https://adventofcode.com/2024/day/2)
+
+```{r}
+#| label: 2024 - day 2 - load data
+
+library(tidyverse)
+
+input <- read_lines(file = "inputs/2024/02.txt") |>
+    str_split(pattern = " ") |>
+    map(as.integer)
+```
+
+## Part One
+
+```{r}
+#| label: 2024 - day 2 - part 1
+
+is_safe <- function(x) {
+    variations <- diff(x)
+    same_sign <- all(variations > 0) || all(variations < 0)
+    boundness <- all(abs(variations) <= 3)
+    
+    same_sign && boundness
+}
+
+input |> 
+    tibble(is_safe = map_lgl(input, is_safe)) |>
+    summarise(total = sum(is_safe)) |> 
+    pull(total) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2024 - day 2 - part 2
+
+is_safeable <- function(x) {
+    for (i in seq_along(x)) {
+        if (is_safe(x[-i])) 
+            return(TRUE)
+    }
+    
+    return(FALSE)
+}
+
+input |> 
+    tibble(is_safe = map_lgl(input, is_safe),
+           is_safeable = map_lgl(input, is_safeable),
+           is_ok = is_safe | is_safeable) |>
+    summarise(total = sum(is_ok)) |> 
+    pull(total) |> 
+    cat()
+```
