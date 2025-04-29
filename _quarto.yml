@@ -115,6 +115,7 @@ website:
             - text: "2024"
               contents:
                 - solutions/2024/01.qmd
+                - solutions/2024/02.qmd
 
 format:
     html:
