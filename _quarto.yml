@@ -110,6 +110,11 @@ website:
               contents:
                 - solutions/2023/01.qmd
                 - solutions/2023/02.qmd
+      - title: "2024"
+        contents:
+            - text: "2024"
+              contents:
+                - solutions/2024/01.qmd
 
 format:
     html:
