@@ -1,0 +1,42 @@
+---
+title: "Day 1: Historian Hysteria"
+---
+
+[Reference](https://adventofcode.com/2024/day/1)
+
+```{r}
+#| label: 2024 - day 1 - load data
+
+library(tidyverse)
+
+input <- read_table(file = "inputs/2024/01.txt",
+                    col_names = c("side_1", "side_2"),
+                    show_col_types = FALSE)
+```
+
+## Part One
+
+```{r}
+#| label: 2024 - day 1 - part 1
+
+tibble(side_1 = input |> pull(side_1) |> vctrs::vec_sort(),
+       side_2 = input |> pull(side_2) |> vctrs::vec_sort()) |> 
+    mutate(distance = abs(side_1 - side_2)) |> 
+    filter(distance > 0) |> 
+    summarise(total = sum(distance)) |> 
+    pull(total) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2024 - day 1 - part 2
+
+input |> 
+    mutate(multiplier = map_int(side_1, \(x) sum(side_2 == x)),
+           similarity_score = multiplier * side_1) |> 
+    summarise(total = sum(similarity_score)) |> 
+    pull(total) |> 
+    cat()
+```
