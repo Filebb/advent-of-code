@@ -1,0 +1,74 @@
+---
+title: "Day 4: Ceres Search"
+---
+
+[Reference](https://adventofcode.com/2024/day/4)
+
+```{r}
+#| label: 2024 - day 4 - load data
+
+library(tidyverse)
+
+raw <- read_lines(file = "inputs/2024/04.txt")
+
+lines <- str_split(raw, pattern = "")
+
+input <- matrix(nrow = length(lines), ncol = length(lines))
+
+for (i in seq_along(lines)) {
+    input[i, ] <- lines[[i]]
+}
+```
+
+## Part One
+
+```{r}
+#| label: 2024 - day 4 - part 1
+
+rev_list_vctrs <- function(list_vctrs) {
+    map(list_vctrs, rev)
+}
+
+right <- split(input, row(input))
+left  <- rev_list_vctrs(right)
+down  <- split(input, col(input))
+up    <- rev_list_vctrs(down)
+
+diag1 <- split(input, row(input) - col(input))
+diag2 <- rev_list_vctrs(diag1)
+diag3 <- split(input, row(input) + col(input))
+diag4 <- rev_list_vctrs(diag3)
+
+c(right, left, down, up, diag1, diag2, diag3, diag4) |> 
+    map_chr(\(x) paste(x, collapse = "")) |> 
+    str_count(pattern = "XMAS") |> 
+    sum()
+```
+
+## Part Two
+
+```{r}
+#| label: 2024 - day 4 - part 2
+
+is_x_mas <- function(sq) {
+    check_A <- sq[2, 2] == "A"
+    
+    valid_MMSS <- c("MMSS", "MSMS", "SMSM", "SSMM")
+    check_MMSS <- str_c(sq[1, 1], sq[1, 3], sq[3, 1], sq[3, 3]) %in% valid_MMSS
+    
+    check_A && check_MMSS
+}
+
+extract_sq <- function(input, x, y) {
+    input[x:(x+2), y:(y+2)]
+}
+
+expand_grid(x = 1:(nrow(input)-2), y = 1:(nrow(input)-2)) |> 
+    mutate(sq = map2(x, y, \(x, y) extract_sq(input, x, y)),
+           is_x_mas = map_lgl(sq, is_x_mas)) |> 
+    summarise(total = sum(is_x_mas)) |> 
+    pull(total) |> 
+    cat()
+```
+
+

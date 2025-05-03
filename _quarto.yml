@@ -119,6 +119,7 @@ website:
                 - solutions/2024/01.qmd
                 - solutions/2024/02.qmd
                 - solutions/2024/03.qmd
+                - solutions/2024/04.qmd
 
 format:
     html:
