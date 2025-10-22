@@ -1,0 +1,151 @@
+---
+title: "Day 5: Print Queue"
+---
+
+[Reference](https://adventofcode.com/2024/day/5)
+
+```{r}
+#| label: 2024 - day 5 - load data
+
+library(tidyverse)
+
+# raw <- read_lines(file = "inputs/2024/05.txt")
+raw <- read_lines(file = "test.txt")
+```
+
+## Part One
+
+```{r}
+#| label: 2024 - day 5 - part 1
+
+ordering_rules <- raw[1:(which(raw == "") - 1)]
+updates <- setdiff(raw, ordering_rules)[-1]
+
+ordering_rules_lookup <- tibble(ordering_rules) |>
+    separate_wider_delim(ordering_rules,
+                         delim = "|",
+                         names = c("page", "page_after")) |> 
+    summarise(page_after = str_flatten(page_after, collapse = ","),
+              .by = page) |> 
+    mutate(page_after = map(page_after, \(x) str_split_1(x, pattern = ",")))
+
+is_right_order <- function(update_vec) {
+    # index from 2 to end of vector
+    iterator <- seq_along(update_vec)[-1]
+    
+    # message(paste(update_vec, collapse = " "))
+    
+    for (i in iterator) {
+        # message("current number: ", update_vec[i])
+        
+        # retrieve ordering rules for current page
+        following_pages <- ordering_rules_lookup |> 
+            filter(page == update_vec[i]) |> 
+            pull(page_after) |>
+            unlist()
+        
+        # message("dictionary: ", paste(following_pages, collapse = " "))
+        
+        # message("previous elements: ", str_c(update_vec[1:(i-1)], collapse = " "))
+        
+        # intersection can be NULL (element not in LHS of ordering rules)
+        # but length(NULL) = 0, so it's ok
+        intersection <- base::intersect(update_vec[1:(i-1)], following_pages)
+        
+        if (length(intersection) != 0) {
+            return(FALSE)
+        }
+    }
+    
+    return(TRUE)
+}
+
+tibble(updates_raw = updates,
+       update_vec = map(updates_raw, \(x) str_split_1(x, pattern = ",")),
+       right_order = map_lgl(update_vec, is_right_order)) |> 
+    filter(right_order) |> 
+    mutate(mid_page = map_chr(update_vec, \(x) x[ceiling(length(x)/2)]),
+           mid_page = as.integer(mid_page)) |> 
+    summarise(total = sum(mid_page)) |> 
+    pull(total) |> 
+    cat()
+```
+
+## Part Two
+
+```{r}
+#| label: 2024 - day 5 - part 2
+
+tibble(updates_raw = updates,
+       update_vec = map(updates_raw, \(x) str_split_1(x, pattern = ",")),
+       right_order = map_lgl(update_vec, is_right_order)) |> 
+    filter(!right_order)
+```
+
+
+```{r}
+input <- read_lines("test.txt")
+
+sep <- which(input == "")
+
+rules <- input[seq(1, sep - 1)] |>
+  strsplit("\\|") |>
+  lapply(as.integer)
+updates <- input[seq(sep + 1, length(input))] |>
+  strsplit(",") |>
+  lapply(as.integer)
+
+pass_rule <- function(rule, update) {
+  order <- diff(match(rule, update))
+
+  is.na(order) || order > 0
+}
+
+pass_rules <- function(update, rules) {
+  all(vapply(rules, pass_rule, logical(1), update = update))
+}
+
+which_passes <- vapply(updates, pass_rules, logical(1), rules)
+
+get_middle <- function(x) {
+  mid <- length(x) / 2 + 1
+  x[mid]
+}
+
+uncorrect <- updates[!which_passes]
+
+fix_order <- function(rule, update) {
+    browser()
+  matches <- match(rule, update)
+  before <- matches[1]
+  after <- matches[2]
+  
+  before_inds <- setdiff(seq(1, before), after)
+  
+  after_inds <- setdiff(seq_along(update), c(before_inds, after))
+  
+  new_order <- c(before_inds, after, after_inds)
+  update[new_order]
+}
+
+fix_update <- function(update, rules) {
+  while (!pass_rules(update, rules)) {
+    for (rule in rules) {
+      if (pass_rule(rule, update)) {
+        next
+      }
+      update <- fix_order(rule, update)
+    }
+  }
+  update
+}
+
+uncorrect |>
+  lapply(fix_update, rules) |>
+  lapply(get_middle) |>
+  unlist() |>
+  sum()
+
+
+```
+
