@@ -1,1 +1,4 @@
 /* css styles */
+pre code {
+  font-weight: bold;
+}
