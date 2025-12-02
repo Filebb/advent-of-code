@@ -51,3 +51,5 @@ rsconnect/
 # temp folders
 temp*/
 
+
+**/*.quarto_ipynb
