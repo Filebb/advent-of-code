@@ -1,0 +1,58 @@
+# Day 1: Secret Entrance
+
+[Reference](https://adventofcode.com/2025/day/1)
+
+```{r}
+#| label: 2025 - day 1 - load data
+
+library(tidyverse)
+
+input <- tibble(raw = read_lines("inputs/2025/01.txt"))
+```
+
+## Part One
+
+```{r}
+#| label: 2025 - day 1 - part 1
+
+moves <- input |>
+    mutate(
+        # Extract and parse moves
+        direction = str_extract(raw, "(L|R)"),
+        distance = as.integer(str_extract(raw, "\\d+")),
+        distance_signed = if_else(direction == "R", distance, -distance),
+        
+        # Calculate positions on circular track
+        start_position = (50L + c(0L, cumsum(distance_signed[-n()]))) %% 100L,
+        end_position = (start_position + distance_signed) %% 100L,
+        
+        # Track when landing on position 0
+        lands_on_0 = as.integer(end_position == 0L)
+    )
+
+cat("Times landed on position 0:\n", sum(moves$lands_on_0))
+```
+
+## Part Two
+
+```{r}
+#| label: 2025 - day 1 - part 2
+
+moves <- moves |>
+    mutate(
+        visits_0 =
+            # For right moves: count 0s in range [start+1, start+distance]
+            # For left moves: count 0s in range [start+distance, start-1]
+            if_else(
+                distance_signed > 0,
+                # Moving right: how many multiples of 100 in (start, start+distance]?
+                pmax(0L, as.integer(floor((start_position + distance_signed) / 100) - 
+                                        floor(start_position / 100))),
+                # Moving left: how many multiples of 100 in [start+distance, start)?
+                pmax(0L, as.integer(floor((start_position - 1) / 100) - 
+                                        floor((start_position + distance_signed - 1) / 100)))
+            )
+    )
+
+cat("Times dial points at 0:\n", sum(moves$visits_0))
+```
