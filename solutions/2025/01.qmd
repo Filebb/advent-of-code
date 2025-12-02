@@ -1,4 +1,6 @@
-# Day 1: Secret Entrance
+---
+title: "Day 1: Secret Entrance"
+---
 
 [Reference](https://adventofcode.com/2025/day/1)
 
