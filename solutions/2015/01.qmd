@@ -21,14 +21,13 @@ input <- read_lines(file = "inputs/2015/01.txt")
 ```{r}
 #| label: 2015 - day 1 - part 1
 
-moves <- tibble(input  = str_split_1(string = input, pattern = ""),
-                move   = case_match(input, "(" ~  1L, ")" ~ -1L),
-                height = cumsum(move))
+moves <- tibble(
+    input = str_split_1(input, ""),
+    move = case_match(input, "(" ~  1L, ")" ~ -1L),
+    height = cumsum(move)
+)
 
-moves |> 
-    tail(1) |> 
-    pull(height) |> 
-    cat()
+cat("Final floor:", tail(moves$height, 1), "\n")
 ```
 
 ## Full Table
@@ -51,14 +50,13 @@ rmarkdown::paged_table(moves)
 ```{r}
 #| label: 2015 - day 1 - part 2
 
-moves <- moves |> 
-    rowid_to_column("time")
-
-moves |> 
+basement_entry_position <- moves |> 
+    rowid_to_column("time") |> 
     filter(height == -1) |> 
-    head(1) |> 
-    pull(time) |> 
-    cat()
+    slice(1) |> 
+    pull(time)
+
+cat("Basement position:", basement_entry_position, "\n")
 ```
 
 ## Full Table
@@ -67,7 +65,9 @@ moves |>
 #| label: 2015 - day 1 - part 2 full table
 #| echo: false
 
-rmarkdown::paged_table(moves)
+moves |> 
+    rowid_to_column("time") |>
+    rmarkdown::paged_table()
 ```
 
 :::
@@ -77,8 +77,23 @@ rmarkdown::paged_table(moves)
 ```{r}
 #| label: 2015 - day 1 - plot
 
-moves |> 
-    ggplot(mapping = aes(x = time, y = height)) +
+moves_plot <- moves |> rowid_to_column("time")
+final_floor <- tail(moves$height, 1)
+
+moves_plot |> 
+    ggplot(aes(x = time, y = height)) +
     geom_line() +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "gray50", alpha = 0.5) +
+    geom_point(data = moves_plot |> filter(time == basement_entry_position),
+               color = "red", size = 3) +
+    geom_point(data = moves_plot |> filter(time == max(time)),
+               color = "blue", size = 3) +
+    annotate("label", x = max(moves_plot$time) - 650, y = final_floor - 25,
+             label = paste("Part 1:\nFloor", final_floor),
+             color = "blue", fill = "white", alpha = 0.8) +
+    annotate("label", x = basement_entry_position + 500, y = 150, 
+             label = paste("Part 2:\nStep", basement_entry_position),
+             vjust = 1.5, color = "red", fill = "white", alpha = 0.8) +
+    labs(x = "Step", y = "Floor") +
     theme_bw()
 ```
