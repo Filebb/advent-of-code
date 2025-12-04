@@ -26,6 +26,7 @@ paper <- input |>
                          names = c("l", "w", "h"),
                          delim = "x",
                          cols_remove = FALSE) |> 
+    relocate(original, l, w, h) |>
     mutate(across(c(l, w, h), as.integer)) |> 
     mutate(paper_needed = 2L * (l*w + w*h + h*l) + pmin(l*w, w*h, h*l))
 
@@ -66,7 +67,9 @@ cat("Total ribbon needed:", total_ribbon_needed, "ft\n")
 #| label: 2015 - day 2 - part 2 full table
 #| echo: false
 
-rmarkdown::paged_table(paper)
+paper |>
+    select(-paper_needed) |>
+    rmarkdown::paged_table()
 ```
 
 :::
