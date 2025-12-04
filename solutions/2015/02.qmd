@@ -21,31 +21,22 @@ input <- read_csv(file = "inputs/2015/02.txt", col_names = "original")
 ```{r}
 #| label: 2015 - day 2 - part 1
 
-paper_area <- function(l, w, h) {
-    2L * (l*w + w*h + h*l) + min(l*w, w*h, h*l)
-}
-
 paper <- input |> 
-
-    separate_wider_delim(cols        = original,
-                         names       = c("l", "w", "h"),
-                         delim       = "x",
+    separate_wider_delim(cols = original,
+                         names = c("l", "w", "h"),
+                         delim = "x",
                          cols_remove = FALSE) |> 
+    mutate(across(c(l, w, h), as.integer)) |> 
+    mutate(paper_needed = 2L * (l*w + w*h + h*l) + pmin(l*w, w*h, h*l))
 
-    mutate(across(.cols = c(l, w, h), .fns = as.integer)) |> 
-
-    mutate(paper = pmap_int(.l = list(l, w, h), .f = paper_area))
-
-paper |> 
-    summarise(total_paper = sum(paper)) |> 
-    pull(total_paper) |> 
-    cat()
+total_paper_needed <- sum(paper$paper_needed)
+cat("Total paper needed:", total_paper_needed, "sq ft\n")
 ```
 
 ## Full Table
 
 ```{r}
-#| label: 2015 - day 2 - pat 1 full table
+#| label: 2015 - day 2 - part 1 full table
 #| echo: false
 
 rmarkdown::paged_table(paper)
@@ -62,23 +53,17 @@ rmarkdown::paged_table(paper)
 ```{r}
 #| label: 2015 - day 2 - part 2
 
-ribbon_length <- function(l, w, h) {
-    2L * (l+w+h - max(l, w, h)) + l*w*h
-}
-
 paper <- paper |>
-    mutate(ribbon = pmap_int(.l = list(l, w, h), .f = ribbon_length))
+    mutate(ribbon_needed = 2L * (l + w + h - pmax(l, w, h)) + l*w*h)
 
-paper |> 
-    summarise(total_ribbon = sum(ribbon)) |> 
-    pull(total_ribbon) |> 
-    cat()
+total_ribbon_needed <- sum(paper$ribbon_needed)
+cat("Total ribbon needed:", total_ribbon_needed, "ft\n")
 ```
 
 ## Full Table
 
 ```{r}
-#| label: 2015 - day 2 - pat 2 full table
+#| label: 2015 - day 2 - part 2 full table
 #| echo: false
 
 rmarkdown::paged_table(paper)
