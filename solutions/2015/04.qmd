@@ -53,7 +53,7 @@ md5(paste0("pqrstuv", 1048970), serialize = FALSE)
 n <- 2.55e5
 
 md5_hashes <- tibble(number = 1:n,
-                     string = paste0(input, number),
+                     string = str_c(input, number),
                      hash   = map_chr(.x = string, .f = \(x) md5(x, serialize = FALSE)))
 
 md5_hashes |> 
@@ -88,7 +88,7 @@ md5_hashes |>
 n <- 1.04e6
 
 md5_hashes <- tibble(number = 1:n,
-                     string = paste0(input, number),
+                     string = str_c(input, number),
                      hash   = map_chr(.x = string, .f = \(x) md5(x, serialize = FALSE))) 
     
 md5_hashes |> 
