@@ -21,20 +21,21 @@ input <- read_lines(file = "inputs/2015/03.txt")
 ```{r}
 #| label: 2015 - day 3 - part 1
 
-moves <- tibble(input  = str_split_1(input, pattern = ""),
-                move_x = case_match(input, "^" ~  0, ">" ~  1,
-                                           "v" ~  0, "<" ~ -1),
-                move_y = case_match(input, "^" ~  1, ">" ~  0,
-                                           "v" ~ -1, "<" ~  0),
-                pos_x  = cumsum(move_x),
-                pos_y  = cumsum(move_y)) |> 
-    
-    add_row(pos_x = 0, pos_y = 0, .before = 1)
-    
-moves |> 
+moves <- tibble(input = c(NA, str_split_1(input, pattern = ""))) |> 
+    mutate(move_x = case_match(input,
+                               "^" ~ 0, ">" ~ 1, "v" ~ 0, "<" ~ -1,
+                               .default = 0),
+           move_y = case_match(input, 
+                               "^" ~ 1, ">" ~ 0, "v" ~ -1, "<" ~ 0,
+                               .default = 0),
+           pos_x = cumsum(move_x),
+           pos_y = cumsum(move_y))
+
+houses_visited <- moves |> 
     distinct(pos_x, pos_y) |> 
-    nrow() |>
-    cat()
+    nrow()
+
+cat("Houses visited:", houses_visited, "\n")
 ```
 
 ## Full Table
@@ -68,20 +69,24 @@ moves |>
 ```{r}
 #| label: 2015 - day 3 - part 2
 
-moves <- moves |> 
+moves <- tibble(input = str_split_1(input, pattern = "")) |> 
+    mutate(
+        move_x = case_match(input, "^" ~ 0, ">" ~ 1, "v" ~ 0, "<" ~ -1),
+        move_y = case_match(input, "^" ~ 1, ">" ~ 0, "v" ~ -1, "<" ~ 0),
+        who = if_else(row_number() %% 2 == 1, "santa", "robo")
+    ) |> 
+    mutate(
+        pos_x = cumsum(move_x),
+        pos_y = cumsum(move_y),
+        .by = who
+    ) |> 
+    add_row(pos_x = 0, pos_y = 0, who = "both", .before = 1)
 
-    mutate(who = case_when(row_number() - 1  == 0 ~ "both",
-                           row_number() %% 2 == 0 ~ "santa",
-                           .default = "robo")) |> 
-
-    mutate(pos_x = cumsum(move_x), pos_y = cumsum(move_y), .by = who) |> 
-
-    mutate(across(.cols = starts_with("pos"), .fns = \(x) coalesce(x, 0)))
-
-moves |>
+houses_visited_p2 <- moves |>
     distinct(pos_x, pos_y) |>
-    nrow() |>
-    cat()
+    nrow()
+
+cat("Houses visited with Robo-Santa:", houses_visited_p2, "\n")
 ```
 
 ## Full Table
