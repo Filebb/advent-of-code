@@ -55,10 +55,12 @@ md5_hashes <- tibble(number = 1:n,
                      string = str_c(input, number),
                      hash   = map_chr(.x = string, .f = \(x) md5(x, serialize = FALSE)))
 
-md5_hashes |> 
+lowest_number <- md5_hashes |> 
     filter(str_starts(hash, "00000")) |> 
-    pull(number) |> 
-    cat()
+    slice(1) |>
+    pull(number)
+
+cat("Lowest number:", lowest_number, "\n")
 ```
 
 ## Partial Table
@@ -89,10 +91,12 @@ md5_hashes <- tibble(number = 1:n,
                      string = str_c(input, number),
                      hash   = map_chr(.x = string, .f = \(x) md5(x, serialize = FALSE))) 
     
-md5_hashes |> 
+lowest_number <- md5_hashes |> 
     filter(str_starts(hash, "000000")) |> 
-    pull(number) |> 
-    cat()
+    slice(1) |>
+    pull(number)
+
+cat("Lowest number:", lowest_number, "\n")
 ```
 
 ## Partial Table
