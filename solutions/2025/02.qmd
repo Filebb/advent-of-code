@@ -6,12 +6,42 @@ title: "Day 2: Gift Shop"
 
 ```{r}
 #| label: 2025 - day 2 - load data
+
+library(tidyverse)
+
+input <- read_lines("inputs/2025/02.txt")
+
+input <- tibble(raw = str_split_1(input, ",")) |>
+    separate_wider_delim(cols = raw,
+                         delim = "-",
+                         names = c("start", "end")) |>
+    mutate(across(everything(), as.double))
 ```
 
 ## Part One
 
 ```{r}
 #| label: 2025 - day 2 - part 1
+
+repeated_twice <- function(id) {
+    len <- str_length(id)
+    
+    len %% 2 == 0 &&
+        str_sub(id, 1, len / 2) == str_sub(id, len / 2 + 1, len)
+}
+
+count_repeated_twice <- function(start, end) {
+    tibble(id = start:end, repeated_twice = map_lgl(id, repeated_twice)) |>
+        summarise(count = sum(repeated_twice)) |>
+        pull(count)
+}
+
+count_repeated_twice(11, 22)
+count_repeated_twice(95, 115)
+count_repeated_twice(998, 115)
+input |>
+    mutate(count = map2_int(start, end, count_repeated_twice)) |>
+    summarise(total = sum(count))
 ```
 
 ## Part Two
