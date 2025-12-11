@@ -49,8 +49,7 @@ md5(paste0("pqrstuv", 1048970), serialize = FALSE)
 ```{r}
 #| label: 2015 - day 4 - part 1
 
-# number of attempts, this is empirically enough
-n <- 2.55e5
+n <- 255000 # Empirically sufficient to find the answer
 
 md5_hashes <- tibble(number = 1:n,
                      string = str_c(input, number),
@@ -84,8 +83,7 @@ md5_hashes |>
 ```{r}
 #| label: 2015 - day 4 - part 2
 
-# number of attempts, this is empirically enough
-n <- 1.04e6
+n <- 1040000 # Empirically sufficient to find the answer
 
 md5_hashes <- tibble(number = 1:n,
                      string = str_c(input, number),
