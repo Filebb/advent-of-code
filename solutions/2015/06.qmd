@@ -10,7 +10,7 @@ title: "Day 6: Probably a Fire Hazard"
 library(tidyverse)
 library(scales)
 
-input <- read_csv2(file = "inputs/2015/06.txt", col_names = "original")
+input <- tibble(original = read_lines(file = "inputs/2015/06.txt"))
 ```
 
 ## Part One
