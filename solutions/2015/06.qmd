@@ -74,10 +74,8 @@ instructions <- instructions |>
     mutate(grid = make_story(instructions, action, grid_start),
            n_on = map_int(grid, sum))
 
-instructions |> 
-    tail(1) |> 
-    pull(n_on) |> 
-    cat()
+total_lights_on <- instructions |> tail(1) |> pull(n_on)
+cat("Total lights on:", total_lights_on, "\n")
 ```
 
 ## Full Table
@@ -136,10 +134,8 @@ instructions <- instructions |>
     mutate(grid       = make_story(instructions, new_action, grid_start),
            brightness = map_int(grid, sum))
 
-instructions |> 
-    tail(1) |> 
-    pull(brightness) |> 
-    cat()
+total_brightness <- instructions |> tail(1) |> pull(brightness)
+cat("Total brightness:", total_brightness, "\n")
 ```
 
 ## Full Table
