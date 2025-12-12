@@ -45,7 +45,7 @@ I learned how to evaluate MD5 hash in R using the `digest` package from
 ```{r}
 #| label: 2015 - day 4 - part 1
 
-n <- 255000 # Empirically sufficient to find the answer
+n <- 1040000 # Empirically sufficient to find the answers (also for part 2)
 
 md5_hashes <- tibble(
     number = 1:n,
@@ -82,14 +82,6 @@ md5_hashes |>
 
 ```{r}
 #| label: 2015 - day 4 - part 2
-
-n <- 1040000 # Empirically sufficient to find the answer
-
-md5_hashes <- tibble(
-    number = 1:n,
-    string = str_c(input, number),
-    hash = map_chr(string, \(x) digest(x, algo = "md5", serialize = FALSE)) 
-)
 
 lowest_number_6zeros <- md5_hashes |> 
     filter(str_starts(hash, "000000")) |> 
