@@ -82,7 +82,7 @@ instructions |>
 ## Full Table
 
 ```{r}
-#| label: 2015 - day 2 - pat 1 full table
+#| label: 2015 - day 6 - part 1 full table
 #| echo: false
 
 instructions |> 
@@ -93,7 +93,7 @@ instructions |>
 ## Plot
 
 ```{r}
-#| label: 2015 - day 2 - pat 1 plot
+#| label: 2015 - day 6 - part 1 plot
 #| echo: false
 
 library(scales)
@@ -146,7 +146,7 @@ instructions |>
 ## Full Table
 
 ```{r}
-#| label: 2015 - day 2 - pat 2 full table
+#| label: 2015 - day 6 - part 2 full table
 #| echo: false
 
 instructions |> 
@@ -157,7 +157,7 @@ instructions |>
 ## Plot
 
 ```{r}
-#| label: 2015 - day 2 - pat 2 plot
+#| label: 2015 - day 6 - part 2 plot
 #| echo: false
 
 library(scales)
