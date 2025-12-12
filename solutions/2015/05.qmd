@@ -21,29 +21,13 @@ input <- read_csv(file = "inputs/2015/05.txt", col_names = "original")
 ```{r}
 #| label: 2015 - day 5 - part 1
 
-has_3more_vowels <- function(string) {
-    str_count(string = string, pattern = "[aeiou]") >= 3
-}
-
-has_1more_double <- function(string) {
-    str_count(string = string, pattern = "([a-z])\\1") >= 1
-}
-
-has_not_ab_cd_pq_xy <- function(string) {
-    !str_detect(string = string, pattern = "ab|cd|pq|xy")
-}
-
-is_nice <- function(string) {
-    has_3more_vowels(string) &
-    has_1more_double(string) &
-    has_not_ab_cd_pq_xy(string)
-}
-
 nice <- input |> 
-    mutate(three_more_vowels = map_lgl(.x = original, .f = has_3more_vowels),
-           one_more_double   = map_lgl(.x = original, .f = has_1more_double),
-           not_ab_cd_pq_xy   = map_lgl(.x = original, .f = has_not_ab_cd_pq_xy),
-           nice              = map_lgl(.x = original, .f = is_nice))
+    mutate(
+        three_more_vowels = str_count(original, "[aeiou]") >= 3,
+        one_more_double = str_detect(original, "([a-z])\\1"),
+        not_ab_cd_pq_xy = !str_detect(original, "ab|cd|pq|xy"),
+        nice = three_more_vowels & one_more_double & not_ab_cd_pq_xy
+    )
 
 nice |> 
     summarise(total_nice = sum(nice)) |> 
@@ -71,23 +55,12 @@ rmarkdown::paged_table(nice)
 ```{r}
 #| label: 2015 - day 5 - part 2
 
-has_couple_twice <- function(string) {
-    str_detect(string = string, pattern = "[a-z]*([a-z]{2})[a-z]*\\1[a-z]*")
-}
-
-has_az_any_az <- function(string) {
-    str_detect(string = string, pattern = "([a-z])[a-z]\\1")
-}
-
-is_nice_new <- function(string) {
-    has_couple_twice(string) &
-    has_az_any_az(string)
-}
-
 nice_new <- input |> 
-    mutate(couple_twice = map_lgl(.x = original, .f = has_couple_twice),
-           az_any_az    = map_lgl(.x = original, .f = has_az_any_az),
-           nice_new     = map_lgl(.x = original, .f = is_nice_new))
+    mutate(
+        couple_twice = str_detect(original, "([a-z]{2}).*\\1"),
+        az_any_az = str_detect(original, "([a-z])[a-z]\\1"),
+        nice_new = couple_twice & az_any_az
+    )
 
 nice_new |> 
     summarise(total_nice = sum(nice_new)) |> 
