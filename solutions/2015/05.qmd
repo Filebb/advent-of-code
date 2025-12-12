@@ -29,10 +29,8 @@ nice <- input |>
         nice = three_more_vowels & one_more_double & not_ab_cd_pq_xy
     )
 
-nice |> 
-    summarise(total_nice = sum(nice)) |> 
-    pull(total_nice) |> 
-    cat()
+total_nice_strings <- sum(nice$nice)
+cat("Total nice strings (old rules):", total_nice_strings, "\n")
 ```
 
 ## Full Table
@@ -62,10 +60,8 @@ nice_new <- input |>
         nice_new = couple_twice & az_any_az
     )
 
-nice_new |> 
-    summarise(total_nice = sum(nice_new)) |> 
-    pull(total_nice) |> 
-    cat()
+total_nice_strings_new <- sum(nice_new$nice_new)
+cat("Total nice strings (new rules):", total_nice_strings_new, "\n")
 ```
 
 ## Full Table
