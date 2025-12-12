@@ -56,7 +56,7 @@ rmarkdown::paged_table(nice)
 nice_new <- input |> 
     mutate(
         repeating_pair = str_detect(original, "([a-z]{2}).*\\1"),
-        repeat_with_gap = str_detect(original, "([a-z])[a-z]\\1"),
+        repeat_with_gap = str_detect(original, "([a-z]).\\1"),
         nice_new = repeating_pair & repeat_with_gap
     )
 
