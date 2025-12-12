@@ -55,9 +55,9 @@ rmarkdown::paged_table(nice)
 
 nice_new <- input |> 
     mutate(
-        couple_twice = str_detect(original, "([a-z]{2}).*\\1"),
-        az_any_az = str_detect(original, "([a-z])[a-z]\\1"),
-        nice_new = couple_twice & az_any_az
+        repeating_pair = str_detect(original, "([a-z]{2}).*\\1"),
+        repeat_with_gap = str_detect(original, "([a-z])[a-z]\\1"),
+        nice_new = repeating_pair & repeat_with_gap
     )
 
 total_nice_strings_new <- sum(nice_new$nice_new)
