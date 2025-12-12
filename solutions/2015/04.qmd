@@ -53,12 +53,12 @@ md5_hashes <- tibble(
     hash = map_chr(string, \(x) digest(x, algo = "md5", serialize = FALSE))
 )
 
-lowest_number <- md5_hashes |> 
+lowest_number_5zeros <- md5_hashes |> 
     filter(str_starts(hash, "00000")) |> 
     slice(1) |>
     pull(number)
 
-cat("Lowest number with 5 leading zeros:", lowest_number, "\n")
+cat("Lowest number with 5 leading zeros:", lowest_number_5zeros, "\n")
 ```
 
 ## Partial Table
@@ -91,12 +91,12 @@ md5_hashes <- tibble(
     hash = map_chr(string, \(x) digest(x, algo = "md5", serialize = FALSE)) 
 )
 
-lowest_number <- md5_hashes |> 
+lowest_number_6zeros <- md5_hashes |> 
     filter(str_starts(hash, "000000")) |> 
     slice(1) |>
     pull(number)
 
-cat("Lowest number with 6 leading zeros:", lowest_number, "\n")
+cat("Lowest number with 6 leading zeros:", lowest_number_6zeros, "\n")
 ```
 
 ## Partial Table
