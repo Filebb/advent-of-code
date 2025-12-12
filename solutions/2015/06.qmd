@@ -8,6 +8,7 @@ title: "Day 6: Probably a Fire Hazard"
 #| label: 2015 - day 6 - load data
 
 library(tidyverse)
+library(scales)
 
 input <- read_csv2(file = "inputs/2015/06.txt", col_names = "original")
 ```
@@ -96,8 +97,6 @@ instructions |>
 #| label: 2015 - day 6 - part 1 plot
 #| echo: false
 
-library(scales)
-
 instructions |> 
     ggplot(mapping = aes(x = 1:nrow(instructions), y = n_on)) +
     geom_line() +
@@ -160,8 +159,6 @@ instructions |>
 #| label: 2015 - day 6 - part 2 plot
 #| echo: false
 
-library(scales)
-
 instructions |> 
     ggplot(mapping = aes(x = 1:nrow(instructions), y = brightness)) +
     geom_line() +
@@ -176,8 +173,6 @@ instructions |>
 #| label: 2015 - day 6 - part 1 (old version)
 #| echo: false
 #| eval: false
-
-library(tidyverse)
 
 input <- read_lines(file = "inputs/2015/06.txt")
 
