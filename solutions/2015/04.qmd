@@ -68,7 +68,7 @@ cat("Lowest number with 5 leading zeros:", lowest_number_5zeros, "\n")
 #| echo: false
 
 md5_hashes |> 
-    slice(254571:254580) |> 
+    slice((lowest_number_5zeros - 5):(lowest_number_5zeros + 4)) |> 
     rmarkdown::paged_table()
 ```
 
@@ -106,7 +106,7 @@ cat("Lowest number with 6 leading zeros:", lowest_number_6zeros, "\n")
 #| echo: false
 
 md5_hashes |> 
-    slice(1038731:1038740) |> 
+    slice((lowest_number_6zeros - 5):(lowest_number_6zeros + 4)) |> 
     rmarkdown::paged_table()
 ```
 
