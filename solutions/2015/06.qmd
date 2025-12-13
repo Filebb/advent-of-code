@@ -34,14 +34,12 @@ instructions <- tibble(raw = input) |>
 grid_start <- matrix(FALSE, 1e3, 1e3)
 
 action <- function(instruction, x_range, y_range, grid) {
-    if (instruction == "toggle")
-        grid[x_range, y_range] <- !grid[x_range, y_range]
-    
-    else if (instruction == "turn on")
-        grid[x_range, y_range] <- TRUE
-    
-    else if (instruction == "turn off")
-        grid[x_range, y_range] <- FALSE
+    grid[x_range, y_range] <- switch(
+        instruction,
+        "toggle"   = !grid[x_range, y_range],
+        "turn on"  = TRUE,
+        "turn off" = FALSE
+    )
     
     return(grid)
 }
