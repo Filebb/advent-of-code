@@ -23,12 +23,12 @@ input <- read_lines(file = "inputs/2015/06.txt")
 #| label: 2015 - day 6 - part 1
 
 instructions <- tibble(raw = input) |> 
-    mutate(instruction = str_extract(raw, pattern = "toggle|turn on|turn off"),
-           position    = str_extract_all(raw, pattern = "[0-9]+")) |> 
-    unnest_wider(col = position, names_sep = "_") |> 
-    mutate(across(.cols = starts_with("position"), .fns = \(x) as.integer(x) + 1L)) |> 
-    mutate(x_range = map2(.x = position_1, .y = position_3, .f = \(a, b) a:b),
-           y_range = map2(.x = position_2, .y = position_4, .f = \(a, b) a:b))
+    mutate(instruction = str_extract(raw, "toggle|turn on|turn off"),
+           position = str_extract_all(raw, "[0-9]+")) |> 
+    unnest_wider(position, names_sep = "_") |> 
+    mutate(across(starts_with("position"), \(x) as.integer(x) + 1L)) |> 
+    mutate(x_range = map2(position_1, position_3, \(a, b) a:b),
+           y_range = map2(position_2, position_4, \(a, b) a:b))
 
 # initial grid
 grid_start <- matrix(FALSE, 1e3, 1e3)
