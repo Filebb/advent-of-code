@@ -49,22 +49,17 @@ action <- function(instruction, x_range, y_range, grid) {
 make_story <- function(instructions, action, grid_start) {
     # initialize list
     grid_story <- vector(mode = "list", length = nrow(instructions))
-    for (i in 1:nrow(instructions)) grid_story[[i]] <- grid_start
     
-    # perform instructions
-    for (i in seq_along(grid_story)) {
+    # perform instruction
+    for (i in 1:nrow(instructions)) {
+        previous_grid <- if (i == 1) grid_start else grid_story[[i-1]]
         
-        if (i == 1) {
-            grid_story[[1]] <- action(instruction = instructions[[1, "instruction"]][[1]],
-                                      x_range     = instructions[[1, "x_range"]][[1]],
-                                      y_range     = instructions[[1, "y_range"]][[1]],
-                                      grid        = grid_story[[1]])
-        } else {
-            grid_story[[i]] <- action(instruction = instructions[[i, "instruction"]][[1]],
-                                      x_range     = instructions[[i, "x_range"]][[1]],
-                                      y_range     = instructions[[i, "y_range"]][[1]],
-                                      grid        = grid_story[[i-1]])
-        }
+        grid_story[[i]] <- action(
+            instruction = instructions[[i, "instruction"]][[1]],
+            x_range     = instructions[[i, "x_range"]][[1]],
+            y_range     = instructions[[i, "y_range"]][[1]],
+            grid        = previous_grid
+        )
     }
     
     return(grid_story)
