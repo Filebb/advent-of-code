@@ -36,7 +36,7 @@ instructions <- tibble(raw = input) |>
     ) |>
     mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) # Convert to 1-indexed for R
     
-action <- function(instruction, x_range, y_range, grid) {
+action_lights <- function(instruction, x_range, y_range, grid) {
     grid[x_range, y_range] <- switch(
         instruction,
         "toggle"   = !grid[x_range, y_range],
@@ -50,7 +50,7 @@ lights <- instructions |>
     mutate(
         grid = accumulate(
             .x = row_number(),
-            .f = \(grid, i) action(
+            .f = \(grid, i) action_lights(
                 instruction = instruction[i],
                 x_range     = x_start[i]:x_end[i],
                 y_range     = y_start[i]:y_end[i],
@@ -101,7 +101,7 @@ lights |>
 ```{r}
 #| label: 2015 - day 6 - part 2
 
-new_action <- function(instruction, x_range, y_range, grid) {
+action_brightness <- function(instruction, x_range, y_range, grid) {
     grid[x_range, y_range] <- switch(
         instruction,
         "toggle"   = grid[x_range, y_range] + 2,
@@ -115,7 +115,7 @@ brightness <- instructions |>
     mutate(
         grid = accumulate(
             .x = row_number(),
-            .f = \(grid, i) new_action(
+            .f = \(grid, i) action_brightness(
                 instruction = instruction[i],
                 x_range     = x_start[i]:x_end[i],
                 y_range     = y_start[i]:y_end[i],
