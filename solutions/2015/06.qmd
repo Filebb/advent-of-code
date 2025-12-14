@@ -85,7 +85,7 @@ lights |>
 lights |> 
     ggplot(aes(x = seq_along(lights_on), y = lights_on)) +
     geom_line() +
-    scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale())) +
+    scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
     theme_bw() +
     labs(x = "step", y = "# lights on")
 ```
@@ -150,7 +150,7 @@ brightness |>
 brightness |> 
     ggplot(aes(x = seq_along(total_brightness), y = total_brightness)) +
     geom_line() +
-    scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale())) +
+    scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
     theme_bw() +
     labs(x = "step", y = "total brightness")
 ```
