@@ -30,9 +30,6 @@ instructions <- tibble(raw = input) |>
     mutate(x_range = map2(position_1, position_3, \(a, b) a:b),
            y_range = map2(position_2, position_4, \(a, b) a:b))
 
-# initial grid
-grid_start <- matrix(FALSE, 1e3, 1e3)
-
 action <- function(instruction, x_range, y_range, grid) {
     grid[x_range, y_range] <- switch(
         instruction,
@@ -40,32 +37,23 @@ action <- function(instruction, x_range, y_range, grid) {
         "turn on"  = TRUE,
         "turn off" = FALSE
     )
-    
     return(grid)
 }
 
-make_story <- function(instructions, action, grid_start) {
-    # initialize list
-    grid_story <- vector(mode = "list", length = nrow(instructions))
-    
-    # perform instruction
-    for (i in 1:nrow(instructions)) {
-        previous_grid <- if (i == 1) grid_start else grid_story[[i-1]]
-        
-        grid_story[[i]] <- action(
-            instruction = instructions[[i, "instruction"]][[1]],
-            x_range     = instructions[[i, "x_range"]][[1]],
-            y_range     = instructions[[i, "y_range"]][[1]],
-            grid        = previous_grid
-        )
-    }
-    
-    return(grid_story)
-}
-
 instructions <- instructions |> 
-    mutate(grid = make_story(instructions, action, grid_start),
-           n_on = map_int(grid, sum))
+    mutate(
+        grid = accumulate(
+            .x = row_number(),
+            .f = \(grid, i) action(
+                instruction = instruction[i],
+                x_range     = x_range[[i]],
+                y_range     = y_range[[i]],
+                grid        = grid
+            ),
+            .init = matrix(FALSE, 1e3, 1e3)
+        )[-1] # Remove the initial grid (.init) from results
+    ) |>  
+    mutate(n_on = map_int(grid, sum))
 
 total_lights_on <- instructions |> tail(1) |> pull(n_on)
 cat("Total lights on:", total_lights_on, "\n")
