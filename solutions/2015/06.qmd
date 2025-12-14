@@ -23,12 +23,22 @@ input <- read_lines(file = "inputs/2015/06.txt")
 #| label: 2015 - day 6 - part 1
 
 instructions <- tibble(raw = input) |> 
-    mutate(instruction = str_extract(raw, "toggle|turn on|turn off"),
-           position = str_extract_all(raw, "[0-9]+")) |> 
-    unnest_wider(position, names_sep = "_") |> 
-    mutate(across(starts_with("position"), \(x) as.integer(x) + 1L)) |> 
-    mutate(x_range = map2(position_1, position_3, \(a, b) a:b),
-           y_range = map2(position_2, position_4, \(a, b) a:b))
+    mutate(
+        instruction = str_extract(raw, "toggle|turn on|turn off"),
+        coords = str_extract_all(raw, "[0-9]+")
+    ) |> 
+    unnest_wider(coords, names_sep = "_") |>
+    rename(
+        x_start = coords_1,
+        y_start = coords_2,
+        x_end = coords_3,
+        y_end = coords_4
+    ) |>
+    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) |> # Convert to 1-indexed for R
+    mutate(
+        x_range = map2(x_start, x_end, \(a, b) a:b),
+        y_range = map2(y_start, y_end, \(a, b) a:b)
+    )
 
 action <- function(instruction, x_range, y_range, grid) {
     grid[x_range, y_range] <- switch(
@@ -118,9 +128,9 @@ brightness <- instructions |>
             .init = matrix(0, 1e3, 1e3)
         ) |> tail(-1) # Remove the initial grid (.init) from results
     ) |>  
-    mutate(brightness = map_int(grid, sum))
+    mutate(total_brightness = map_int(grid, sum))
 
-total_brightness <- brightness |> tail(1) |> pull(brightness)
+total_brightness <- brightness |> tail(1) |> pull(total_brightness)
 cat("Total brightness:", total_brightness, "\n")
 ```
 
@@ -142,7 +152,7 @@ brightness |>
 #| echo: false
 
 brightness |> 
-    ggplot(aes(x = seq_along(brightness), y = brightness)) +
+    ggplot(aes(x = seq_along(total_brightness), y = total_brightness)) +
     geom_line() +
     scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale())) +
     theme_bw() +
