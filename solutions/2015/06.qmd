@@ -34,12 +34,8 @@ instructions <- tibble(raw = input) |>
         x_end = coords_3,
         y_end = coords_4
     ) |>
-    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) |> # Convert to 1-indexed for R
-    mutate(
-        x_range = map2(x_start, x_end, \(a, b) a:b),
-        y_range = map2(y_start, y_end, \(a, b) a:b)
-    )
-
+    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) # Convert to 1-indexed for R
+    
 action <- function(instruction, x_range, y_range, grid) {
     grid[x_range, y_range] <- switch(
         instruction,
@@ -56,8 +52,8 @@ lights <- instructions |>
             .x = row_number(),
             .f = \(grid, i) action(
                 instruction = instruction[i],
-                x_range     = x_range[[i]],
-                y_range     = y_range[[i]],
+                x_range     = x_start[i]:x_end[i],
+                y_range     = y_start[i]:y_end[i],
                 grid        = grid
             ),
             .init = matrix(FALSE, 1e3, 1e3)
@@ -76,7 +72,7 @@ cat("Total lights on:", total_lights_on, "\n")
 #| echo: false
 
 lights |> 
-    select(-x_range, -y_range, -grid) |> 
+    select(-grid) |> 
     rmarkdown::paged_table()
 ```
 
@@ -121,8 +117,8 @@ brightness <- instructions |>
             .x = row_number(),
             .f = \(grid, i) new_action(
                 instruction = instruction[i],
-                x_range     = x_range[[i]],
-                y_range     = y_range[[i]],
+                x_range     = x_start[i]:x_end[i],
+                y_range     = y_start[i]:y_end[i],
                 grid        = grid
             ),
             .init = matrix(0, 1e3, 1e3)
@@ -141,7 +137,7 @@ cat("Total brightness:", total_brightness, "\n")
 #| echo: false
 
 brightness |> 
-    select(-x_range, -y_range, -grid) |> 
+    select(-grid) |> 
     rmarkdown::paged_table()
 ```
 
