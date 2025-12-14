@@ -36,7 +36,7 @@ instructions <- tibble(raw = input) |>
     ) |>
     mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) # Convert to 1-indexed for R
     
-action_lights <- function(instruction, x_range, y_range, grid) {
+action_lights <- function(grid, instruction, x_range, y_range) {
     grid[x_range, y_range] <- switch(
         instruction,
         "toggle"   = !grid[x_range, y_range],
@@ -51,10 +51,10 @@ lights <- instructions |>
         grid = accumulate(
             .x = row_number(),
             .f = \(grid, i) action_lights(
+                grid        = grid,
                 instruction = instruction[i],
                 x_range     = x_start[i]:x_end[i],
-                y_range     = y_start[i]:y_end[i],
-                grid        = grid
+                y_range     = y_start[i]:y_end[i]
             ),
             .init = matrix(FALSE, 1e3, 1e3)
         ) |> tail(-1) # Remove the initial grid (.init) from results
@@ -87,7 +87,7 @@ lights |>
     geom_line() +
     scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
     theme_bw() +
-    labs(x = "step", y = "# lights on")
+    labs(x = "Step", y = "Lights on")
 ```
 
 :::
@@ -101,7 +101,7 @@ lights |>
 ```{r}
 #| label: 2015 - day 6 - part 2
 
-action_brightness <- function(instruction, x_range, y_range, grid) {
+action_brightness <- function(grid, instruction, x_range, y_range) {
     grid[x_range, y_range] <- switch(
         instruction,
         "toggle"   = grid[x_range, y_range] + 2,
@@ -116,10 +116,10 @@ brightness <- instructions |>
         grid = accumulate(
             .x = row_number(),
             .f = \(grid, i) action_brightness(
+                grid        = grid,
                 instruction = instruction[i],
                 x_range     = x_start[i]:x_end[i],
-                y_range     = y_start[i]:y_end[i],
-                grid        = grid
+                y_range     = y_start[i]:y_end[i]
             ),
             .init = matrix(0, 1e3, 1e3)
         ) |> tail(-1) # Remove the initial grid (.init) from results
@@ -152,7 +152,7 @@ brightness |>
     geom_line() +
     scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
     theme_bw() +
-    labs(x = "step", y = "total brightness")
+    labs(x = "Step", y = "Total Brightness")
 ```
 
 :::
