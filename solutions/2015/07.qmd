@@ -295,8 +295,8 @@ repeat{
                 ~as.character(eval(parse(text = .))))
 }
 
-a <- lhs[rhs == "a"]
-cat(a)
+signal_a <- lhs[rhs == "a"]
+cat("Signal on wire a:", signal_a, "\n")
 ```
 
 ## Part Two
@@ -306,7 +306,7 @@ cat(a)
 
 # take the signal you got on wire a, override wire b to that signal
 instructions <- instructions |> 
-    mutate(lhs = if_else(rhs == "b", a, lhs))
+    mutate(lhs = if_else(rhs == "b", signal_a, lhs))
 
 lhs <- instructions |> pull(lhs)
 rhs <- instructions |> pull(rhs)
@@ -340,6 +340,6 @@ repeat{
                 ~as.character(eval(parse(text = .))))
 }
 
-a <- lhs[rhs == "a"]
-cat(a)
+signal_a_new <- lhs[rhs == "a"]
+cat("Signal on wire a (override b):", signal_a_new, "\n")
 ```
