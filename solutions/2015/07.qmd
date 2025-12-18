@@ -284,7 +284,7 @@ repeat{
     names(replacement) <- paste0("(?<=^| )", rhs[numbers_ind], "(?=$| )")
     
     # replace values
-    lhs <- lhs %>%
+    lhs <- lhs |>
         str_replace_all(replacement)
     
     # evaluate instructions that can be evaluated
@@ -329,7 +329,7 @@ repeat{
     names(replacement) <- paste0("(?<=^| )", rhs[numbers_ind], "(?=$| )")
     
     # replace values
-    lhs <- lhs %>%
+    lhs <- lhs |>
         str_replace_all(replacement)
     
     # evaluate instructions that can be evaluated
