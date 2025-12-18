@@ -254,13 +254,13 @@ instructions <- tibble(original = input) |>
                          names = c("lhs", "rhs"),
                          cols_remove = FALSE) |> 
     mutate(
-        lhs = str_replace_all(lhs, c(
-            "AND"    = "%AND%",
-            "OR"     = "%OR%",
-            "NOT"    = "1 %NOT%",
-            "RSHIFT" = "%RSHIFT%",
-            "LSHIFT" = "%LSHIFT%"
-        )),
+        lhs = str_replace_all(
+            lhs, c("AND"    = "%AND%",
+                   "OR"     = "%OR%",
+                   "NOT"    = "1 %NOT%",
+                   "RSHIFT" = "%RSHIFT%",
+                   "LSHIFT" = "%LSHIFT%")
+        )
     )
 
 lhs <- instructions |> pull(lhs)
