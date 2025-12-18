@@ -268,7 +268,7 @@ rhs <- instructions |> pull(rhs)
 
 repeat{
     # find where we have JUST numbers
-    numbers_ind <- which(str_detect(lhs, "^[0-9]*$"))
+    numbers_ind <- which(str_detect(lhs, "^[0-9]+$"))
     
     if (length(numbers_ind) == length(lhs)) break
     
@@ -313,7 +313,7 @@ rhs <- instructions |> pull(rhs)
 
 repeat{
     # find where we have JUST numbers
-    numbers_ind <- which(str_detect(lhs, "^[0-9]*$"))
+    numbers_ind <- which(str_detect(lhs, "^[0-9]+$"))
     
     if (length(numbers_ind) == length(lhs)) break
     
