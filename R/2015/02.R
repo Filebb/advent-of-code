@@ -1,7 +1,7 @@
 library(tidyverse)
 library(cli)
 
-input <- read_csv(file = "inputs/2015/02.txt", col_names = "original")
+input <- read_csv("inputs/2015/02.txt", col_names = "original")
 
 paper <- input |>
     separate_wider_delim(cols = original,

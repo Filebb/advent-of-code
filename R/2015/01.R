@@ -1,7 +1,7 @@
 library(tidyverse)
 library(cli)
 
-input <- read_lines(file = "inputs/2015/01.txt")
+input <- read_lines("inputs/2015/01.txt")
 
 moves <- tibble(
     input = str_split_1(input, ""),
