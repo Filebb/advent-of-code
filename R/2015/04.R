@@ -31,4 +31,4 @@ lowest_number_6zeros <- md5_hashes |>
     slice(1) |>
     pull(number)
 
-cli_alert_success("Lowest number with 5 leading zeros: {lowest_number_6zeros}")
+cli_alert_success("Lowest number with 6 leading zeros: {lowest_number_6zeros}")
