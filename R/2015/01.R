@@ -9,14 +9,12 @@ moves <- tibble(
     height = cumsum(move)
 )
 
-part1 <- tail(moves$height, 1)
+final_floor <- tail(moves$height, 1)
+cli_alert_success("Final floor: {final_floor}")
 
-cli_alert_success("Final floor: {part1}")
-
-basement_entry_position <- moves |>
+basement_entries <- moves |>
     rowid_to_column("time") |>
     filter(height == -1)
 
-part2 <- head(basement_entry_position$time, 1)
-
-cli_alert_success("Basement position: {part2}")
+basement_entry_position <- head(basement_entries$time, 1)
+cli_alert_success("Basement position: {basement_entry_position}")
