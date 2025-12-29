@@ -1,0 +1,84 @@
+library(tidyverse)
+library(cli)
+
+# load input
+input <- read_lines(file = "inputs/2015/06.txt")
+
+# pre-processing
+instructions <- tibble(raw = input) |>
+    mutate(
+        instruction = str_extract(raw, "toggle|turn on|turn off"),
+        coords = str_extract_all(raw, "[0-9]+")
+    ) |>
+    unnest_wider(coords, names_sep = "_") |>
+    rename(
+        x_start = coords_1,
+        y_start = coords_2,
+        x_end = coords_3,
+        y_end = coords_4
+    ) |>
+    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) # Convert to 1-indexed for R
+
+# part 1
+action_lights <- function(grid, instruction, x_range, y_range) {
+    grid[x_range, y_range] <- switch(
+        instruction,
+        "toggle"   = !grid[x_range, y_range],
+        "turn on"  = TRUE,
+        "turn off" = FALSE
+    )
+    return(grid)
+}
+
+lights <- instructions |>
+    mutate(
+        grid = accumulate(
+            .x = row_number(),
+            .f = \(grid, i) action_lights(
+                grid        = grid,
+                instruction = instruction[i],
+                x_range     = x_start[i]:x_end[i],
+                y_range     = y_start[i]:y_end[i]
+            ),
+            .init = matrix(FALSE, 1e3, 1e3)
+        ) |> tail(-1) # Remove the initial grid (.init) from results
+    ) |>
+    mutate(lights_on = map_int(grid, sum))
+
+total_lights_on <- lights |>
+    tail(1) |>
+    pull(lights_on)
+
+cli_alert_success("Total lights on: {total_lights_on}")
+
+# part 2
+action_brightness <- function(grid, instruction, x_range, y_range) {
+    grid[x_range, y_range] <- switch(
+        instruction,
+        "toggle"   = grid[x_range, y_range] + 2,
+        "turn on"  = grid[x_range, y_range] + 1,
+        "turn off" = pmax(grid[x_range, y_range] - 1, 0)
+    )
+    return(grid)
+}
+
+brightness <- instructions |>
+    mutate(
+        grid = accumulate(
+            .x = row_number(),
+            .f = \(grid, i) action_brightness(
+                grid        = grid,
+                instruction = instruction[i],
+                x_range     = x_start[i]:x_end[i],
+                y_range     = y_start[i]:y_end[i]
+            ),
+            .init = matrix(0, 1e3, 1e3)
+        ) |> tail(-1) # Remove the initial grid (.init) from results
+    ) |>
+    mutate(total_brightness = map_int(grid, sum))
+
+total_brightness <- brightness |>
+    tail(1) |>
+    pull(total_brightness)
+
+cli_alert_success("Total brightness: {total_brightness}")
