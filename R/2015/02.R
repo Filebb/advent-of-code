@@ -16,7 +16,7 @@ total_paper_needed <- sum(paper$paper_needed)
 cli_alert_success("Total paper needed: {total_paper_needed} sq ft")
 
 paper <- paper |>
-    mutate(ribbon_needed = 2L * (l + w + h - pmax(l, w, h)) + l*w*h)
+    mutate(ribbon_needed = 2L * pmin(l+w, l+h, w+h) + l*w*h)
 
 total_ribbon_needed <- sum(paper$ribbon_needed)
 cli_alert_success("Total ribbon needed: {total_ribbon_needed} ft")
