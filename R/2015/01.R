@@ -1,20 +1,24 @@
+# Day 1: Not Quite Lisp
+# https://adventofcode.com/2015/day/1
+
+# Setup ----
 library(tidyverse)
 library(cli)
 
+# Load Data ----
 input <- read_lines("inputs/2015/01.txt")
 
+# Pre-processing ----
 moves <- tibble(
     input = str_split_1(input, ""),
     move = case_match(input, "(" ~  1L, ")" ~ -1L),
-    height = cumsum(move)
+    floor = cumsum(move)
 )
 
-final_floor <- tail(moves$height, 1)
+# Part 1 - Find final floor ----
+final_floor <- tail(moves$floor, 1)
 cli_alert_success("Final floor: {final_floor}")
 
-basement_entries <- moves |>
-    rowid_to_column("time") |>
-    filter(height == -1)
-
-basement_entry_position <- head(basement_entries$time, 1)
+# Part 2 - Find first basement entry ----
+basement_entry_position <- which(moves$floor == -1)[1]
 cli_alert_success("Basement position: {basement_entry_position}")
