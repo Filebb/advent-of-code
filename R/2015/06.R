@@ -1,10 +1,14 @@
+# Day 6: Probably a Fire Hazard
+# https://adventofcode.com/2015/day/6
+
+# Setup ----
 library(tidyverse)
 library(cli)
 
-# load input
-input <- read_lines(file = "inputs/2015/06.txt")
+# Load Data ----
+input <- read_lines("inputs/2015/06.txt")
 
-# pre-processing
+# Pre-processing ----
 instructions <- tibble(raw = input) |>
     mutate(
         instruction = str_extract(raw, "toggle|turn on|turn off"),
@@ -17,9 +21,10 @@ instructions <- tibble(raw = input) |>
         x_end = coords_3,
         y_end = coords_4
     ) |>
-    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L)) # Convert to 1-indexed for R
+    # Convert to 1-indexed for R
+    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L))
 
-# part 1
+# Part 1 - Toggle lights on/off ----
 action_lights <- function(grid, instruction, x_range, y_range) {
     grid[x_range, y_range] <- switch(
         instruction,
@@ -45,13 +50,10 @@ lights <- instructions |>
     ) |>
     mutate(lights_on = map_int(grid, sum))
 
-total_lights_on <- lights |>
-    tail(1) |>
-    pull(lights_on)
-
+total_lights_on <- tail(lights$lights_on, 1)
 cli_alert_success("Total lights on: {total_lights_on}")
 
-# part 2
+# Part 2 - Adjust brightness levels ----
 action_brightness <- function(grid, instruction, x_range, y_range) {
     grid[x_range, y_range] <- switch(
         instruction,
@@ -77,8 +79,5 @@ brightness <- instructions |>
     ) |>
     mutate(total_brightness = map_int(grid, sum))
 
-total_brightness <- brightness |>
-    tail(1) |>
-    pull(total_brightness)
-
+total_brightness <- tail(brightness$total_brightness, 1)
 cli_alert_success("Total brightness: {total_brightness}")
