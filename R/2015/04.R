@@ -7,8 +7,6 @@ library(cli)
 library(digest)
 library(furrr)
 
-
-
 # Examples ----
 # digest(str_c("abcdef", 609043), algo = "md5", serialize = FALSE)
 # digest(str_c("pqrstuv", 1048970), algo = "md5", serialize = FALSE)
@@ -47,4 +45,3 @@ lowest_number_6zeros <- md5_hashes |>
     pull(number)
 
 cli_alert_success("Lowest number with 6 leading zeros: {lowest_number_6zeros}")
-
