@@ -23,10 +23,7 @@ santa <- moves |>
   ) |>
   add_row(pos_x = 0, pos_y = 0, .before = 1)
 
-santa_houses_visited <- santa |>
-  distinct(pos_x, pos_y) |>
-  nrow()
-
+santa_houses_visited <- n_distinct(santa$pos_x, santa$pos_y)
 cli_alert_success("Houses visited by Santa: {santa_houses_visited}")
 
 # Part 2 - Houses visited by Santa and Robo ----
@@ -39,8 +36,5 @@ both <- moves |>
   ) |>
   add_row(pos_x = 0, pos_y = 0, .before = 1)
 
-both_houses_visited <- both |>
-  distinct(pos_x, pos_y) |>
-  nrow()
-
+both_houses_visited <- n_distinct(both$pos_x, both$pos_y)
 cli_alert_success("Houses visited by Santa and Robo: {both_houses_visited}")
