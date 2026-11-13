@@ -1,7 +1,8 @@
 # Day 3: Perfectly Spherical Houses in a Vacuum
 # https://adventofcode.com/2015/day/3
 
-# Setup ----
+# Packages ----
+options(tidyverse.quiet = TRUE)
 library(tidyverse)
 library(cli)
 
@@ -9,10 +10,10 @@ library(cli)
 input <- read_lines("inputs/2015/03.txt")
 
 # Pre-processing ----
-moves <- tibble(raw = str_split_1(input, "")) |>
+moves <- tibble(move = str_split_1(input, "")) |>
   mutate(
-    move_x = recode_values(raw, "^" ~ 0, ">" ~ 1, "v" ~ 0, "<" ~ -1),
-    move_y = recode_values(raw, "^" ~ 1, ">" ~ 0, "v" ~ -1, "<" ~ 0)
+    move_x = recode_values(move, "^" ~ 0, ">" ~ 1, "v" ~ 0, "<" ~ -1),
+    move_y = recode_values(move, "^" ~ 1, ">" ~ 0, "v" ~ -1, "<" ~ 0)
   )
 
 # Part 1 - Houses visited by Santa ----
@@ -23,8 +24,8 @@ santa <- moves |>
   ) |>
   add_row(pos_x = 0, pos_y = 0, .before = 1)
 
-santa_houses_visited <- n_distinct(santa$pos_x, santa$pos_y)
-cli_alert_success("Houses visited by Santa: {santa_houses_visited}")
+santa_houses <- n_distinct(santa$pos_x, santa$pos_y)
+cli_alert_success("Houses visited by Santa: {.val {santa_houses}}")
 
 # Part 2 - Houses visited by Santa and Robo ----
 both <- moves |>
@@ -36,5 +37,5 @@ both <- moves |>
   ) |>
   add_row(pos_x = 0, pos_y = 0, .before = 1)
 
-both_houses_visited <- n_distinct(both$pos_x, both$pos_y)
-cli_alert_success("Houses visited by Santa and Robo: {both_houses_visited}")
+both_houses <- n_distinct(both$pos_x, both$pos_y)
+cli_alert_success("Houses visited by Santa and Robo: {.val {both_houses}}")
