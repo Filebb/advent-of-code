@@ -2,6 +2,7 @@
 # https://adventofcode.com/2015/day/1
 
 # Packages ----
+options(tidyverse.quiet = TRUE)
 library(tidyverse)
 library(cli)
 
