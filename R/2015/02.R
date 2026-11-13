@@ -1,7 +1,8 @@
 # Day 2: I Was Told There Would Be No Math
 # https://adventofcode.com/2015/day/2
 
-# Setup ----
+# Packages ----
+options(tidyverse.quiet = TRUE)
 library(tidyverse)
 library(cli)
 
@@ -9,24 +10,24 @@ library(cli)
 input <- read_lines("inputs/2015/02.txt")
 
 # Pre-processing ----
-paper <- tibble(present_dimensions = input) |>
+presents <- tibble(dimensions = input) |>
   separate_wider_delim(
-    cols = present_dimensions,
+    cols = dimensions,
     names = c("l", "w", "h"),
     delim = "x",
     cols_remove = FALSE
   ) |>
-  #relocate(present_dimensions, l, w, h) |>
-  mutate(across(c(l, w, h), as.integer)) |>
+  #relocate(dimensions, l, w, h) |>
   mutate(
-    paper_needed = 2L * (l*w + w*h + h*l) + pmin(l*w, w*h, h*l),
-    ribbon_needed = 2L * pmin(l+w, l+h, w+h) + l*w*h
+    across(c(l, w, h), as.integer),
+    paper = 2L * (l * w + w * h + h * l) + pmin(l * w, w * h, h * l),
+    ribbon = 2L * pmin(l + w, l + h, w + h) + l * w * h
   )
 
 # Part 1 - Calculate wrapping paper needed ----
-total_paper_needed <- sum(paper$paper_needed)
-cli_alert_success("Total paper needed: {total_paper_needed} sq ft")
+paper_total <- sum(presents$paper)
+cli_alert_success("Total paper needed: {.val {paper_total}} sq ft")
 
 # Part 2 - Calculate ribbon needed ----
-total_ribbon_needed <- sum(paper$ribbon_needed)
-cli_alert_success("Total ribbon needed: {total_ribbon_needed} ft")
+ribbon_total <- sum(presents$ribbon)
+cli_alert_success("Total ribbon needed: {.val {ribbon_total}} ft")
