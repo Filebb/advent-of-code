@@ -6,78 +6,84 @@ library(tidyverse)
 library(cli)
 
 # Load Data ----
-input <- read_lines("inputs/2015/06.txt")
+input <- read_lines(here::here("inputs/2015/06.txt"))
 
 # Pre-processing ----
 instructions <- tibble(raw = input) |>
-    mutate(
-        instruction = str_extract(raw, "toggle|turn on|turn off"),
-        coords = str_extract_all(raw, "[0-9]+")
-    ) |>
-    unnest_wider(coords, names_sep = "_") |>
-    rename(
-        x_start = coords_1,
-        y_start = coords_2,
-        x_end = coords_3,
-        y_end = coords_4
-    ) |>
-    # Convert to 1-indexed for R
-    mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L))
+  mutate(
+    instruction = str_extract(raw, "toggle|turn on|turn off"),
+    coords = str_extract_all(raw, "[0-9]+")
+  ) |>
+  unnest_wider(coords, names_sep = "_") |>
+  rename(
+    x_start = coords_1,
+    y_start = coords_2,
+    x_end = coords_3,
+    y_end = coords_4
+  ) |>
+  # Convert to 1-indexed for R
+  mutate(across(matches("^[xy]"), \(x) as.integer(x) + 1L))
 
 # Part 1 - Toggle lights on/off ----
 action_lights <- function(grid, instruction, x_range, y_range) {
-    grid[x_range, y_range] <- switch(
-        instruction,
-        "toggle"   = !grid[x_range, y_range],
-        "turn on"  = TRUE,
-        "turn off" = FALSE
-    )
-    return(grid)
+  grid[x_range, y_range] <- switch(
+    instruction,
+    "toggle" = !grid[x_range, y_range],
+    "turn on" = TRUE,
+    "turn off" = FALSE
+  )
+  return(grid)
 }
 
 lights <- instructions |>
-    mutate(
-        grid = accumulate(
-            .x = row_number(),
-            .f = \(grid, i) action_lights(
-                grid        = grid,
-                instruction = instruction[i],
-                x_range     = x_start[i]:x_end[i],
-                y_range     = y_start[i]:y_end[i]
-            ),
-            .init = matrix(FALSE, 1e3, 1e3)
-        ) |> tail(-1) # Remove the initial grid (.init) from results
+  mutate(
+    grid = accumulate(
+      .x = row_number(),
+      .f = \(grid, i) {
+        action_lights(
+          grid = grid,
+          instruction = instruction[i],
+          x_range = x_start[i]:x_end[i],
+          y_range = y_start[i]:y_end[i]
+        )
+      },
+      .init = matrix(FALSE, 1e3, 1e3)
     ) |>
-    mutate(lights_on = map_int(grid, sum))
+      tail(-1), # Remove the initial grid (.init) from results
+    lights_on = map_int(grid, sum)
+  )
 
 total_lights_on <- tail(lights$lights_on, 1)
-cli_alert_success("Total lights on: {total_lights_on}")
+cli_alert_success("Total lights on: {.val {total_lights_on}}")
 
 # Part 2 - Adjust brightness levels ----
 action_brightness <- function(grid, instruction, x_range, y_range) {
-    grid[x_range, y_range] <- switch(
-        instruction,
-        "toggle"   = grid[x_range, y_range] + 2,
-        "turn on"  = grid[x_range, y_range] + 1,
-        "turn off" = pmax(grid[x_range, y_range] - 1, 0)
-    )
-    return(grid)
+  grid[x_range, y_range] <- switch(
+    instruction,
+    "toggle" = grid[x_range, y_range] + 2L,
+    "turn on" = grid[x_range, y_range] + 1L,
+    "turn off" = pmax(grid[x_range, y_range] - 1L, 0L)
+  )
+  return(grid)
 }
 
 brightness <- instructions |>
-    mutate(
-        grid = accumulate(
-            .x = row_number(),
-            .f = \(grid, i) action_brightness(
-                grid        = grid,
-                instruction = instruction[i],
-                x_range     = x_start[i]:x_end[i],
-                y_range     = y_start[i]:y_end[i]
-            ),
-            .init = matrix(0, 1e3, 1e3)
-        ) |> tail(-1) # Remove the initial grid (.init) from results
+  mutate(
+    grid = accumulate(
+      .x = row_number(),
+      .f = \(grid, i) {
+        action_brightness(
+          grid = grid,
+          instruction = instruction[i],
+          x_range = x_start[i]:x_end[i],
+          y_range = y_start[i]:y_end[i]
+        )
+      },
+      .init = matrix(0L, 1e3, 1e3)
     ) |>
-    mutate(total_brightness = map_int(grid, sum))
+      tail(-1), # Remove the initial grid (.init) from results
+    total_brightness = map_int(grid, sum)
+  )
 
 total_brightness <- tail(brightness$total_brightness, 1)
-cli_alert_success("Total brightness: {total_brightness}")
+cli_alert_success("Total brightness: {.val {total_brightness}}")
